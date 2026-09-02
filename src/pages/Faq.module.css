@@ -1,0 +1,302 @@
+.section {
+  padding: 0 0 var(--space-6);
+  background: linear-gradient(160deg, var(--color-lavender) 0%, var(--color-peach-light) 100%);
+}
+
+/* Hero en pile centrée (31/08/2026, maquette envoyée par Marine : titre, puis "(sans
+   tabou)" juste en dessous, sous-titre centré, et la photo pleine largeur en dessous de
+   tout) plutôt que le 2 colonnes texte/image côte à côte de la 1ère version.
+   Fond poudré bord à bord ("mets le fond poudré", "juste pour le haut" : seulement ce
+   bloc, pas toute la page) via 100vw/marges négatives pour déborder du .container
+   parent sans toucher au reste de la page. */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  padding: var(--space-4) var(--space-4);
+  background: var(--color-peach);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+/* Même grain que Hero.tsx (accueil) : voir Hero.module.css pour le contexte (fourni par
+   Marine le 28/08/2026, opacité 0.28 pour rester discret). */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  background-image: url('../assets/texture/grain-tile.png');
+  background-repeat: repeat;
+}
+
+.heroText {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+}
+
+/* Cœur qui bat doucement (31/08/2026, "on peut aussi ajouter le coeur qui pulse") : même
+   recette que .heart dans Contact.module.css/Hero.module.css, pour rester cohérent avec le
+   reste du site. */
+.heart {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 30px;
+  transform: translateX(195px);
+  animation: heartBeat 2.6s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%,
+  100% {
+    transform: translateX(195px) scale(1);
+  }
+  50% {
+    transform: translateX(195px) scale(1.12);
+  }
+}
+
+.eyebrow {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(16px, 2.2vw, 22px);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-size: clamp(32px, 5vw, 48px);
+  color: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.subtitle {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* Petit effet d'entrée sur la photo (31/08/2026, "une petite anim pour le haut") : léger
+   zoom-avant au montage, en plus du fade/slide déjà géré par <Reveal> sur le wrapper — les
+   deux se cumulent sans se marcher dessus (transform ici sur l'img, translateY côté Reveal
+   sur le div parent). Un seul passage, pas de boucle (contrairement au cœur juste
+   au-dessus) : c'est une apparition, pas un battement continu. */
+.heroImage {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  animation: faqHeroPop 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+
+@keyframes faqHeroPop {
+  from {
+    transform: scale(0.88);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroImage,
+  .heart {
+    animation: none;
+  }
+}
+
+/* Flèche pour inciter à descendre (31/08/2026, "montrer qu'il faut descendre" sous le
+   sous-titre) : un trait fin qui se courbe en pointe (pas un chevron plein) pour un rendu
+   plus "féminin et premium", avec un léger rebond vertical continu (contrairement au
+   Hero où le flottement continu avait été explicitement écarté — ici c'est justement le
+   mouvement qui porte le sens "scrolle"). */
+.scrollArrow {
+  display: block;
+  margin: var(--space-3) auto 0;
+  color: var(--color-primary);
+  animation: faqArrowBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes faqArrowBounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollArrow {
+    animation: none;
+  }
+}
+
+/* Accordéon (31/08/2026, "ok pour l'accordéon") : la question reste toujours visible,
+   seuls le texte et l'illustration se déplient au clic — via grid-template-rows 0fr -> 1fr
+   (pas de JS pour mesurer une hauteur), même mécanisme que Faq.tsx utilisait dans une 1ère
+   version. Pas de cartes ni d'ombres portées (demande explicite "pas hyper modernes...
+   pas obligé d'avoir des blocs aussi visibles") : juste un séparateur fin entre questions. */
+.list {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.item:first-child {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.itemHeading {
+  margin: 0;
+}
+
+.question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(19px, 2.4vw, 24px);
+  color: var(--color-primary-dark);
+  padding: var(--space-4) var(--space-2);
+  cursor: pointer;
+}
+
+/* "+" en CSS pur (2 traits superposés) plutôt qu'une icône importée : tourne à 45deg à
+   l'ouverture pour devenir un "×". */
+.toggle {
+  position: relative;
+  flex: none;
+  width: 22px;
+  height: 22px;
+}
+
+.toggle::before,
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--color-primary);
+  border-radius: 2px;
+  transform: translate(-50%, -50%);
+}
+
+.toggle::before {
+  width: 100%;
+  height: 2px;
+}
+
+.toggle::after {
+  width: 2px;
+  height: 100%;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.toggleOpen::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
+}
+
+.answerWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.itemOpen .answerWrap {
+  grid-template-rows: 1fr;
+}
+
+.answerInner {
+  overflow: hidden;
+}
+
+/* Image + texte en quinconce (31/08/2026, "les images et les textes étaient en
+   quinconces") à l'intérieur de chaque panneau déplié : alternent de côté à chaque
+   question pour casser la monotonie d'une liste verticale. */
+.row {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 320px);
+  align-items: center;
+  gap: var(--space-5);
+  padding: 0 var(--space-2) var(--space-5);
+}
+
+.rowImage {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+}
+
+.answer {
+  color: var(--color-text);
+  line-height: 1.65;
+  font-size: 16px;
+}
+
+.closing {
+  text-align: center;
+  margin-top: var(--space-6);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-primary-dark);
+}
+
+.closing a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+@media (max-width: 780px) {
+  .heroImage {
+    order: -1;
+    max-width: 300px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .rowImage {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .question {
+    font-size: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .answerWrap,
+  .toggle::after {
+    transition: none;
+  }
+}

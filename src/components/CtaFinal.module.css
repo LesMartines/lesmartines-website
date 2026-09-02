@@ -1,0 +1,25 @@
+.section {
+  /* Fond distinct (31/08/2026, "pas de délimitation entre nos partenaires sûrs et
+     alors tu nous rejoins, alors que c'est 2 blocs différents") : Partenaires et
+     CtaFinal héritaient tous les deux du même rose pudré de body (aucun des deux ne
+     posait son propre fond), donc aucune frontière visible entre les 2 sections.
+     Le blanc chaud essayé d'abord recréait le même souci avec le Footer juste en
+     dessous (`background: var(--color-white-warm)` aussi dans Footer.module.css) —
+     lilas à la place (31/08/2026, "on va se retrouver avec la même couleur que le
+     footer [...] tu peux le mettre en lila") : distinct du rose pudré au-dessus ET du
+     blanc chaud du Footer en dessous. */
+  background: var(--color-lavender);
+  padding: var(--space-6) 0;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+}
+
+.title {
+  font-size: clamp(28px, 4vw, 44px);
+}

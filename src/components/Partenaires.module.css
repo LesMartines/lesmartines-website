@@ -1,0 +1,177 @@
+.section {
+  padding: var(--space-6) 0;
+  overflow: hidden;
+}
+
+.title {
+  text-align: center;
+  /* Aligné sur ValeursBloc (31/08/2026, "pas à la même taille que Nos green flags") :
+     clamp(22px,3vw,28px) -> clamp(32px,5vw,52px), même échelle que les autres titres
+     de section "Nos ...". */
+  font-size: clamp(32px, 5vw, 52px);
+  margin-bottom: var(--space-4);
+  padding: 0 var(--space-3);
+}
+
+/* Défilement sur 2 lignes plutôt qu'une grille statique (31/08/2026, "trop petits, on
+   arrivait pas à les lire [...] que ça fasse la même chose que pour nos green flags,
+   pas besoin de tous les voir en même temps") : même mécanique que ValeursBloc — voir
+   les commentaires détaillés dans ValeursBloc.module.css pour le pourquoi de chaque
+   choix (3 copies par ligne, sens opposés, fondu sur les bords, pause au survol). */
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.marqueeWrap {
+  overflow: hidden;
+  /* 14px -> 28px -> 44px (31/08/2026, "la ligne du bas a encore son ombre coupée au
+     hover") : --shadow-card (tokens.css) a un décalage de 8px + un flou de 30px, donc
+     jusqu'à ~38px de débord visible sous la carte au survol — 28px de padding
+     restaient un peu courts. La ligne du haut avait le même souci mais il passait
+     inaperçu, sa moitié de débord étant recouverte par la ligne du bas qui la
+     chevauche (marge négative juste en dessous) ; la ligne du bas, elle, n'a rien pour
+     masquer le rognage. */
+  padding: 44px 0;
+  mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+
+/* Chevauchement augmenté d'autant que le padding ci-dessus (31/08/2026, "trop d'espace
+   entre les 2 lignes") : le padding sert à loger l'ombre au survol, pas à espacer les 2
+   lignes entre elles — sans compenser ici, l'écart visuel perçu entre les lignes aurait
+   grossi en même temps que le padding. */
+.marqueeWrap + .marqueeWrap {
+  margin-top: -68px;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  /* Le gap habituel de .list (entre les cartes DANS une même copie) ne s'applique pas
+     ENTRE deux copies voisines (chaque copie est un <ul> à part) : sans ce gap ici
+     aussi, la dernière carte d'une copie touchait la 1re de la copie suivante
+     (31/08/2026, "bonne dose et puissante se touche" / "reusse et we vibe se touche
+     aussi" — exactement la jointure entre copies). Doit rester identique à la valeur
+     de .list pour un espacement régulier partout. */
+  gap: var(--space-3);
+  width: max-content;
+  /* Plus lent que ValeursBloc (110s) : les logos, plus grands et moins nombreux par
+     ligne, ont besoin d'un peu plus de temps à l'écran pour rester lisibles. */
+  animation: scroll 130s linear infinite;
+}
+
+.track.reverse {
+  animation-direction: reverse;
+}
+
+.track:hover {
+  animation-play-state: paused;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  /* La vraie cause du collage signalé ("reusses et we vibe sont collés" /
+     "bonne dose et puissante se touche") était l'absence de gap sur .track entre les
+     copies, pas cette valeur ici (voir .track plus haut) — remis à space-3 sur demande
+     du 31/08/2026 ("rapprocher les carrés entre eux"), doit rester identique au gap de
+     .track. */
+  gap: var(--space-3);
+}
+
+.item {
+  flex: none;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Rétréci (31/08/2026, "il faudrait réduire un peu les carrés") : 150px -> 120px. */
+  width: 120px;
+  height: 120px;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+a.card:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-card);
+}
+
+/* Niveaux de gris au repos, couleur au survol (31/08/2026, "un effet un peu mieux sur
+   les logos ?") : un mur de 30 logos très colorés (Si Si La Paillette, Guidly...) se
+   bat visuellement en couleur plein pot ; en gris, l'ensemble se calme et la couleur
+   redevient une vraie récompense au survol plutôt qu'un effet de plus qui s'ajoute au
+   défilement déjà en mouvement. */
+.logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+.card:hover .logo {
+  filter: grayscale(0%);
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* -33.333% : chaque ligne a 3 copies de sa moitié de liste, la copie suivante
+       prend le relais pile à ce moment-là (même raison que ValeursBloc). */
+    transform: translateX(-33.3333%);
+  }
+}
+
+/* Lien vers la page dédiée (01/09/2026, "faire la page partenaire") : le bandeau défilant
+   de l'accueil reste un teaser (logos seuls, pas de descriptif), la page /partenaires/
+   présente chaque marque en détail. */
+.cta {
+  text-align: center;
+  margin-top: var(--space-4);
+}
+
+.cta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .card {
+    width: 96px;
+    height: 96px;
+    padding: var(--space-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+
+  .marqueeWrap {
+    overflow-x: auto;
+  }
+
+  a.card:hover {
+    transform: none;
+  }
+}

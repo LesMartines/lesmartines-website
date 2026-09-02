@@ -1,0 +1,102 @@
+.footer {
+  background: var(--color-white-warm);
+  padding: var(--space-5) 0 var(--space-3);
+  /* margin-top retiré (31/08/2026, "vire la bande poudré en dessous") : ce
+     margin-top: space-6 (96px) était invisible tant que CtaFinal était peach comme le
+     Footer (rose pudré sur rose pudré) ; maintenant que CtaFinal a son propre fond
+     lilas, ce margin en dehors du fond du Footer laissait voir une bande rose pudré du
+     body entre les deux. Le padding de CtaFinal fait déjà largement l'espacement
+     nécessaire avant le Footer. */
+}
+
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--color-charcoal);
+  margin-bottom: 6px;
+}
+
+.tagline {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  max-width: 320px;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-lavender-pale);
+  font-size: 14px;
+}
+
+.links a {
+  text-decoration: none;
+  color: var(--color-charcoal);
+}
+
+.links a:hover {
+  color: var(--color-primary);
+}
+
+.soon {
+  color: var(--color-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: var(--color-lavender);
+  color: var(--color-primary-dark);
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-lavender-pale);
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.socials {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* Icônes plutôt que texte (29/08/2026, "mets les logos des réseaux plutôt") : lien =
+   juste la zone de l'icône (24x24 mini) en currentColor, pas de texte visible, aria-label
+   sur le <a> pour l'accessibilité (svg en aria-hidden). */
+.socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-charcoal);
+  transition: color 0.15s ease;
+}
+
+.socials a:hover {
+  color: var(--color-primary);
+}

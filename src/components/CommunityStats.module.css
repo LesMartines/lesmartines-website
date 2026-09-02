@@ -1,0 +1,243 @@
+.section {
+  background: var(--color-primary);
+  width: 100%;
+  /* Bandeau rétréci (31/08/2026, "il est bcp plus petit" sur le visuel envoyé par
+     Marine) : space-6 -> space-3, le téléphone (agrandi juste en dessous) déborde
+     davantage au-dessus et en dessous plutôt que d'être en grande partie contenu
+     dans une bande haute. */
+  padding: var(--space-3) 0;
+  /* Marge ajoutée (31/08/2026, "plus d'espace entre les pills des green flags et le
+     haut du telephone") : le téléphone déborde maintenant de 168px au-dessus du
+     bandeau (voir .phone) pour rester centré dessus, ce qui le rapprochait trop des
+     pills de ValeursBloc juste au-dessus. */
+  margin-top: var(--space-5);
+  /* x seul (pas hidden) : demande explicite du 31/08/2026 ("le telephone depasse du
+     bandeau violet pour casser la monotonie du feed") — le vrai screen + le bouquet de
+     fleurs débordent volontairement au-dessus (et pour le téléphone, en dessous) du
+     bandeau, sur le rose pudré alentour. Seul l'axe horizontal reste coupé, même
+     logique que .hero dans Hero.module.css.
+     clip (pas hidden) + overflow-y: visible explicite, même raison que .hero : avec
+     hidden, l'axe y "hérite" silencieusement de auto (couplage des 2 axes, spec CSS)
+     MEME en écrivant overflow-y: visible juste à côté — seul "clip" sur l'axe x évite
+     ce couplage. Sans ça, le débordement volontaire du téléphone/des fleurs créait une
+     scrollbar interne à cette section, en plus de celle de la page (bug réel constaté
+     le 31/08/2026). */
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: minmax(240px, 380px) 1fr;
+  gap: var(--space-5);
+  align-items: center;
+}
+
+/* Boîte de positionnement pour les 4 éléments du collage (téléphone, fleurs, cœur,
+   carte de commentaire), tous en absolute — même technique que .collage dans
+   Hero.module.css. min-height plutôt qu'un aspect-ratio : le débordement du téléphone
+   (au-dessus ET en dessous) est du CONTENU en plus de cette boîte, pas dedans, donc pas
+   de ratio propre à calculer ici. */
+.visual {
+  position: relative;
+  min-height: 260px;
+}
+
+/* Vrai screen "Commentaires" (remplace le cadre CSS + bulles grises placeholder) : seul
+   élément qui NE flotte PAS (demande explicite du 31/08/2026, "ne mets rien sur le
+   telephone") — tout le mouvement de cette compo vient des éléments autour de lui, pas
+   de lui-même. Dépasse le bandeau des deux côtés (marge négative haute, la boîte
+   .visual n'a pas besoin d'aller jusqu'en bas puisque .section n'a plus que
+   overflow-x). */
+.phone {
+  position: absolute;
+  z-index: 2;
+  left: 6%;
+  top: -168px;
+  width: 90%;
+  max-width: 360px;
+  height: auto;
+  display: block;
+  /* Léger angle (31/08/2026, "pencher le telephone comme sur le visuel") : origine en
+     haut pour que le débordement au-dessus du bandeau pivote sur place plutôt que de
+     glisser latéralement. */
+  transform: rotate(-4deg);
+  transform-origin: top center;
+  /* Ombre ajoutée en CSS (31/08/2026, "mettre une ombre en dessous pour le faire
+     ressortir") : contrairement aux autres assets du Hero, ce screen n'a pas d'ombre
+     cuite dans le PNG (export UI brut, pas un mockup déjà stylisé) — drop-shadow plutôt
+     que box-shadow pour épouser le contour réel du téléphone (coins arrondis + le fond
+     transparent autour), même technique que .map dans EventsPromo.module.css. */
+  filter: drop-shadow(0 26px 42px rgba(20, 20, 65, 0.35));
+}
+
+/* Bouquet de fleurs (31/08/2026, fourni par Marine) : déborde par le haut du bandeau,
+   partiellement derrière le coin du téléphone (z-index sous le téléphone) mais devant
+   le fond indigo. */
+.flowers {
+  position: absolute;
+  z-index: 1;
+  left: -2%;
+  top: -88px;
+  width: 44%;
+  max-width: 190px;
+  height: auto;
+  animation: floatFlowers 5.4s ease-in-out infinite;
+}
+
+/* Cœur posé sur le coin haut-droit du téléphone (31/08/2026, "mets le coeur dans le
+   coin en haut à droite" puis "descends-le sur le coin telephone") — même asset que le
+   cœur du Hero (src/assets/hero/heart.png). Pulse plutôt que flotte (31/08/2026, "le
+   faire pulser comme un coeur et pas le faire flotter") : scale seul, pas de
+   translateY, contrairement aux fleurs/à la carte de commentaire. */
+.heart {
+  position: absolute;
+  z-index: 3;
+  left: 78%;
+  top: -134px;
+  width: 52px;
+  height: auto;
+  animation: heartPulse 1.3s ease-in-out infinite;
+}
+
+/* Carte de commentaire "Amira_Sol" qui flotte par-dessus le coin bas-droit du
+   téléphone, empiète sur le fond indigo (31/08/2026, fourni par Marine). Rotation déjà
+   cuite dans le PNG (même convention que les cartes du Hero), rien à gérer en CSS. */
+.floatingComment {
+  position: absolute;
+  z-index: 3;
+  right: -20%;
+  bottom: 6%;
+  width: 74%;
+  max-width: 290px;
+  height: auto;
+  animation: floatComment 5s ease-in-out infinite 0.6s;
+}
+
+@keyframes floatFlowers {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes heartPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.18);
+  }
+}
+
+@keyframes floatComment {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flowers,
+  .heart,
+  .floatingComment {
+    animation: none;
+  }
+}
+
+.text {
+  color: var(--color-white);
+}
+
+.title {
+  color: var(--color-white);
+  font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.15;
+  margin-bottom: var(--space-4);
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.stat {
+  min-width: 96px;
+}
+
+.statNumber {
+  font-family: var(--font-body);
+  /* Agrandi et regraissé (31/08/2026, "grossir 400K 120K 25K et le faire plus gras") :
+     800 -> 900 (poids ajouté à la requête Google Fonts dans index.html), clamp remonté
+     d'un cran. Couleur citron vert (31/08/2026, "passe les chiffres en jaune") : le
+     titre "Une commu ultra engagée" est repassé entièrement en blanc au même moment,
+     la mise en avant du bandeau se fait maintenant sur les chiffres plutôt que sur le
+     titre. */
+  color: var(--color-lime);
+  font-weight: 900;
+  font-size: clamp(38px, 5vw, 58px);
+  line-height: 1;
+  margin: 0 0 6px;
+  /* Largeur tabulaire : les chiffres ne "sautent" pas latéralement pendant le décompte. */
+  font-variant-numeric: tabular-nums;
+}
+
+.statLabel {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  margin: 0;
+}
+
+@media (max-width: 780px) {
+  .section {
+    padding: var(--space-4) 0;
+  }
+
+  .inner {
+    grid-template-columns: 1fr;
+  }
+
+  .visual {
+    min-height: 220px;
+  }
+
+  .phone {
+    left: 50%;
+    top: -56px;
+    width: 60%;
+    transform: translateX(-72%) rotate(-4deg);
+  }
+
+  .flowers {
+    left: 4%;
+    top: -70px;
+    width: 34%;
+  }
+
+  .heart {
+    left: 70%;
+    top: -46px;
+    width: 30px;
+  }
+
+  .floatingComment {
+    right: -4%;
+    bottom: 4%;
+    width: 60%;
+  }
+
+  .stats {
+    gap: var(--space-3);
+  }
+}

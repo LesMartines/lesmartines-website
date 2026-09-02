@@ -1,0 +1,62 @@
+.wrap {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.button {
+  display: inline-flex;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+/* Ombre au survol via filter: drop-shadow, pas box-shadow (31/08/2026, effet "premium"
+   demandé sur les CTA principaux) : box-shadow avait déjà été essayé et retiré le
+   28/08/2026 ("les formes sont moches") car il dessine une ombre RECTANGULAIRE sur la
+   boîte, qui ne suit pas le contour réel du badge (coins arrondis + marge transparente
+   cuits dans l'image). drop-shadow lit le canal alpha du PNG et épouse donc la vraie
+   forme visible du badge. */
+.button:hover {
+  transform: translateY(-3px);
+  filter: drop-shadow(0 8px 14px rgba(47, 50, 74, 0.25));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+
+  .button:hover {
+    transform: none;
+  }
+}
+
+.badge {
+  /* Les badges sont des assets complets (forme + coins arrondis déjà dans l'image) : pas
+     de border-radius/overflow/box-shadow supplémentaire dessus, ça créait un recadrage
+     mal aligné sur la forme réelle du bouton ("les formes sont moches", 28/08/2026). */
+  display: block;
+  height: 52px;
+  width: auto;
+}
+
+.wrap.sizeSmall .badge {
+  height: 42px;
+}
+
+.wrap.sizeLarge .badge {
+  /* Grossis sur demande de Marine (28/08/2026, "grossis les logos dans le heroes" /
+     "les logo des stores") : seulement dans le Hero, où les badges sont le CTA principal
+     au-dessus de la ligne de flottaison ; le CtaFinal et le footer gardent leur taille
+     par défaut/petite. */
+  height: 68px;
+}
+
+/* Rétréci sur petit écran (30/08/2026, "il faut absolument que je vois la composition,
+   adapte la hauteur") : moins haut pour laisser plus de place verticale à la compo du
+   Hero, et surtout pour que les 2 badges tiennent côte à côte sans repasser à la ligne
+   (qui coûterait une hauteur de badge entière en plus). */
+@media (max-width: 640px) {
+  .wrap.sizeLarge .badge {
+    height: 46px;
+  }
+}

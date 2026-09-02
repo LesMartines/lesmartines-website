@@ -1,0 +1,371 @@
+.section {
+  background: var(--color-primary);
+  width: 100%;
+  padding: var(--space-6) 0;
+  overflow: hidden;
+}
+
+/* Conteneur propre (pas la classe globale .container à 1200px) : la maquette du
+   28/08 a demandé une compo (carte + fiches) plus grosse, donc cette section respire sur
+   une largeur un peu plus généreuse (1400px) que le reste du site, uniquement pour donner
+   plus de place à la colonne .visual (la colonne texte garde son gabarit minmax habituel,
+   donc c'est bien la compo qui grossit, pas le texte). */
+.inner {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+  display: grid;
+  grid-template-columns: minmax(280px, 460px) 1fr;
+  gap: var(--space-5);
+  align-items: center;
+}
+
+.text {
+  color: var(--color-white);
+}
+
+/* Badge "coming soon" (29/08/2026) : même famille visuelle que le badge .badge de
+   Nav/Footer (pilule, majuscules, bold, ~11-12px), recoloré en citron vert pour ressortir
+   sur le fond indigo de cette section (le lavande habituel serait trop proche du fond en
+   contraste) — et cohérent avec les touches citron vert déjà présentes dans la compo
+   (pins). */
+.comingSoon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-lime);
+  color: var(--color-primary-dark);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  color: var(--color-white);
+  font-size: clamp(28px, 3.6vw, 44px);
+  margin-bottom: var(--space-2);
+}
+
+.body {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.85;
+  max-width: 440px;
+  margin-bottom: var(--space-3);
+}
+
+.cta {
+  display: inline-block;
+  background: var(--color-white);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: var(--radius-pill);
+  transition: transform 0.15s ease;
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+}
+
+/* Collage : ratio calé sur la maquette envoyée par Marine (~920 x 810). Toutes les
+   positions ci-dessous sont en % de ce conteneur pour rester proportionnelles quel que
+   soit le rétrécissement de la colonne (grid 1fr) à travers les tailles d'écran. */
+.visual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 920 / 810;
+}
+
+/* Carte + marqueurs (28/08, carte "nue" + pins/ronds séparés) : ce wrapper occupe
+   exactement la même boîte que l'ancienne .map (left/top/width identiques), les pins/ronds
+   sont ensuite positionnés en % DE CETTE BOÎTE (donc directement en % de la carte elle-
+   même, peu importe sa taille réelle affichée). */
+.mapGroup {
+  position: absolute;
+  left: 19%;
+  top: 5%;
+  width: 47%;
+  z-index: 1;
+}
+
+/* Ombre/vignette sous la carte pour la détacher du fond violet (29/08, "une légère
+   ombre/vignette sous la carte pour qu'elle se détache") : filter: drop-shadow plutôt que
+   box-shadow, pour que l'ombre épouse le contour arrondi réel de l'image (transparence +
+   coins arrondis cuits dans le PNG) au lieu de projeter une ombre rectangulaire qui
+   dépasserait des coins. */
+.map {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 22px 40px rgba(20, 20, 65, 0.35));
+}
+
+/* Pins (forme goutte) : Marine trouve (28/08, suite) qu'il y a trop d'éléments qui
+   "flottent" dans la carte — les pins qui rebondissaient en boucle + les ronds qui
+   pulsent en même temps faisaient trop de mouvement simultané. Les pins passent donc
+   d'une boucle infinie à une apparition unique (petit "pop" avec overshoot puis figé) :
+   de la vie sans jamais reboucler ni concurrencer le ping des ronds ou le flottement du
+   badge/des fiches. Déclenchement au SCROLL (28/08, suite : "sinon on ne le voit pas" —
+   la section est sous la ligne de flottaison, un pop au chargement du DOM se jouait donc
+   hors champ) : les pins restent cachés (scale(0)/opacity:0) tant que .visual n'a pas la
+   classe .inView, ajoutée par un IntersectionObserver dans EventsPromo.tsx quand la compo
+   entre dans le viewport. Anchor : translate(-50%,-50%) ancre le CENTRE du visuel au point
+   x/y (cohérent avec la mesure par centroïde de couleur faite sur l'ancienne carte à
+   plat). */
+.pin {
+  position: absolute;
+  width: 8.7%;
+  height: auto;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+}
+
+.visual.inView .pin {
+  animation: pinPop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes pinPop {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Ronds : ping radar (28/08, "des effets plus cool sur ces pin dot et lime") — un anneau
+   séparé qui grossit et s'estompe derrière le rond, façon position live sur une carte.
+   `<span>` dédié plutôt qu'un ::after sur l'<img> : les pseudo-éléments ne se rendent pas
+   sur les éléments remplacés (img). .dotWrap porte le placement (left/top/translate). */
+.dotWrap {
+  position: absolute;
+  width: 6.1%;
+  aspect-ratio: 79 / 80;
+  transform: translate(-50%, -50%);
+}
+
+/* Ping radar adouci (29/08, "c'est trop voyant, faut que ce soit plus joli et chic") :
+   anneau fin (contour, pas un disque plein) plutôt qu'un blob rempli, amplitude et
+   opacité réduites pour un effet discret plutôt qu'un flash.
+   Recentré (29/08, suite : "les cercles des radars ne sont pas vraiment au centre") :
+   pin-dot.png a une ombre portée cuite dans le PNG sous le rond plein, donc le rond
+   visible n'est pas au centre du canvas de l'image (mesuré par bbox alpha : disque plein
+   centré à ~49%/34% du canvas, diamètre ~67%, pas inset:0 = centre du canvas à 50%/50%).
+   Les valeurs top/left/right/bottom ci-dessous calent l'anneau exactement sur la bbox du
+   disque plein plutôt que sur toute la boîte .dotWrap. */
+.dotRing {
+  position: absolute;
+  top: 1%;
+  left: 15%;
+  right: 18%;
+  bottom: 32%;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-primary-dark);
+  background: transparent;
+  opacity: 0.4;
+  animation: dotPing 2.8s ease-out infinite;
+  z-index: 0;
+}
+
+.dot {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: dotBreathe 3.2s ease-in-out infinite;
+}
+
+@keyframes dotPing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@keyframes dotBreathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+/* Wrappers de positionnement (un par élément flottant) : portent le placement absolu +
+   le hover (scale léger au survol, jamais de transform de flottement dessus pour ne pas
+   entrer en conflit avec l'animation infinie de l'image qu'ils contiennent — même
+   principe que .visualFloat dans FeatureShowcase.module.css). */
+.floatWrap {
+  position: absolute;
+  transition: transform 0.2s ease;
+}
+
+.floatWrap:hover {
+  transform: scale(1.03);
+}
+
+.floatWrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+}
+
+.badgePos {
+  left: 5%;
+  top: 12%;
+  width: 52%;
+  z-index: 2;
+}
+
+/* Rapprochées de la carte (28/08, "rapproche Yoga et Tartines et Mains dans la terre de la
+   card") : left/top resserrés pour augmenter le chevauchement avec .mapGroup. */
+.cardCafePos {
+  left: 0%;
+  top: 52%;
+  width: 42%;
+  z-index: 3;
+}
+
+.cardMainsPos {
+  left: 38%;
+  top: 63%;
+  width: 47%;
+  z-index: 3;
+}
+
+.cardYogaPos {
+  left: 48%;
+  top: 7%;
+  width: 41%;
+  z-index: 4;
+}
+
+/* Flottement idle (28/08, "faudrait qu'on fasse flotter des elements dans la compo") :
+   chaque image porte sa propre animation, avec une rotation de repos "cuite" dans les
+   keyframes (une animation remplace entièrement la propriété transform qu'elle anime, donc
+   la rotation ne peut pas rester dans une déclaration transform statique à côté — même
+   piège que .itemMap dans Hero.module.css). Durées/délais différents pour un mouvement
+   organique, pas synchronisé. */
+.badgeFloat {
+  animation: floatBadge 5.4s ease-in-out infinite;
+}
+
+.cardCafeFloat {
+  animation: floatCafe 5s ease-in-out infinite 0.3s;
+}
+
+.cardMainsFloat {
+  animation: floatMains 4.6s ease-in-out infinite 0.6s;
+}
+
+.cardYogaFloat {
+  animation: floatYoga 5.8s ease-in-out infinite 0.15s;
+}
+
+@keyframes floatBadge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+@keyframes floatCafe {
+  0%,
+  100% {
+    transform: rotate(-3deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-3deg) translateY(-9px);
+  }
+}
+
+@keyframes floatMains {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes floatYoga {
+  0%,
+  100% {
+    transform: rotate(3deg) translateY(0);
+  }
+  50% {
+    transform: rotate(3deg) translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .badgeFloat,
+  .cardCafeFloat,
+  .cardMainsFloat,
+  .cardYogaFloat,
+  .dot,
+  .dotRing,
+  .pin,
+  .visual.inView .pin {
+    animation: none;
+  }
+
+  .cardCafeFloat {
+    transform: rotate(-3deg);
+  }
+
+  .cardYogaFloat {
+    transform: rotate(3deg);
+  }
+
+  .pin {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  .dotRing {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 780px) {
+  .section {
+    /* 96px en haut/bas passait pour près d'un écran entier de scroll juste en marge sur
+       mobile (30/08/2026, revue mobile-first) : resserré à l'espacement déjà utilisé
+       ailleurs pour les mêmes bandeaux pleine largeur en dessous de 780px. */
+    padding: var(--space-4) 0;
+  }
+
+  .inner {
+    grid-template-columns: 1fr;
+  }
+
+  .visual {
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,446 @@
+.section {
+  position: relative;
+  padding: var(--space-6) 0 var(--space-6);
+  overflow: hidden;
+}
+
+.header {
+  max-width: 640px;
+  margin: 0 auto var(--space-5);
+  text-align: center;
+}
+
+.title {
+  font-size: clamp(36px, 6vw, 60px);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+.subtitle {
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* Cœur qui bat doucement, seule touche "vivante" du haut de page — même recette que
+   .heart dans Hero.module.css, pour rester cohérent avec le reste du site plutôt que
+   d'inventer un nouvel effet pour une seule page. */
+/* Rapproché du titre (31/08/2026) puis regrossi le même jour ("grossis le coeur") : le
+   1er essai (top: 46px) plaçait le cœur DANS la hauteur de ligne du titre (qui a de
+   l'espace vide au-dessus des glyphes à cette taille de police), donc il finissait
+   caché derrière/sur le texte plutôt qu'au-dessus. Remonté un peu, agrandi. */
+/* Repositionné à droite du "?" (01/09/2026, "comme la page FAQ") plutôt qu'au-dessus du
+   milieu du titre : même logique que .heart dans Faq.module.css. */
+.heart {
+  position: absolute;
+  top: 44px;
+  left: 50%;
+  width: 40px;
+  transform: translateX(215px);
+  animation: heartBeat 2.6s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%,
+  100% {
+    transform: translateX(215px) scale(1);
+  }
+  50% {
+    transform: translateX(215px) scale(1.12);
+  }
+}
+
+/* Carte du formulaire : halo doux + carte blanche, même logique que .glow dans
+   FeatureShowcase.module.css (radial-gradient citron vert flouté derrière, jamais
+   au-dessus grâce au z-index négatif dans CE contexte d'empilement précis). */
+.cardWrap {
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* Carré aspect-ratio:1 centré (01/09/2026, "ton halo est top mais il est un peu cassé
+   derrière") plutôt que inset:-10% sur les 4 côtés : la carte change de hauteur selon
+   l'onglet actif (formulaire "marque" plus long que "meuf"), donc un inset en % donnait
+   une boîte non carrée à chaque bascule — un radial-gradient "circle" dans une boîte non
+   carrée ne se déforme pas lui-même, mais se retrouve décentré verticalement, d'où l'effet
+   "cassé". Ici la taille est fixée en % de la LARGEUR uniquement (width + aspect-ratio),
+   donc toujours un vrai cercle, quelle que soit la hauteur de la carte. */
+.glow {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 130%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--color-lavender) 0%, transparent 68%);
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.card {
+  position: relative;
+  z-index: 0;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-5) var(--space-4);
+}
+
+/* Onglets "Une question, un coucou" / "Je suis une marque" (01/09/2026, "une partie pour
+   les partenaires (pro) et une partie classique, pas le même formulaire") : pastille
+   glissante façon Nav (voir Nav.module.css .indicator) aurait été overkill pour 2 choix
+   fixes — un simple fond qui bascule entre les 2 boutons suffit ici. */
+.tabs {
+  display: flex;
+  background: var(--color-peach-light);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  margin-bottom: var(--space-4);
+}
+
+/* Distinction onglet actif/inactif renforcée (02/09/2026, "rendre un peu plus visible
+   [...] pour les distinguer") : l'inactif était gris clair sur fond pêche clair, à peine
+   lisible ; l'actif passe en violet (plutôt que le charbon très proche du gris inactif)
+   pour que le contraste saute aux yeux, pas seulement le fond blanc + ombre. */
+.tab {
+  flex: 1;
+  background: none;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 11px 12px;
+  font-weight: 700;
+  font-size: 13.5px;
+  color: var(--color-muted);
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tabActive {
+  background: var(--color-white);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-card);
+}
+
+.tabIntro {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--space-3);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--space-3);
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-primary-dark);
+}
+
+.labelOptional {
+  font-weight: 400;
+  color: var(--color-muted);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+/* Icônes discrètes dans chaque champ (01/09/2026, "améliore le formulaire") : signal
+   "premium" classique sur un formulaire soigné. Icône en position absolute dans un
+   wrapper relative plutôt que dans l'input lui-même (impossible d'insérer un vrai élément
+   DANS un <input>) ; padding-left ajouté à l'input via .hasIcon pour laisser la place. */
+.inputIconWrap {
+  position: relative;
+}
+
+.inputIcon {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  display: flex;
+  color: var(--color-muted);
+  pointer-events: none;
+}
+
+/* Alignée en haut plutôt qu'au centre pour les textarea (01/09/2026) : au centre, l'icône
+   se serait retrouvée en plein milieu d'un champ multi-lignes, pas au niveau du texte. */
+.inputIconTop {
+  top: 15px;
+  transform: none;
+}
+
+.input,
+.textarea {
+  /* width: 100% explicite (01/09/2026, bug rapporté "les champs sont trop petits sur la
+     longueur") : avant l'ajout de .inputIconWrap, l'input était l'enfant direct de .field
+     (flex column) et profitait du stretch par défaut de flexbox sur l'axe transversal.
+     Le wrapper autour de l'icône a changé ça — c'est maintenant LUI l'enfant flex étiré,
+     l'input à l'intérieur n'a plus rien qui le force à occuper toute la largeur. */
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 15px;
+  color: var(--color-text);
+  background: var(--color-peach-light);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  padding: 13px 16px;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Après .input/.textarea dans la cascade (01/09/2026, bug rapporté "les icônes sont
+   par-dessus le texte") : même spécificité qu'eux (une seule classe), donc l'ordre dans le
+   fichier décide qui gagne — placée avant, cette règle se faisait écraser par le
+   "padding: 13px 16px" ci-dessus. */
+.hasIcon {
+  padding-left: 42px;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--color-muted);
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: var(--color-white);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Messages d'erreur maison (01/09/2026, "un peu les rendre plus beaux" — remplace les
+   bulles de validation natives du navigateur, non stylables en CSS) : bordure teintée sur
+   le champ + petit texte assorti juste en dessous, dans une couleur corail qui reste dans
+   la même famille pastel que le reste du site plutôt qu'un rouge d'alerte criard. */
+.inputError {
+  border-color: var(--color-error);
+  background: var(--color-error-light);
+}
+
+.fieldError {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-error);
+}
+
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--color-primary-dark);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 15px 24px;
+  margin-top: var(--space-1);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.submit:hover {
+  background: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.hint {
+  margin-top: var(--space-2);
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* Célébration affichée après l'ouverture de la messagerie (01/09/2026, "un petit message
+   cool [...] avec une animation sympa de félicitation") : remplace tout le contenu de la
+   carte (onglets + formulaire) plutôt qu'un message ajouté sous le bouton, pour un vrai
+   moment "c'est fait !". Le texte reste honnête ("ta messagerie s'est ouverte") : le
+   formulaire ne "sait" pas si l'email a vraiment été envoyé (mailto ouvre juste le client
+   mail de la visiteuse), le site étant 100% statique sans backend pour le confirmer. */
+.success {
+  position: relative;
+  text-align: center;
+  padding: var(--space-3) 0 var(--space-1);
+  overflow: hidden;
+}
+
+.confettiWrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti {
+  position: absolute;
+  top: -20px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  animation: confettiFall 1.4s ease-in both;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(160px) rotate(340deg);
+    opacity: 0;
+  }
+}
+
+.successHeart {
+  display: inline-block;
+  font-size: 44px;
+  margin-bottom: var(--space-2);
+  animation: successPop 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+}
+
+@keyframes successPop {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.successTitle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-1);
+}
+
+.successText {
+  font-size: 15px;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+  max-width: 340px;
+  margin: 0 auto var(--space-3);
+}
+
+.successReset {
+  background: none;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 11px 22px;
+  border-radius: var(--radius-pill);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.successReset:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti {
+    animation: none;
+    display: none;
+  }
+
+  .successHeart {
+    animation: none;
+  }
+}
+
+.socials {
+  max-width: 560px;
+  margin: var(--space-5) auto 0;
+  text-align: center;
+}
+
+.socialsLabel {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--color-white);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.socialLink:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+  color: var(--color-primary);
+}
+
+@media (max-width: 640px) {
+  .heart {
+    display: none;
+  }
+
+  .card {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .socialLinks {
+    flex-wrap: wrap;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heart {
+    animation: none;
+  }
+
+  .submit:hover {
+    transform: none;
+  }
+
+  .socialLink:hover {
+    transform: none;
+  }
+}
