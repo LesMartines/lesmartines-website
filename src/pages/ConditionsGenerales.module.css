@@ -1,0 +1,72 @@
+/* .page / .card / .title sont maintenant gérés par LegalPage (composant partagé des 3
+   pages légales, 29/08/2026, "c'est pas très moderne là") : ce module ne garde que les
+   styles propres au contenu de cette page. */
+
+.section {
+  margin: var(--space-4) 0;
+  scroll-margin-top: 96px;
+}
+
+.section:first-of-type {
+  margin-top: 0;
+}
+
+.section h2 {
+  font-size: 19px;
+  margin-bottom: var(--space-1);
+  padding-left: 14px;
+  border-left: 3px solid var(--color-lime);
+}
+
+.section h3 {
+  font-size: 16px;
+  color: var(--color-primary-dark);
+  margin: var(--space-2) 0 4px;
+}
+
+.section p {
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.65;
+  margin-bottom: var(--space-1);
+}
+
+.section a {
+  color: var(--color-primary);
+}
+
+.section ul {
+  margin: 4px 0 var(--space-2);
+  padding-left: 20px;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.section li {
+  margin-bottom: 4px;
+}
+
+/* Article 1 : liste numérotée des définitions, un peu plus espacée qu'une liste normale
+   vu la densité de chaque entrée. */
+.definitions {
+  margin: var(--space-1) 0 0;
+  padding-left: 22px;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.definitions li {
+  margin-bottom: 10px;
+}
+
+.definitions strong {
+  color: var(--color-charcoal);
+}
+
+.updated {
+  color: var(--color-muted);
+  font-size: 13px;
+  margin-top: var(--space-3);
+}

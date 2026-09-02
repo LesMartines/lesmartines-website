@@ -1,0 +1,674 @@
+.section {
+  padding: 0 0 var(--space-6);
+  background: linear-gradient(160deg, var(--color-lavender) 0%, var(--color-peach-light) 100%);
+}
+
+/* Fond dégradé (03/09/2026, "rendre [...] le bandeau du haut plus joli et agreable") :
+   un aplat de --color-peach franc créait une coupure nette avec le dégradé
+   lavande/pêche du reste de la section juste en dessous — un dégradé propre à ce bandeau
+   (pêche plus soutenu en haut, qui s'adoucit vers le bas) fait la transition en douceur
+   au lieu d'un bloc de couleur qui s'arrête net. */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: var(--space-5) var(--space-4) var(--space-5);
+  background: linear-gradient(180deg, var(--color-peach) 0%, var(--color-peach-light) 100%);
+  margin-bottom: var(--space-5);
+}
+
+/* position: relative (03/09/2026, "faut que tu le rapproches de les events" — l'écusson
+   était ancré sur .hero, la bande entière, du coup loin du titre centré dans cette
+   colonne plus étroite) : sert désormais de repère à .seal. */
+.heroInner {
+  position: relative;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* Vrai coeur de la maison, au-dessus du titre (03/09/2026, "le coeur n est pas le meme
+   et il faudrait le mettre plus haut, au dessus de les events" — annule le passage à
+   côté du titre en inline-flex fait juste avant) : même asset que /faq/, mais display:
+   block + margin:auto ici plutôt que le positionnement absolute à décalage fixe de la
+   FAQ (pensé pour flotter à côté d'une image, pas pour un hero à une seule colonne). */
+.heroHeart {
+  display: block;
+  width: 32px;
+  margin: 0 auto var(--space-2);
+  animation: eventsHeartBeat 2.6s ease-in-out infinite;
+}
+
+@keyframes eventsHeartBeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroHeart {
+    animation: none;
+  }
+}
+
+.title {
+  font-size: clamp(32px, 5vw, 48px);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+/* Écusson repris du style de /partenaires/ (03/09/2026, "reprend l ecussion des
+   partenaire +30 marques", puis "mets l ecusson en haut à droite") : même recette que
+   .seal/.sealNumber/.sealLabel (Partenaires.module.css), y compris le positionnement en
+   coin haut-droit et la rotation à 8deg (pas -4deg, repris de la version desktop de
+   Partenaires — voir sealFloat, la version -4deg n'existait que dans leur repli mobile).
+   Ancré sur .hero (position: relative) plutôt que .heroInner : "en haut à droite"
+   s'entend du bandeau entier, pas de la seule colonne de texte centrée. */
+.seal {
+  position: absolute;
+  top: -5px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: var(--color-white);
+  border: 2px dashed var(--color-primary);
+  box-shadow: var(--shadow-card);
+  animation: eventsSealFloat 3.4s ease-in-out infinite;
+}
+
+@keyframes eventsSealFloat {
+  0%,
+  100% {
+    transform: rotate(8deg) translateY(0);
+  }
+  50% {
+    transform: rotate(8deg) translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seal {
+    animation: none;
+    transform: rotate(8deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .seal {
+    position: static;
+    margin: 0 auto var(--space-2);
+  }
+}
+
+.sealNumber {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.sealLabel {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-primary-dark);
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+.subtitle {
+  font-size: 17px;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin-bottom: var(--space-1);
+}
+
+/* --color-text plutôt que --color-charcoal (03/09/2026, "c est pas le noir de d
+   habitude, il me semble moins doux" — charcoal a un fond bleu-violet, plus dur que le
+   noir neutre utilisé ailleurs sur le site pour du texte courant en emphase). */
+.subtitle strong {
+  color: var(--color-text);
+}
+
+/* Tagline détachée (03/09/2026, "rendre ce texte plus joli graphiquement") : "À toi de
+   choisir !" devient une signature à part, plus grande, plutôt que la fin d'une phrase
+   qui se fond dans le reste du paragraphe.
+   Pas de font-display (03/09/2026, "on utilise pas gazpacho dans ce texte la c est que
+   pour les titres") : Gazpacho réservé aux vrais titres (h1-h4, voir global.css), cette
+   ligne reste dans la police de texte courant malgré sa taille. Noir comme le reste du
+   texte, pas violet, même raison que .subtitle strong ci-dessus. */
+.tagline {
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--color-text);
+}
+
+.loading {
+  text-align: center;
+  color: var(--color-text-secondary);
+  padding: var(--space-4) 0;
+}
+
+/* Filtre "Tout voir / Martinades / Partenaires" (02/09/2026) : d'abord fait en 3 pilules
+   séparées, jugé "pas très premium" (03/09/2026) — remplacé par un segmented control façon
+   iOS, un seul contenant arrondi avec un fond blanc qui glisse derrière le libellé actif.
+   Filtre sur eventType, le mélange en ligne/présentiel reste un détail par carte plutôt
+   qu'un filtre séparé (décidé ensemble). */
+.filterPills {
+  display: flex;
+  justify-content: center;
+  max-width: var(--container-width);
+  margin: 0 auto var(--space-4);
+}
+
+/* position: relative (03/09/2026, "mets un petit effet cool quand je slide entre les
+   boutons") : sert de repère à .filterIndicator, positionné en absolute par rapport à
+   cette piste. */
+.filterPillsTrack {
+  position: relative;
+  display: inline-flex;
+  gap: 2px;
+  background: var(--color-lilas-light);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  max-width: 100%;
+}
+
+/* Pastille qui glisse (03/09/2026, même recette que .indicator sur Nav.tsx) : une seule
+   pastille blanche repositionnée en JS (voir Events.tsx, filterIndicator) au lieu de
+   basculer le fond de chaque bouton indépendamment — donne un vrai glissement d'un
+   filtre à l'autre plutôt qu'une apparition/disparition instantanée. z-index: 0 pour
+   rester sous le texte des boutons (voir .filterPill, z-index: 1). */
+.filterIndicator {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  bottom: 4px;
+  z-index: 0;
+  background: var(--color-white);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 8px rgba(47, 50, 106, 0.15);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filterIndicator {
+    transition: none;
+  }
+}
+
+.filterPill {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  font-weight: 700;
+  font-size: 13.5px;
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.filterPill:hover {
+  color: var(--color-primary);
+}
+
+.filterPillActive,
+.filterPillActive:hover {
+  color: var(--color-primary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  max-width: var(--container-width);
+  margin: 0 auto;
+}
+
+/* Carte reprise du composant Figma Card/Event (node 9787:36210, 02/09/2026) — voir le
+   commentaire détaillé dans Events.tsx. Conversion des couches "glass" empilées de la
+   maquette (photo -> dégradé -> badges -> ruban -> bloc info -> ligne organisatrice) en
+   flux normal (plus de position absolute que nécessaire) plutôt qu'un pavé de coordonnées
+   figées en pixels, pour rester responsive dans une grille CSS. */
+/* Lien englobant la card (03/09/2026, "Pourquoi les Events ne sont pas cliquables depuis
+   la page événements ?") : la card gère déjà tout son style visuel, ce lien ne fait que
+   l'envelopper sans lui imposer la couleur/le soulignement par défaut d'un <a>. */
+.cardLink {
+  display: block;
+  height: 100%;
+  color: inherit;
+}
+
+/* Fond poudré (03/09/2026, "je voudrais les card aient un fond poudré clair" — précisé
+   ensuite "je te parle de cette couleur FFFBF9", donc --color-white-warm, pas la lavande
+   pâle essayée d'abord). */
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white-warm);
+  border: 1px solid rgba(96, 102, 216, 0.3);
+  border-radius: 30px 30px 5px 5px;
+  box-shadow: 0 1px 7.5px rgba(0, 0, 0, 0.07), 0 0 5px rgba(47, 50, 106, 0.15);
+  padding: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Léger soulèvement au survol (02/09/2026, "mets un hover sur les cards qu'on comprenne
+   que c'est cliquable") : même signal que sur les cartes Partenaires, en attendant qu'une
+   vraie page détail existe derrière (voir la checklist de publication en tête de
+   Events.tsx) — pas de curseur pointer forcé pour l'instant puisqu'il n'y a pas encore de
+   vraie destination de clic. */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(47, 50, 106, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card:hover {
+    transform: none;
+  }
+}
+
+/* overflow: visible, pas hidden (02/09/2026, bug rapporté "le badge partenaire n'est pas
+   bien placé") : le ruban Partenaire doit pouvoir déborder sous la photo pour chevaucher
+   la limite avec le bloc info, comme dans la maquette Figma. Le coin arrondi de la photo
+   est de toute façon assuré par le border-radius posé directement sur .photo plus bas,
+   pas par un overflow:hidden ici.
+   Hauteur fixe en dur, pas aspect-ratio (02/09/2026, bug rapporté "yoga est toujours trop
+   haute [...] il faut fixer la taille du composant image") : `aspect-ratio` sur un enfant
+   flex en column peut se faire recalculer par le navigateur (constaté ici : la photo
+   carrée de "Yoga & Tartines" gonflait à 292px de haut au lieu des 195px des 2 autres,
+   alors que .card faisait bien la même hauteur totale sur les 3 — un vrai flou de la
+   spec CSS sur l'interaction aspect-ratio + flex column). Une hauteur fixe + flex-shrink:0
+   n'a pas cette ambiguïté : la boîte photo est TOUJOURS la même, quelle que soit l'image
+   qu'on y met (upload futur inclus). */
+.photoContainer {
+  position: relative;
+  height: 195px;
+  flex-shrink: 0;
+  border-radius: 25px 25px 5px 5px;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 25px 25px 5px 5px;
+}
+
+.gradientOverlay {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 60px;
+  border-radius: 0 0 5px 5px;
+  background: linear-gradient(to bottom, rgba(47, 50, 106, 0) 0%, rgba(47, 50, 106, 0.62) 100%);
+  pointer-events: none;
+}
+
+/* Passé en glass, comme les autres badges de la photo (03/09/2026, "les badges en bas
+   de la photo [...] beaucoup de pastilles qui se concurrencent" — plusieurs badges pleins
+   de couleurs différentes côte à côte sur la même photo faisaient trop "chargé") : même
+   traitement translucide que .urgencyBadge/.topBadges/.partnerTag, le citron vert reste
+   seulement sur le texte pour garder l'info "catégorie" identifiable sans ajouter un
+   bloc plein de couleur de plus. */
+.categoryTag {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(219, 255, 115, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--color-primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* Coin haut-droit (02/09/2026, "peut aller dans le coin en haut droite vu qu'on a enlevé
+   le cœur") : la place laissée libre par le bouton favori supprimé. Glassmorphisme
+   (02/09/2026, "il y a un effet de transparence sur le plus que 7 places") comme le nom
+   Figma d'origine le suggérait ("urgency-glass") : fond plein remplacé par une version
+   semi-transparente + flou. */
+.urgencyBadge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  background: rgba(152, 155, 223, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--color-white);
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  max-width: calc(100% - 120px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Avatars agrandis + gap augmenté (02/09/2026, bug rapporté "les chiffres passent en
+   dessous des photos [...] il faudrait que les photos soient un peu plus grosses") :
+   20px + un gap trop serré faisait passer "N/12" à la ligne ou le collait aux avatars.
+   Glassmorphisme renforcé (02/09/2026, "t'as un effet de glassmorphisme aussi sur le
+   compteur") : plus transparent + plus flouté, même famille que le badge d'urgence. */
+.topBadges {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  padding: 5px 10px 5px 6px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.avatarStack {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* Avatars anonymes, pas des photos floutées (02/09/2026, "il faut être inscrite [...]
+   pour voir les identités [...] tu floutes les photos" — puis, essai après essai, "c'est
+   tjs moche" / "affreux" : un flou sur un cercle de 24-28px reste un petit tas de pixels
+   indistinct quel que soit le dosage). Pastille de couleur + silhouette (voir
+   AnonymousAvatar dans Events.tsx) : lit comme "anonyme par design", pas comme une photo
+   dégradée. flex center pour centrer l'icône SVG à l'intérieur du cercle. */
+.avatarRing {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-white);
+  object-fit: cover;
+  margin-right: -10px;
+}
+
+/* Flou léger (02/09/2026, itéré plusieurs fois : "le blur est pas très beau" -> "affreux
+   faut que ce soit moins flouté" -> pastilles génériques essayées puis refusées -> "je
+   veux du flou mais moins flou pour distinguer quand même le rond") : pas de scale ni de
+   saturate/brightness en plus, juste un flou doux — assez pour rendre les visages
+   inreconnaissables, assez peu pour qu'on voie encore "une vraie photo dans un rond". */
+.blurredPhoto {
+  filter: blur(1.5px);
+}
+
+/* Le -10px sert à chevaucher l'avatar SUIVANT — sur le dernier, il n'y a rien à
+   chevaucher, il ne fait que rapprocher le compteur "N/12" du dernier rond (02/09/2026,
+   bug rapporté "hyper collé" entre la dernière photo et le compteur). */
+.avatarRing:last-child {
+  margin-right: 0;
+}
+
+.participantCount {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-charcoal);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Ruban "Partenaire" SUR la photo, pas en dessous (02/09/2026, re-vérifié sur les
+   coordonnées exactes du Figma : le tag est à y:142-158 dans une photo de 14-173, donc
+   bien à l'intérieur de la photo, en bas à gauche — sur la même ligne que le tag
+   catégorie en bas à droite, pas à cheval sur la limite avec le bloc info). */
+.partnerTag {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 251, 249, 0.95);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px 4px 8px;
+  font-size: 11px;
+  color: var(--color-primary);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.partnerTag img {
+  width: 11px;
+  height: 11px;
+}
+
+.infoBlock {
+  padding: 10px 10px 0;
+}
+
+/* 1 ligne max + ellipse (03/09/2026, "les titres qui débordent [...] pourraient casser
+   la mise en page avec du vrai contenu back-office") : rien d'autre dans la carte n'a de
+   position calée sur la hauteur du titre, mais un titre sur 2-3 lignes pousserait quand
+   même tout le reste vers le bas de façon différente d'une carte à l'autre — même
+   raisonnement que .cardDescription juste en dessous. */
+.cardTitle {
+  font-size: 16px;
+  color: var(--color-charcoal);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hauteur fixe, clampée à 2 lignes (02/09/2026, bug rapporté "il faudrait que les dates
+   et le lieu soient toujours alignés avec les autres cards") : les descriptifs n'ont pas
+   tous la même longueur, sans hauteur fixe la ligne date/lieu juste en dessous se
+   retrouvait à une position différente sur chaque carte. */
+/* 3 lignes max (02/09/2026, "mets 3 lignes de descriptif max dans les cards avec les 3
+   ... pour lire la suite") : hauteur relevée de 36px (2 lignes) à 54px en conséquence,
+   toujours fixe pour garder les dates/lieu alignés entre cartes (voir plus haut). */
+.cardDescription {
+  height: 54px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin-bottom: 8px;
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--color-muted);
+}
+
+.metaItem img,
+.metaItem svg {
+  width: 13px;
+  height: 13px;
+  flex: none;
+}
+
+/* Retour au fond neutre (03/09/2026, essai pêche fait puis "non je preferais avant" —
+   le neutre distinguait déjà bien du violet des badges du haut, il manquait juste un peu
+   de relief) : une légère ombre portée à la place d'un changement de couleur, "peut etre
+   ajoute une legere ombre autout" — fait ressortir le bloc de la carte sans rouvrir le
+   sujet de la couleur. */
+.organizerRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-white-warm);
+  border: 1px solid rgba(96, 102, 216, 0.15);
+  border-radius: 5px;
+  padding: 6px 10px;
+  margin: auto 2px 2px;
+  box-shadow: 0 1px 3px rgba(47, 50, 106, 0.08);
+}
+
+.organizerAvatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid var(--color-white);
+  object-fit: cover;
+  flex: none;
+}
+
+.organizerText {
+  font-size: 11px;
+  color: var(--color-charcoal);
+}
+
+.organizerName,
+.organizerStats {
+  color: var(--color-primary);
+}
+
+/* Étoiles maison, pas l'emoji ⭐ (03/09/2026, "on ne va pas utiliser les emojis") : même
+   recette que .stars sur Hero/Avis (citron vert + fin contour violet). */
+.starRating {
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--color-lime);
+  -webkit-text-stroke: 0.35px var(--color-primary);
+}
+
+/* Mini-FAQ SEO/AEO (03/09/2026, "le but de cette page, c'est aussi qu'on remonte en
+   SEO [...] pour le SEO IA que pour le SEO classique Google") : texte simple, pas
+   d'accordéon interactif — contrairement à Faq.tsx, l'objectif ici n'est pas
+   l'exhaustivité mais juste 2-3 réponses en langage naturel, propres aux events, que
+   Google et les IA peuvent citer directement (voir EVENTS_FAQ dans Events.tsx). */
+.faqBlock {
+  max-width: 720px;
+  margin: var(--space-6) auto 0;
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(96, 102, 216, 0.2);
+}
+
+.faqTitle {
+  font-size: 22px;
+  color: var(--color-primary);
+  text-align: center;
+  margin-bottom: var(--space-4);
+}
+
+/* Accordéon (03/09/2026, "on fait pas un accordéon ?") : même mécanique que .item sur
+   /faq/ (grid-template-rows 0fr -> 1fr, animé en CSS pur sans mesurer de hauteur en JS). */
+.faqItem {
+  border-bottom: 1px solid rgba(96, 102, 216, 0.15);
+}
+
+.faqQuestionHeading {
+  margin: 0;
+}
+
+.faqQuestion {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-charcoal);
+  padding: var(--space-3) 4px;
+  cursor: pointer;
+}
+
+.faqToggle {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+.faqToggle::before,
+.faqToggle::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--color-primary);
+  border-radius: 2px;
+  transform: translate(-50%, -50%);
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.faqToggle::before {
+  width: 14px;
+  height: 2px;
+}
+
+.faqToggle::after {
+  width: 2px;
+  height: 14px;
+}
+
+.faqToggleOpen::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+  opacity: 0;
+}
+
+.faqAnswerWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.faqItemOpen .faqAnswerWrap {
+  grid-template-rows: 1fr;
+}
+
+.faqAnswerInner {
+  overflow: hidden;
+}
+
+.faqAnswer {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  padding: 0 4px var(--space-3);
+}
+
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

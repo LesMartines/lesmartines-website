@@ -1,0 +1,28 @@
+# Accès complet pour tout le monde, y compris les crawlers IA.
+# (beaucoup de sites bloquent ces user-agents par erreur avec un robots.txt générique,
+# ce qui les rend invisibles dans ChatGPT / Perplexity / les AI Overviews de Google)
+User-agent: *
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://www.lesmartines.app/sitemap.xml

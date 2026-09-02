@@ -1,0 +1,652 @@
+.backLink {
+  display: inline-block;
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 14px;
+  margin: var(--space-4) 0 var(--space-3);
+}
+
+/* 2e refonte (03/09/2026, "je trouve ca vieillot [...] la preuve sociale sur vibes elle
+   est a droite" + référence Meetup envoyée par Marine, même schéma : description à
+   gauche SANS boîte, carte d'action compacte à droite) : plus large que la 1ère version
+   (640px, pensée pour 1 colonne) pour laisser la place aux 2 colonnes en dessous du
+   titre. */
+.layout {
+  max-width: 860px;
+  margin: 0 auto var(--space-6);
+}
+
+/* Même forme que .photoContainer sur les cards (03/09/2026, "la forme de la photo qui
+   donne tout le style") — juste une hauteur plus grande, et pleine largeur du layout
+   (photo au centre, gardée telle quelle malgré le passage en 2 colonnes plus bas :
+   "Mais nous, on garde la photo au centre"). */
+.heroPhotoContainer {
+  height: 380px;
+  border-radius: 28px 28px 10px 10px;
+  margin-bottom: var(--space-3);
+}
+
+.heroPhotoContainer img {
+  border-radius: 28px 28px 10px 10px;
+}
+
+.title {
+  font-size: clamp(28px, 4vw, 38px);
+  color: var(--color-charcoal);
+  margin-bottom: var(--space-3);
+}
+
+/* Contexte marque pour qui arrive via un lien partagé (03/09/2026, "expliquer ce que
+   c'est les Martines [...] elles ne connaissent pas les Martines") : fond très léger
+   pour la distinguer visuellement du reste (elle répond à une question qu'une Martine
+   qui connaît déjà le site ne se pose pas), sans reprendre le look "encart" qui avait
+   été jugé vieillot ailleurs sur la page — juste un fond, pas de bordure ni d'ombre. */
+.brandIntro {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  background: var(--color-lilas-light);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: var(--space-3);
+}
+
+.brandIntro strong {
+  color: var(--color-primary);
+}
+
+/* Le vrai coeur de cette 2e version : la page se sépare en 2 à partir d'ici (photo et
+   titre restent pleine largeur au-dessus). Colonne large à gauche pour la lecture,
+   colonne étroite à droite pour l'action — jamais l'inverse, la logique de lecture reste
+   gauche→droite. */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mainCol {
+  min-width: 0;
+}
+
+/* Lignes meta façon vibes.lgbt/Meetup (03/09/2026) : icône dans un rond pastel + libellé
+   fin au-dessus d'une valeur en gras, posées à même la page — pas de fond coloré autour,
+   c'est justement ce qui rendait la 1ère version "vieillotte". */
+.metaList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.metaIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-lilas-light);
+}
+
+.metaIcon img,
+.metaIcon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.metaLabel {
+  display: block;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.metaValue {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-charcoal);
+}
+
+/* Texte visible, pas juste un `title` au survol (03/09/2026, "je ne comprends pas
+   pourquoi [...] reste secret si on n'est pas inscrite" — le cadenas seul ne suffisait
+   pas à se faire comprendre). Petit cadenas devant le texte (03/09/2026, "mets un petit
+   cadenas à côté de la phrase") : l'icône principale de la ligne est redevenue le pin
+   standard, ce cadenas-ci porte maintenant, à lui seul, le sens "cette info est cachée". */
+.metaHint {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  color: var(--color-muted);
+  margin-top: 1px;
+}
+
+.metaHint svg {
+  flex: none;
+}
+
+/* Arguments concrets pour pousser à réserver (03/09/2026, "Il faut vraiment avoir des
+   infos pour pousser à réserver et donc à télécharger l'application") : coche verte
+   plutôt qu'une puce classique — lit comme une checklist qu'on valide une à une, pas
+   comme une liste neutre. */
+.highlights {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.highlights li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.highlights li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-lime);
+  color: var(--color-primary-dark);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.highlights strong {
+  color: var(--color-charcoal);
+}
+
+/* Label de section (03/09/2026, vu sur Luma ET Eventbrite indépendamment : "À propos de
+   l'événement"/"Overview" au-dessus du descriptif) : structure la lecture au lieu d'un
+   paragraphe qui tombe sans prévenir après la checklist. */
+/* font-family explicite (03/09/2026, "Ce n'est pas du tout la bonne typo") : un <h2> hérite
+   du serif display en global (voir global.css, "h1, h2, h3, h4 { font-family:
+   var(--font-display) }") — parfait pour un vrai titre, mais ce label est un petit
+   kicker discret en capitales, pas un titre, donc la police de texte courant. */
+.sectionLabel {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+
+/* Texte simple, pas de boîte colorée (03/09/2026, "je trouve ca vieillot") : juste un
+   séparateur fin au-dessus, comme une note de bas de section plutôt qu'un encart. */
+.privacyNote {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(96, 102, 216, 0.15);
+}
+
+/* Colonne de droite façon Meetup/vibes.lgbt : sticky pour rester visible pendant que la
+   description (souvent plus longue) défile.
+   top: 84px, pas var(--space-3) (03/09/2026, bug rapporté "le ticket [...] touche le
+   menu") : le Nav est LUI-MÊME sticky top:0 à 64px de haut (voir Nav.module.css) — un
+   top trop petit ici faisait remonter la carte jusqu'à toucher/passer sous le nav au lieu
+   de s'arrêter juste en dessous. 64px (hauteur du nav) + 20px de respiration. */
+.sideCol {
+  position: sticky;
+  top: 84px;
+}
+
+/* 2e passe, toujours pas assez visible (03/09/2026, "je trouve qu'on ne la voit
+   toujours pas" — l'ombre seule ne suffisait pas sur un fond déjà clair) : blanc pur
+   (pas blanc-chaud, trop proche du fond) + bordure violette franche de 2px, traitement
+   "carte mise en avant" plutôt qu'une carte discrète de plus parmi d'autres. */
+.sideCard {
+  text-align: center;
+  background: var(--color-white);
+  border: 1.5px solid rgba(152, 155, 223, 0.6);
+  border-radius: 20px;
+  box-shadow: 0 20px 44px rgba(96, 102, 216, 0.3), 0 4px 12px rgba(47, 50, 106, 0.15);
+  padding: var(--space-4) var(--space-3);
+}
+
+/* Icône appli + note (inspiré de la carte "Rejoins Vibes" sur vibes.lgbt) : même chiffre
+   que la homepage (Hero.tsx, "4,8/5 · 450+ avis") — la preuve sociale vue AVANT de
+   cliquer télécharger, pas juste après. */
+/* Centré explicitement + agrandi (03/09/2026, "tu peux centrer le logo au milieu de la
+   bande et le grossir un peu") : display:block + margin auto plutôt que de compter sur
+   le text-align:center hérité du parent (un <img> est inline par défaut, mais rester
+   explicite évite toute surprise si un futur changement de layout casse l'héritage). */
+.ctaAppIcon {
+  display: block;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto var(--space-2);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(47, 50, 106, 0.2);
+}
+
+/* Petit mot manuscrit (03/09/2026, "tu peux aussi utliser la typo caveat" + "rajoute des
+   petits éléments en plus [...] pour donner envie de télécharger") : légère rotation,
+   comme un post-it collé sur la carte plutôt qu'un texte droit et sage. */
+.ctaHandwritten {
+  display: block;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-primary);
+  transform: rotate(-4deg);
+  margin-bottom: 2px;
+}
+
+.ctaRating {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-2);
+}
+
+/* Étoiles maison (03/09/2026, "ce n'est pas les étoiles qu'on a sur la home page [...]
+   on ne va pas utiliser les emojis") : même recette que .stars sur Hero/Avis (citron
+   vert + fin contour violet), pas l'emoji ⭐ du système. */
+.starRating {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--color-lime);
+  -webkit-text-stroke: 0.4px var(--color-primary);
+}
+
+.ctaRatingSep {
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+.ctaDivider {
+  width: 40px;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: rgba(96, 102, 216, 0.2);
+  margin: var(--space-2) auto var(--space-3);
+}
+
+.ctaTitle {
+  font-size: 19px;
+  color: var(--color-primary);
+  margin-bottom: 2px;
+}
+
+/* Urgence détachée en sa propre ligne, en gras (03/09/2026, "mettre plus que neuf places
+   en gras" + structure "plus premium") : repère visuel net entre le titre et le texte,
+   plutôt qu'un détail noyé au milieu d'une phrase. */
+.ctaUrgency {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+}
+
+.ctaText {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+}
+
+/* Bouton unique, centré (03/09/2026, "on va avoir un deep link [...] pas besoin des
+   logos" + "il faudrait que tu centres tout") : remplace les 2 badges App Store/Google
+   Play — display:inline-block pour que text-align:center sur .sideCard le centre
+   correctement (un <a> est inline par défaut, mais le padding ci-dessous a besoin d'un
+   contexte block/inline-block pour s'appliquer proprement). */
+/* text-decoration: none (03/09/2026, bug rapporté "le bouton [...] souligner") : un <a>
+   garde le soulignement par défaut du navigateur tant que rien ne le retire — global.css
+   ne réinitialise que la couleur ("a { color: inherit }"), pas le soulignement. */
+.ctaButton {
+  display: inline-block;
+  background: var(--color-primary);
+  color: var(--color-white);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 13px 28px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 6px 16px rgba(96, 102, 216, 0.35);
+  transition: transform 0.15s ease;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaButton:hover {
+    transform: none;
+  }
+}
+
+/* Réassurance rapide sous le bouton (03/09/2026, "rajoute des petits éléments en plus
+   [...] pour donner envie de télécharger") : lève les 3 objections les plus courantes
+   avant même qu'elles soient posées. */
+/* Puce coche plutôt qu'emoji (03/09/2026, "on ne va pas utiliser les emojis") : même
+   traitement que .highlights li::before (rond citron vert + coche), pour rester dans le
+   même langage visuel que la checklist plus haut plutôt que d'improviser une 3e façon de
+   faire une puce. */
+/* Toujours sur 1 ligne (03/09/2026, "il faudrait que ça reste sur la même ligne" — sur
+   une carte étroite, flex-wrap normal faisait retomber "2 min chrono" tout seul en
+   dessous des 2 autres) : gap resserré + taille de police légèrement réduite plutôt que
+   d'accepter le retour à la ligne. */
+.ctaTrust {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+  padding: 0;
+  margin-top: var(--space-2);
+  font-size: 10.5px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.ctaTrust li {
+  position: relative;
+  padding-left: 16px;
+}
+
+/* Partage regroupé dans la carte (03/09/2026, "on devrait rappeler les reseaux sociaux
+   et egalement avoir le lien de partage [...] tu l'enleves la-haut") : séparé du reste
+   par un fin trait, même famille visuelle que .ctaDivider plus haut dans la carte. */
+.shareRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(96, 102, 216, 0.15);
+}
+
+.shareLabel {
+  font-size: 11px;
+  color: var(--color-muted);
+}
+
+.shareIcons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shareIcons a,
+.shareIcons button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--color-lilas-light);
+  color: var(--color-primary);
+  border: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.shareIcons a:hover,
+.shareIcons button:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.shareCopied {
+  font-size: 11px;
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.ctaTrust li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0.5px;
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-lime);
+  color: var(--color-primary-dark);
+  font-size: 8px;
+  font-weight: 700;
+}
+
+/* Aperçu de carte flouté (03/09/2026, inspiré de Luma : "Inscrivez-vous pour voir
+   l'adresse exacte" sur fond de carte réelle — voir la note dans EventDetail.tsx sur
+   pourquoi on ne charge pas une VRAIE carte). Le flou est sur un motif décoratif, pas sur
+   une donnée géographique réelle. */
+/* Couleur d'origine reprise (03/09/2026, "je préférerais la couleur d'avant [...] est-ce
+   que tu peux lui mettre un ombrage [...] pour qu'elle se détache" — le fond lavande
+   soutenu de l'essai précédent réglait le contraste interne mais changeait le ton voulu
+   au départ ; Marine préfère garder --color-lilas-light et faire ressortir le bloc de la
+   PAGE plutôt que ses rues entre elles) : box-shadow sur le conteneur pour le détacher du
+   fond, plutôt qu'un changement de palette. */
+.mapTeaser {
+  position: relative;
+  height: 130px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--color-lilas-light);
+  box-shadow: 0 10px 28px rgba(96, 102, 216, 0.25);
+  margin-bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mapTeaserStreets {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--color-lavender);
+  filter: blur(1px);
+}
+
+.mapTeaserPin {
+  position: absolute;
+  display: flex;
+  color: var(--color-primary);
+  filter: drop-shadow(0 2px 3px rgba(47, 50, 106, 0.3));
+}
+
+.mapTeaserPin svg {
+  width: 26px;
+  height: 26px;
+}
+
+.mapTeaserLabel {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: var(--color-primary-dark);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Suggestions en bas de page (03/09/2026, "en dessous de tout ça, tu peux me suggérer
+   d'autres événements ? Et pas t'arrêter là") : plus large que .layout (860px) pour
+   accueillir la grille à 3 colonnes d'eventsStyles.grid telle quelle, comme sur /events/. */
+/* text-align: center retiré d'ici (03/09/2026, bug rapporté "tu as centré ton texte et
+   ton titre dans ta card" — le centrage posé sur ce conteneur descendait en cascade
+   jusque DANS les EventCard suggérées, recentrant leur titre/description alors qu'ils
+   sont ferrés à gauche partout ailleurs sur le site, y compris sur la grille /events/).
+   Centré seulement sur .otherEventsTitle/.otherEventsAllLink eux-mêmes, plus bas. */
+.otherEvents {
+  max-width: var(--container-width);
+  margin: var(--space-6) auto 0;
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(96, 102, 216, 0.15);
+}
+
+.otherEventsTitle {
+  text-align: center;
+  font-size: 24px;
+  color: var(--color-primary);
+  margin-bottom: var(--space-3);
+}
+
+/* La carte gère déjà son propre style (bordure, ombre, hover) : le lien ne fait
+   qu'englober, sans hériter du bleu/souligné par défaut d'un <a>. */
+.otherEventLink {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Slider (03/09/2026, "faut que ce soit un slider") : même recette que .sliderOuter sur
+   Avis.tsx — pleine largeur d'écran (sort du .container/.otherEvents) via 100vw +
+   translateX, pas juste 100% du parent. */
+.otherEventsSliderOuter {
+  position: relative;
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  --gutter: max(var(--space-3), calc((100vw - var(--container-width)) / 2 + var(--space-3)));
+}
+
+.otherEventsSlider {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Padding vertical généreux (03/09/2026, même raison que Avis.module.css : overflow-x
+     auto force overflow-y à découper aussi, l'ombre/le hover de .card seraient rognés
+     par un padding trop fin). */
+  padding: 12px var(--gutter) 24px;
+}
+
+.otherEventsSlider::-webkit-scrollbar {
+  display: none;
+}
+
+.otherEventsSlide {
+  flex: 0 0 min(320px, 82vw);
+  scroll-snap-align: start;
+  display: flex;
+}
+
+.otherEventsAllLink {
+  display: block;
+  text-align: center;
+  margin-top: var(--space-4);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+/* Barre sticky mobile (03/09/2026, "Le bouton sticky, c'est hyper bien pour telecharger
+   l'application" — vu sur Meetup) : masquée par défaut, seulement affichée sous 860px
+   (là où .sideCard n'est plus sticky et retombe dans le flux normal, voir .contentGrid
+   plus haut) pour ne jamais doubler l'action principale sur desktop.
+   position: fixed, pas sticky (03/09/2026, bug rapporté "le sticky disparaît à partir du
+   moment où on arrive sur le bandeau où on a encore les logos") : `sticky` ne reste
+   "collé" que tant qu'il reste de la place à parcourir DANS son propre flux — comme
+   c'est le tout dernier élément de la page, dès qu'on approche du bas, son propre
+   emplacement naturel rejoint le bas de l'écran et il arrête de "flotter", donnant
+   l'impression qu'il disparaît. `fixed` le sort complètement du flux : il reste à
+   l'écran EN PERMANENCE, comme la barre "Participer" de Meetup. .layout compense avec un
+   padding-bottom pour que ce bandeau fixe ne cache jamais définitivement les boutons de
+   la vraie carte d'action juste au-dessus. */
+.stickyBar {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .layout {
+    padding-bottom: 84px;
+  }
+
+  .stickyBar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background: var(--color-white-warm);
+    border-top: 1px solid rgba(96, 102, 216, 0.15);
+    box-shadow: 0 -8px 24px rgba(47, 50, 106, 0.12);
+    padding: 10px var(--space-3);
+  }
+}
+
+.stickyBarText {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  color: var(--color-charcoal);
+  min-width: 0;
+}
+
+.stickyBarRating {
+  font-size: 11.5px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+/* Bouton unique (03/09/2026, "On va avoir un deep link. Donc pas obligé de mettre les
+   logos partout") : remplace les 2 badges de store dans cette barre, trop étroite pour
+   les accueillir proprement en plus du texte (voir StoreButtons dans EventDetail.tsx). */
+.stickyBarButton {
+  flex: none;
+  background: var(--color-primary);
+  color: var(--color-white);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}

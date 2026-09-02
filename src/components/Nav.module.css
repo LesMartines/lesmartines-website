@@ -1,0 +1,195 @@
+.header {
+  /* Glassmorphisme : fond translucide + flou de ce qui défile derrière, avec un liseré
+     et une ombre légère pour détacher la nav du contenu. Fallback en fond plein pour les
+     rares navigateurs sans support de backdrop-filter. */
+  background: rgba(255, 251, 249, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 1px 24px rgba(47, 50, 74, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .header {
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .header {
+    background: var(--color-white-warm);
+  }
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  transition: height 0.25s ease;
+}
+
+/* Rétraction légère au scroll (28/08/2026, "un petit élément cool qui donne du
+   dynamisme") : la nav gagne un peu de place à l'écran une fois qu'on a commencé à
+   lire la page. */
+.headerScrolled .inner {
+  height: 52px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inner {
+    transition: none;
+  }
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--color-charcoal);
+  text-decoration: none;
+  transition: font-size 0.25s ease;
+}
+
+.headerScrolled .logo {
+  font-size: 19px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo {
+    transition: none;
+  }
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Soulignement animé qui glisse sous le lien survolé/actif (31/08/2026, "améliorer le
+   menu et le rendre plus premium") : une seule pastille positionnée en JS (voir Nav.tsx,
+   moveIndicatorTo) via transform: translateX plutôt que left, pour une transition GPU
+   fluide. bottom négatif : passe sous le texte des liens sans réduire leur hauteur de
+   ligne ni pousser le reste du header. */
+.indicator {
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: var(--color-primary);
+  transition: transform 0.25s ease, width 0.25s ease, opacity 0.2s ease;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition: opacity 0.2s ease;
+  }
+}
+
+.link {
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  color: var(--color-charcoal);
+}
+
+.link:hover {
+  color: var(--color-primary);
+}
+
+/* "L'appli" pointe vers la page d'accueil elle-même (31/08/2026, "l'appli c'est la page
+   accueil en fait, donc faut que ça reste violet quand on est dessus") : maintenant que
+   le site a une vraie 2e page (/contact/), il faut distinguer "sur quelle page on est",
+   pas juste un survol — voir useLocation() dans Nav.tsx. */
+.linkActive {
+  color: var(--color-primary);
+}
+
+.linkSoon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--color-muted);
+  cursor: default;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: var(--color-lavender);
+  color: var(--color-primary-dark);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 8px;
+}
+
+.burger span {
+  width: 22px;
+  height: 2px;
+  background: var(--color-charcoal);
+  border-radius: 2px;
+}
+
+@media (max-width: 860px) {
+  .burger {
+    display: flex;
+  }
+
+  .nav {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    /* Fond plein (pas de transparence/blur) : sur un menu qui recouvre directement le
+       Hero (images + titre foncé), une version translucide laisse le contenu du dessous
+       transparaître et rend les liens illisibles. Un panneau opaque reste lisible quel
+       que soit ce qu'il y a en dessous. */
+    background: var(--color-white-warm);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    padding: var(--space-3);
+    box-shadow: var(--shadow-card);
+    display: none;
+    transition: top 0.25s ease;
+  }
+
+  /* Suit la rétraction de la nav au scroll (voir .headerScrolled .inner plus haut), sinon
+     un petit espace apparaît entre le header rétréci et le menu déroulant mobile. */
+  .headerScrolled .nav {
+    top: 52px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav {
+      transition: none;
+    }
+  }
+
+  .navOpen {
+    display: flex;
+  }
+
+  /* Le glissement horizontal n'a pas de sens sur le menu déroulant vertical mobile. */
+  .indicator {
+    display: none;
+  }
+}

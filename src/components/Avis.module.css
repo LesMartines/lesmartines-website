@@ -1,0 +1,225 @@
+.section {
+  /* Resserré (31/08/2026, "on pourrait resserer un peu") : space-6 -> space-5. */
+  padding: var(--space-5) 0;
+  background: var(--color-white-warm);
+}
+
+/* Mis en valeur SANS carte (29/08/2026, "j'aime pas que ce soit dans une card" — la 1re
+   passe avait mis un fond blanc + ombre autour, retiré ici). On revient à du texte posé
+   directement sur le fond de la section (même logique que .statNumber dans
+   CommunityStats.module.css : pas de boîte, juste une typo beaucoup plus grosse et grasse
+   pour porter l'emphase). Étoiles agrandies, chiffre nettement plus gros, "4,8/5" en gras
+   coloré dans le breakdown : la hiérarchie vient uniquement de l'échelle et du poids, pas
+   d'un encadré. */
+.stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Resserré (31/08/2026, meme demande) : space-6 -> space-5, avant le slider. */
+  margin: 0 auto var(--space-5);
+  text-align: center;
+}
+
+.stars {
+  color: var(--color-lime);
+  font-size: 32px;
+  /* Fin contour plutôt qu'un drop-shadow décalé (rendait un bord dur/moche sur les glyphes
+     d'étoile). -webkit-text-stroke gère le contour proprement sur Chrome/Safari ; le
+     text-shadow en 4 directions sert de repli discret sur Firefox, qui ignore text-stroke.
+     Violet clair (--color-primary) plutôt que le indigo foncé d'origine, sur demande de Marine. */
+  -webkit-text-stroke: 0.5px var(--color-primary);
+  text-shadow:
+    -0.5px -0.5px 0 var(--color-primary),
+    0.5px -0.5px 0 var(--color-primary),
+    -0.5px 0.5px 0 var(--color-primary),
+    0.5px 0.5px 0 var(--color-primary);
+  margin-bottom: var(--space-1);
+  /* Petit effet (31/08/2026, "mettre un petit effet sur les etoiles") : pop au scroll,
+     caché tant que .stats n'a pas .inView (voir Avis.tsx, IntersectionObserver dédié —
+     le Reveal du bloc englobant gère déjà le fade du texte, mais anime tout le bloc d'un
+     bloc ; ce pop est un mouvement propre aux étoiles, à part). */
+  transform: scale(0);
+  opacity: 0;
+}
+
+.stats.inView .stars {
+  animation: starsPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: 0.2s;
+}
+
+@keyframes starsPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stars {
+    animation: none;
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.count {
+  font-size: clamp(38px, 5.2vw, 60px);
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.breakdown {
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: var(--space-1);
+}
+
+/* Score en évidence dans le breakdown, même traitement que .ratingScore du Hero pour que
+   les deux badges de confiance se répondent visuellement. */
+.score {
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.sliderOuter {
+  position: relative;
+  /* Pleine largeur d'écran (sort du .container), pas juste 100% du container. */
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  /* --gutter servait aussi à positionner les flèches prev/next, retirées le 28/08/2026
+     ("vire les flèches [...] on comprend qu'on peut scroller") ; reste utilisée pour le
+     padding du slider ci-dessous. */
+  --gutter: max(var(--space-3), calc((100vw - var(--container-width)) / 2 + var(--space-3)));
+}
+
+.slider {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Le padding gauche/droite aligne la 1re et la dernière carte sur la même marge que le
+     reste du contenu (.container), même si le slider lui-même va bord à bord de l'écran.
+     Padding haut/bas augmenté (28/08/2026, "ton ombre est coupée en haut et en bas, t'as
+     le même problème sur les témoignages") : overflow-x: auto force overflow-y à un
+     comportement de découpe équivalent (la spec CSS ne laisse pas un axe à "visible" si
+     l'autre ne l'est pas), donc le box-shadow des cartes (et le translateY au survol,
+     voir .card:hover) se faisait rogner par un padding vertical bien trop fin (4px) pour
+     laisser la place à l'ombre + au soulèvement. */
+  padding: 22px var(--gutter) 24px;
+}
+
+.slider::-webkit-scrollbar {
+  display: none;
+}
+
+.slide {
+  flex: 0 0 min(320px, 82vw);
+  scroll-snap-align: start;
+  display: flex;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  box-shadow: var(--shadow-soft);
+  margin: 0;
+  width: 100%;
+  /* Petit hover léger (28/08/2026, "des petits hover légers sur les cartes des avis") :
+     légère élévation + ombre un peu plus marquée, pour donner un peu de vie sans être
+     tape-à-l'œil. */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card);
+}
+
+.cardStars {
+  color: var(--color-lime);
+  font-size: 12px;
+  letter-spacing: 1px;
+  -webkit-text-stroke: 0.4px var(--color-primary);
+  text-shadow:
+    -0.4px -0.4px 0 var(--color-primary),
+    0.4px -0.4px 0 var(--color-primary),
+    -0.4px 0.4px 0 var(--color-primary),
+    0.4px 0.4px 0 var(--color-primary);
+  margin-bottom: var(--space-2);
+  display: inline-block;
+  /* Petit effet (31/08/2026) : les étoiles grossissent légèrement au survol de la
+     carte, même déclencheur que le léger soulèvement de .card ci-dessus. */
+  transition: transform 0.2s ease;
+  transform-origin: left center;
+}
+
+.card:hover .cardStars {
+  transform: scale(1.15);
+}
+
+.quote {
+  flex: 1;
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.author {
+  margin-top: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-lavender-pale);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.source {
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--color-text);
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slider {
+    scroll-behavior: auto;
+  }
+
+  .card {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .cardStars {
+    transition: none;
+  }
+
+  .card:hover .cardStars {
+    transform: none;
+  }
+}

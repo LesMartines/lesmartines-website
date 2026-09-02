@@ -1,0 +1,132 @@
+.section {
+  padding: var(--space-4) 0 var(--space-6);
+  overflow: hidden;
+}
+
+.title {
+  text-align: center;
+  font-size: clamp(32px, 5vw, 52px);
+  margin-bottom: var(--space-4);
+  padding: 0 var(--space-3);
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  /* Le padding vertical de .marqueeWrap (voir juste en dessous) fournit l'essentiel de
+     l'espacement visuel entre les 2 lignes ; gap CSS ne peut pas être négatif, donc le
+     resserrement demandé le 28/08/2026 ("j'ai mis trop d'espace entre les deux rangées de
+     pills") se fait via une marge négative sur la 2e ligne, voir .marqueeWrap + .marqueeWrap
+     juste en dessous — le padding de CHAQUE ligne reste intact (toujours nécessaire pour ne
+     pas re-couper l'ombre au survol). */
+  gap: 0;
+}
+
+/* Même technique que PressLogos.module.css : le défilement sort du .container (pleine
+   largeur), avec un fondu sur les bords plutôt qu'une coupure nette sur les pills.
+   Padding vertical ajouté (28/08/2026, "ton ombre est coupée en haut et en bas") puis
+   AUGMENTÉ (même jour, "l'ombre des pills est coupée au hover") : overflow: hidden coupe
+   tout ce qui dépasse la boîte de .marqueeWrap. Au survol, .pill:hover fait scale(1.08) EN
+   PLUS d'une ombre déjà plus marquée (0 4px 14px) — un transform scale() agrandit tout le
+   rendu de l'élément, ombre comprise, donc l'empreinte de l'ombre au survol est nettement
+   plus grande qu'au repos. 10px de padding suffisait au repos mais pas au survol : passé à
+   22px pour couvrir aussi ce cas. */
+.marqueeWrap {
+  overflow: hidden;
+  padding: 22px 0;
+  mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+
+/* Resserre l'espace entre les 2 lignes (28/08/2026) sans réduire le padding de la 2e ligne
+   (qui doit rester à 22px pour ne pas re-couper l'ombre au survol) : les 2 paddings de
+   22px se chevauchent partiellement via cette marge négative, ramenant l'écart visuel
+   perçu entre les lignes de 44px à ~20px. */
+.marqueeWrap + .marqueeWrap {
+  margin-top: -24px;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  /* Un peu moins serré (28/08/2026, "tu peux les faire un peu moins serrées entre elles
+     à l'horizontal") : 10px -> 16px, gardé identique à .list ci-dessous pour ne pas créer
+     de "trou" visible à la jonction entre les 3 copies dupliquées du marquee. */
+  gap: 16px;
+  width: max-content;
+  /* Ralenti à la demande de Marine le 28/08/2026 (38s -> 110s) : un défilement posé,
+     lisible, pas une bande qui file trop vite pour avoir le temps de lire les mots. */
+  animation: scroll 110s linear infinite;
+}
+
+.track.reverse {
+  animation-direction: reverse;
+}
+
+.track:hover {
+  animation-play-state: paused;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+}
+
+.pill {
+  background: var(--color-lavender);
+  color: var(--color-primary-dark);
+  /* Taille rapprochée de la maquette Figma envoyée le 28/08/2026 (+ un peu plus de padding
+     que la V1, qui était trop discrète en comparaison). Graisse repassée de 700 à 500 le
+     28/08 ("le texte ne soit pas en gras dans les pills violettes") : la taille de police
+     suffit à faire ressortir les pills, pas besoin de gras en plus. */
+  font-weight: 500;
+  font-size: 16px;
+  padding: 14px 26px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  /* Petite ombre légère (28/08/2026, "des petites ombres légères derrière les pills") :
+     détache doucement chaque pill du fond rose pudré/lavande, sans effet de relief trop
+     marqué. Un peu plus prononcée au survol pour accompagner le scale existant. */
+  box-shadow: 0 2px 8px rgba(47, 50, 106, 0.1);
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* Petit effet ludique au survol (demande du 27/08/2026), en CSS pur donc coût ~0 :
+   la pill grossit légèrement et s'incline, alternée pour un rendu moins mécanique. */
+.pill:hover {
+  transform: scale(1.08) rotate(-2deg);
+  background: var(--color-lime);
+  box-shadow: 0 4px 14px rgba(47, 50, 106, 0.16);
+}
+
+.pill:nth-child(even):hover {
+  transform: scale(1.08) rotate(2deg);
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* -33.333% car chaque ligne a 3 copies de sa moitié de liste : la copie suivante
+       prend le relais pile à ce moment-là (voir le commentaire dans ValeursBloc.tsx). */
+    transform: translateX(-33.3333%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+
+  .marqueeWrap {
+    overflow-x: auto;
+  }
+}

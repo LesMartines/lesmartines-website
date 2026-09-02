@@ -1,0 +1,57 @@
+/*
+  Tokens extraits de la maquette Figma (fichier SZh2o5i2nvejJy4MaKDFBD, frame Homepage).
+  Gazpacho (titres) est en place depuis le 30/08/2026, voir le @font-face dans
+  global.css. Graphik (texte, maquette) est une police payante non fournie : Marine a
+  choisi Inter (Google Fonts, gratuite) comme remplacement définitif du texte courant,
+  chargée via <link> dans index.html.
+*/
+:root {
+  /* Couleurs */
+  --color-primary: #6066d8;
+  --color-primary-dark: #2f326a;
+  --color-charcoal: #3a3748;
+  --color-charcoal-2: #2f323d;
+  --color-muted: #9395ae;
+  --color-text: #212121;
+  --color-text-secondary: #6b6b6b;
+  --color-lime: #dbff73;
+  --color-lavender: #dadaff;
+  --color-lavender-pale: #eaeaf6;
+  --color-peach: #ffeee2;
+  --color-peach-light: #fdf2eb;
+  --color-white-warm: #fffbf9;
+  --color-white: #ffffff;
+  /* Corail plutôt qu'un rouge d'alerte classique (01/09/2026, messages d'erreur du
+     formulaire Contact) : reste dans la même famille pastel que le reste de la palette. */
+  --color-error: #d9636f;
+  --color-error-light: #fbeced;
+  /* violet/middle et violet/lilas-light (02/09/2026, Card/Event du Figma "Product Les
+     Martines", node 9787:36210) : tokens du design system Figma absents jusqu'ici du
+     site car jamais utilisés par un composant précédent. */
+  --color-violet-middle: #989bdf;
+  --color-lilas-light: #ececff;
+
+  /* Typo */
+  --font-display: 'Gazpacho', Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* 03/09/2026, "tu peux aussi utliser la typo caveat" : petites annotations à la main,
+     voir le commentaire détaillé dans index.html. */
+  --font-hand: 'Caveat', cursive;
+
+  /* Rayons / rythme */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 64px;
+  --space-6: 96px;
+
+  --container-width: 1200px;
+
+  --shadow-soft: 0 4px 20px rgba(47, 50, 74, 0.08);
+  --shadow-card: 0 8px 30px rgba(47, 50, 74, 0.12);
+}

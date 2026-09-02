@@ -1,0 +1,140 @@
+/* Espace généreux sous la nav sticky du site (29/08/2026, "trop proche du menu") : la nav
+   fait 64px de haut, on veut clairement plus qu'un simple padding de section standard
+   avant le badge de mise à jour. */
+.page {
+  padding: var(--space-6) 0 var(--space-6);
+}
+
+/* header + content vivent dans la même colonne que le sommaire les longe (.main), pour
+   que le titre et la carte de contenu partagent exactement le même bord gauche
+   (29/08/2026, "t'es pas du tout aligné" : avant, le header était hors grille en pleine
+   largeur pendant que le contenu vivait dans la 2e colonne de la grille, décalé par la
+   largeur du sommaire — d'où le décalage visible). */
+.main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.header {
+  margin-bottom: var(--space-4);
+}
+
+.updatedPill {
+  display: inline-block;
+  background: var(--color-lavender-pale);
+  color: var(--color-primary-dark);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-size: clamp(30px, 4.2vw, 44px);
+  margin-bottom: var(--space-1);
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-top: var(--space-1);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--space-5);
+  align-items: start;
+}
+
+/* Sommaire collant avec suivi de scroll : top décalé sous la nav sticky du site (64px)
+   + un peu d'air. */
+.toc {
+  position: sticky;
+  top: 96px;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+}
+
+.tocLabel {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-muted);
+  margin-bottom: var(--space-1);
+}
+
+.toc ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border-left: 2px solid var(--color-lavender-pale);
+}
+
+.toc a {
+  display: block;
+  padding: 6px 0 6px 14px;
+  margin-left: -2px;
+  border-left: 2px solid transparent;
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.toc a:hover {
+  color: var(--color-primary-dark);
+}
+
+.tocActive {
+  color: var(--color-primary) !important;
+  font-weight: 700;
+  border-left-color: var(--color-primary) !important;
+}
+
+.content {
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-5);
+  min-width: 0;
+}
+
+/* Soulignement redonné aux liens simples dans le corps de texte (03/09/2026, suite au
+   reset global "a { text-decoration: none }" dans global.css) : les mentions
+   légales/CGU/politique de confidentialité contiennent des <a> nus (emails, URLs) SANS
+   classe dédiée, en plein milieu de paragraphes — sans un signal visuel, rien ne les
+   distinguerait plus du texte autour (la couleur est déjà héritée, voir "a { color:
+   inherit }" dans global.css). Un vrai bouton/CTA stylé (pilule, texte en gras coloré)
+   n'a pas ce problème : sa forme suffit à se faire comprendre comme cliquable. */
+.content a {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .toc {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .content {
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+  }
+}

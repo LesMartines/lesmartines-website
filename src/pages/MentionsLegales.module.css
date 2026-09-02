@@ -1,0 +1,63 @@
+/* .page / .card / .title sont maintenant gérés par LegalPage (composant partagé des 3
+   pages légales, 29/08/2026) : ce module ne garde que les styles propres au contenu de
+   cette page. */
+
+.intro {
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+}
+
+.intro a {
+  color: var(--color-primary);
+}
+
+.section {
+  margin-bottom: var(--space-4);
+  scroll-margin-top: 96px;
+}
+
+.section h2 {
+  font-size: 18px;
+  margin-bottom: var(--space-1);
+  padding-left: 12px;
+  border-left: 3px solid var(--color-lime);
+}
+
+.section p {
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+
+.section a {
+  color: var(--color-primary);
+}
+
+/* Bouton "Voir nos CGU" : même famille visuelle que le .cta des sections marketing (fond
+   primaire, pilule), pour que même une page légale garde un peu de la patte Les Martines
+   plutôt qu'un lien texte plat. */
+.cta {
+  display: inline-block;
+  background: var(--color-primary);
+  color: var(--color-white) !important;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  margin-top: 4px;
+  transition: transform 0.15s ease;
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+}
+
+.closing {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-style: italic;
+  margin-top: var(--space-3);
+}

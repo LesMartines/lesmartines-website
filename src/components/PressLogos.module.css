@@ -1,0 +1,109 @@
+.section {
+  background: var(--color-white-warm);
+  /* Bandeau réduit le 28/08/2026 ("réduire un peu la hauteur du bandeau des logos") :
+     padding vertical resserré (24/64px -> 16/40px) sans toucher à la taille des logos
+     eux-mêmes (.item), déjà calibrée par ailleurs. */
+  padding: var(--space-2) 0 var(--space-4);
+  text-align: center;
+  /* Remonte par-dessus le bas du collage du Hero (30/08/2026, "faire passer la ligne avec
+     les logos des médias par-dessus le visuel pour qu'on ait l'impression que la
+     composition passe sous la ligne") : position relative + z-index pour peindre par-
+     dessus le débordement du Hero (qui n'est plus coupé net, voir Hero.module.css), marge
+     négative pour chevaucher physiquement cette zone. Le fond opaque de .section fait le
+     reste : tout ce qui dépasse sous cette ligne est visuellement "avalé". */
+  position: relative;
+  z-index: 2;
+  /* Descendu de 20px puis 30px de plus (31/08/2026, "baisse le bandeau des logos") :
+     -72px -> -52px -> -22px, pour laisser respirer la compo du Hero agrandie juste
+     au-dessus (voir Hero.module.css). */
+  margin-top: -22px;
+}
+
+.title {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: var(--space-3);
+}
+
+.marqueeWrap {
+  overflow: hidden;
+  /* Estompe les bords plutôt qu'une coupure nette sur les logos. */
+  mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  animation: scroll 28s linear infinite;
+}
+
+.list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  list-style: none;
+  margin: 0;
+  padding: 0 var(--space-3);
+}
+
+.item a {
+  /* Les logos avec lien (28/08/2026) sont enveloppés dans <a> : ce <a> doit occuper toute
+     la hauteur de .item pour que "height: 100%" sur .item img (ci-dessous) continue de
+     fonctionner comme avant l'ajout des liens. */
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  /* Les logos réels ont des proportions et des poids visuels très différents (BFM Tech&Co
+     est compact, Les Echos est en toutes lettres serif) : une hauteur commune fixe garde
+     un alignement propre sans écraser ni surdimensionner aucun d'eux. Assets recadrés
+     (marges transparentes retirées) le 28/08 pour que cette hauteur commune corresponde
+     à une taille perçue cohérente d'un logo à l'autre — recadrage vertical PARTAGÉ entre
+     les 6 logos depuis la dernière passe (et non plus une bbox individuelle par logo, qui
+     faussait les tailles relatives, voir mémoire projet). Hauteur : 28px (trop petit,
+     tailles perçues incohérentes) → 40px ("grossis-les") → 34px ("un peu plus petit") →
+     38px ("un petit peu plus grands") → 42px ("encore un peu plus grand") → 50px
+     (valeur exacte demandée par Marine), après le fix du recadrage partagé, 6 ajustements
+     le 28/08. */
+  height: 50px;
+}
+
+.item img {
+  display: block;
+  height: 100%;
+  width: auto;
+  /* "passe tout en gris" — logos réels convertis en niveaux de gris, quelle que soit leur
+     couleur d'origine (rouge Her Story/Cosmo, vert Leptidigital, rose BFM Tech&Co...), pour
+     une bande presse discrète et homogène. */
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* -20% car la liste est dupliquée 5 fois (voir PressLogos.tsx) : la copie suivante
+       prend le relais pile à ce moment-là, comme avant avec -50% pour 2 copies. */
+    transform: translateX(-20%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+
+  .marqueeWrap {
+    overflow-x: auto;
+  }
+}

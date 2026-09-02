@@ -1,0 +1,617 @@
+.hero {
+  position: relative;
+  /* Retiré le 28/08/2026 : l'effet "aurora" (blobs flous dégradés) ajouté plus tôt le
+     même jour, sur retour de Marine ("vire les dégradés"). Remplacé par le vrai grain
+     qu'elle a envoyé (voir .hero::before juste en dessous). Nécessaire en plus de body
+     (global.css) : .hero a son propre fond opaque qui recouvrirait sinon celui de body. */
+  background-color: var(--color-peach);
+  /* Padding bas resserré (30/08/2026, "faire passer la ligne avec les logos des médias
+     par-dessus le visuel pour qu'on ait l'impression que la composition passe sous la
+     ligne") : moins d'espace vide sous le collage, et overflow-x seul (au lieu de
+     overflow: hidden) pour laisser le bas des téléphones déborder verticalement sous le
+     Hero au lieu d'être coupé net — c'est ce débordement que PressLogos vient ensuite
+     recouvrir partiellement (voir PressLogos.module.css, marge négative). */
+  padding: var(--space-5) 0 8px;
+  /* clip (pas hidden) sur l'axe x (30/08/2026, "double scroll sur le hero") : la
+     spec CSS force l'axe "visible" à devenir "auto" dès que l'autre axe vaut
+     "hidden"/"scroll"/"auto" — même en écrivant overflow-y: visible explicitement,
+     son calculé restait "auto" (vérifié en devtools). "clip" n'entre pas dans ce
+     couplage : l'axe x reste coupé net (aucun scroll possible dessus, comme hidden)
+     sans forcer l'axe y à devenir un conteneur de scroll. Sans ça, le débordement
+     volontaire du bas des téléphones créait une 2e scrollbar interne au Hero, en plus
+     de celle de la page. */
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+/* Grain en pseudo-élément séparé, pas directement en background-image sur .hero, pour
+   pouvoir baisser son opacité sans toucher à celle du rose pudré lui-même (même raison et
+   même valeur que body::before dans global.css : posé à pleine intensité au premier
+   essai, jugé "vraiment pas beau" par Marine le 28/08/2026). */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  background-image: url('../assets/texture/grain-tile.png');
+  background-repeat: repeat;
+}
+
+.inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Sélecteur composé (.hero .inner, 2 classes) : plus spécifique que la règle .container
+   du fichier global (1 classe), donc gagne de façon fiable quel que soit l'ordre de
+   chargement des feuilles de style — plutôt que de dupliquer toute la logique de
+   .container ici. Élargit uniquement le Hero (31/08/2026, "grossis un peu les
+   éléments") pour laisser plus de place à la compo ci-dessous ; le titre/les boutons
+   gardent leur propre max-width donc ne s'étirent pas avec. */
+.hero .inner {
+  max-width: 1320px;
+}
+
+.title {
+  font-size: clamp(32px, 5vw, 60px);
+  color: var(--color-primary);
+  letter-spacing: 0.02em;
+  max-width: 900px;
+  margin-bottom: var(--space-3);
+}
+
+.breakDesktop {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .breakDesktop {
+    display: inline;
+  }
+}
+
+/* Badge pilule (29/08/2026, "vraiment pas mis assez en valeur") : avant, une simple
+   ligne de texte gris 13px, quasi invisible sous les gros boutons de stores. Fond blanc +
+   ombre douce pour se détacher du fond pêche du Hero, étoiles citron vert avec contour
+   (même recette que .stars dans Avis.module.css) pour que la note du Hero et celle de la
+   section Avis plus bas se fassent écho visuellement. flex-wrap + text-align: center pour
+   rester lisible si le texte doit passer sur 2 lignes en très petit écran. */
+.rating {
+  margin-top: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  background: var(--color-white);
+  border-radius: var(--radius-pill);
+  padding: 9px 18px;
+  box-shadow: var(--shadow-soft);
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ratingStars {
+  color: var(--color-lime);
+  font-size: 15px;
+  letter-spacing: 1px;
+  -webkit-text-stroke: 0.5px var(--color-primary);
+  text-shadow:
+    -0.5px -0.5px 0 var(--color-primary),
+    0.5px -0.5px 0 var(--color-primary),
+    -0.5px 0.5px 0 var(--color-primary),
+    0.5px 0.5px 0 var(--color-primary);
+}
+
+.ratingScore {
+  color: var(--color-primary-dark);
+  font-weight: 800;
+}
+
+.ratingSep {
+  color: var(--color-muted);
+}
+
+/* Wrapper autour de StoreButtons + la note, remplace un simple enchaînement d'enfants du
+   flex .inner : nécessaire pour porter le Reveal en cascade (28/08/2026, voir Hero.tsx). */
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Wrapper de centrage (29/08/2026) : portait aussi le contexte de perspective 3D pour le
+   tilt au survol, retiré sur demande de Marine ("évite le truc 3D j'aime pas trop") — plus
+   de perspective, plus de useEffect mousemove dans Hero.tsx, juste ce flex de centrage qui
+   porte le Reveal en cascade. */
+.collageWrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  /* Resserré encore (31/08/2026, "remonte encore, elle est trop sous le bandeau") :
+     space-4 -> 0. La compo agrandie (voir .collage plus bas) est aussi plus haute,
+     donc son bas arrivait trop près de la bande presse une fois le -72px de
+     chevauchement appliqué (PressLogos.module.css) ; remonter tout le bloc lui redonne
+     la même marge de respiration qu'avant l'agrandissement. */
+  margin-top: 0;
+}
+
+/* Wrapper porteur du role="img" (voir Hero.tsx) : sans width explicite, cet enfant de
+   .collageWrap (display:flex) se réduit à une largeur de contenu nulle, puisque son
+   propre enfant .collage n'a qu'une largeur en % (les % ne comptent pas dans le calcul
+   de la largeur "intrinsèque" d'un item flex) — .collage se retrouvait donc à 100% de 0.
+   Bug réel rencontré le 30/08/2026 en ajoutant ce wrapper pour l'accessibilité. */
+.collageInner {
+  width: 100%;
+}
+
+/* Vraie compo, recalée le 30/08/2026 sur les coordonnées exactes du frame Figma
+   "hero-composition" (801x349px source, cf. Hero.tsx) : aspect-ratio du conteneur alignée
+   sur celle du frame source pour que les % left/top/width de chaque élément retombent au
+   bon endroit. Meme technique que le collage d'EventsPromo/CommunityStats : chaque
+   element positionne en % de ce conteneur (fluide a toutes les tailles), z-index pour
+   l'empilage (ordre des calques Figma). Rotations et ombres deja cuites dans chaque PNG
+   exporte par Marine, rien a gerer en CSS. */
+.collage {
+  position: relative;
+  width: 100%;
+  /* Agrandi (30/08/2026, "grossis un peu l'ensemble des images de la composition pour
+     que ca pete") : 980px -> 1120px, toujours confortablement dans les 1152px utiles du
+     .container (1200px - paddings). Un seul nombre a changer grace au positionnement en
+     % : tous les elements grossissent ensemble, proportions et chevauchements intacts. */
+  max-width: 1240px;
+  aspect-ratio: 801 / 349;
+}
+
+/* Base commune SANS width (le width vient de chaque classe d'element ci-dessous) : une
+   regle "width" ici serait a specificite egale et pourrait entrer en conflit selon
+   l'ordre de declaration - chaque element garde sa propre largeur en %. */
+.el {
+  position: absolute;
+  display: block;
+  height: auto;
+}
+
+/* Version mobile simplifiée (30/08/2026, "on voit rien" sur la compo complète), voir le
+   commentaire dans Hero.tsx : cachée par défaut, affichée uniquement sous 640px (voir
+   media query plus bas), où elle remplace .collage. Les 3 vrais écrans d'appli, en
+   grand, en éventail (Chloé et la carte de proximité qui dépassent légèrement derrière
+   Papotage, au premier plan et pleine largeur). Pas de filter/drop-shadow ajouté sur les
+   téléphones : l'ombre est déjà cuite dans chaque PNG (même remarque que pour .el
+   ci-dessus). */
+.mobilePhones {
+  display: none;
+  position: relative;
+  width: 76%;
+  max-width: 280px;
+  margin: 0 auto;
+  aspect-ratio: 801 / 1040;
+}
+
+.mobilePhoneImg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.mobilePhonePapotageWrap {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.mobilePhoneMapWrap {
+  position: absolute;
+  z-index: 1;
+  width: 60%;
+  left: -18%;
+  bottom: 4%;
+}
+
+.mobilePhoneChloeWrap {
+  position: absolute;
+  z-index: 1;
+  width: 58%;
+  right: -20%;
+  bottom: 8%;
+}
+
+/* Post + bulles positionnés en % DE LEUR TÉLÉPHONE (le wrap fait exactement la taille de
+   l'image du téléphone, voir .mobilePhoneImg), pour rester calés sur l'écran quelle que
+   soit la taille finale. Un seul post choisi parmi les 3 de la compo desktop (Lou_Lou),
+   pas besoin des 3 sur un mockup aussi petit. */
+.mobilePostLoulou {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: 84%;
+  left: 8%;
+  top: 22%;
+}
+
+.mobileBubbleMeuf {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: 74%;
+  right: 6%;
+  top: 32%;
+}
+
+.mobileBubbleAssure {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: 54%;
+  right: 10%;
+  top: 48%;
+}
+
+/* Les 3 telephones (carte de proximite, Papotage, Chloe) + les 3 bulles de conversation
+   restent aux positions exactes du frame Figma source (verifiees sur deux appels MCP
+   separes, non bougees entre-temps). Plus de flottement du tout sur ces 6 elements
+   (30/08/2026, "il faudrait empecher les trois ecrans de bouger") : les 3 bulles restent
+   sans animation elles aussi pour ne pas se decoller du telephone Chloe sur lequel elles
+   sont posees. */
+
+/* Descendu (30/08/2026, "meme chose pour phone-map-maptine") de la meme facon que
+   phonePapotage, pour qu'il passe lui aussi sous la bande des logos presse. Les elements
+   "poses" sur la carte (pins, badge, cartes Mia/Julie) descendent du meme delta pour
+   rester visuellement colles dessus. */
+.phoneMap {
+  left: 9.11%;
+  top: 33.13%;
+  width: 31.28%;
+  z-index: 1;
+}
+
+.phonePapotage {
+  left: 39.35%;
+  top: 30%;
+  width: 25.99%;
+  z-index: 14;
+}
+
+.phoneChloe {
+  left: 64.25%;
+  top: 46.81%;
+  width: 29.13%;
+  z-index: 9;
+}
+
+.bubbleAssure {
+  left: 66%;
+  top: 86.18%;
+  width: 12.19%;
+  z-index: 10;
+}
+
+.bubbleMeuf {
+  left: 71.31%;
+  top: 61.57%;
+  width: 22.16%;
+  z-index: 11;
+}
+
+.bubbleMaisNon {
+  left: 71.4%;
+  top: 76.53%;
+  width: 19.08%;
+  z-index: 12;
+}
+
+/* Cartes "valeurs" + posts du fil : flottement individuel, durees/delais differents pour
+   un mouvement organique plutot que synchronise. */
+/* Plus d'animation de flottement ici (30/08/2026, "la compo bouge toujours sous la
+   bande quand je scroll") : la carte croise la bande presse (voir plus bas dans le
+   fichier), et le flottement continu (translateY +-11px) faisait onduler en permanence
+   la portion visible au-dessus de la bande - lu comme un "bougé" genant. Meme traitement
+   que phoneMap/phonePapotage/phoneChloe plus haut, pour la meme raison.
+   "Pop" au scroll ajouté le 31/08/2026 (voir le groupe .badge / .pinPosN / .cardMia /
+   .cardJulie plus bas) à la place : de la vie sans revenir au flottement en continu
+   qu'on vient de retirer. */
+.cardMia {
+  left: 15.93%;
+  top: 77%;
+  width: 11.57%;
+  z-index: 21;
+  animation-delay: 1.2s;
+}
+
+/* Carte "Julie, 32 ans - 75002" (30/08/2026) : meme role que cardMia (carte profil miniature
+   qui flotte pres de la carte de proximite), asset recu apres coup - position exacte reprise
+   du node Figma "card-mini-event" (juste apres pinPos4 et avant pinPos5 dans l'ordre des
+   calques). */
+/* Meme raison que cardMia juste au-dessus : plus de flottement, la carte croise elle
+   aussi la bande presse. */
+.cardJulie {
+  left: 9.54%;
+  top: 71.5%;
+  width: 13.07%;
+  z-index: 23;
+  animation-delay: 1.3s;
+}
+
+.cardQueen {
+  left: 67.32%;
+  top: 7.3%;
+  width: 12.06%;
+  z-index: 13;
+  animation: floatSoft3 4.6s ease-in-out infinite 0.5s;
+}
+
+.cardAmitie {
+  left: 74.97%;
+  top: 22.87%;
+  width: 14.08%;
+  z-index: 17;
+  animation: floatSoft2 5.2s ease-in-out infinite 0.8s;
+}
+
+.postLoulou {
+  left: 33.02%;
+  top: 48.29%;
+  width: 27.95%;
+  z-index: 16;
+  animation: floatSoft1 5.6s ease-in-out infinite 0.3s;
+}
+
+.postCafe {
+  left: 20.97%;
+  top: 18.58%;
+  width: 24.27%;
+  z-index: 19;
+  animation: floatSoft3 5s ease-in-out infinite 0.6s;
+}
+
+.postLea {
+  left: 43.44%;
+  top: 16.2%;
+  width: 28.36%;
+  z-index: 18;
+  animation: floatSoft2 5.8s ease-in-out infinite 0.1s;
+}
+
+/* Badge "19 Martines" + les 5 pins + cardMia/cardJulie (2 assets pin reutilises a 2
+   endroits chacun, voir Hero.tsx) : un "pop" déclenché au scroll (31/08/2026, "il manque
+   des effets sur les pin qui apparaissent au scroll et le bandeau 19 martines + les card
+   julie et mia"), pas au montage — même recette que .pin dans EventsPromo.module.css
+   (IntersectionObserver + classe .inView posée sur .collage, voir Hero.tsx). Explicitement
+   PAS de flottement en continu derrière ("ne mets pas de flottement sinon ca fait les mm
+   anim partout" — cardQueen/cardAmitie/les posts du fil portent déjà floatSoft*, pas
+   besoin de le dupliquer sur tout le reste de la compo). État initial caché tant que
+   .collage n'a pas .inView ; l'animation elle-même ne joue qu'une fois (voir Hero.tsx,
+   l'observer se déconnecte après le premier déclenchement). */
+.badge,
+.pinPos1,
+.pinPos2,
+.pinPos3,
+.pinPos4,
+.pinPos5,
+.cardMia,
+.cardJulie {
+  transform: scale(0);
+  opacity: 0;
+}
+
+.collage.inView .badge,
+.collage.inView .pinPos1,
+.collage.inView .pinPos2,
+.collage.inView .pinPos3,
+.collage.inView .pinPos4,
+.collage.inView .pinPos5,
+.collage.inView .cardMia,
+.collage.inView .cardJulie {
+  animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.badge {
+  left: 2.87%;
+  top: 46.36%;
+  width: 24.49%;
+  z-index: 20;
+  animation-delay: 0.5s;
+}
+
+.pinPos1 {
+  left: 3.87%;
+  top: 89.01%;
+  width: 3.69%;
+  z-index: 2;
+  animation-delay: 0.65s;
+}
+
+.pinPos2 {
+  left: 11.36%;
+  top: 77%;
+  width: 3.41%;
+  z-index: 22;
+  animation-delay: 0.75s;
+}
+
+.pinPos3 {
+  left: 5.87%;
+  top: 71.5%;
+  width: 3.73%;
+  z-index: 24;
+  animation-delay: 0.9s;
+}
+
+.pinPos4 {
+  left: 31.8%;
+  top: 58.93%;
+  width: 4.18%;
+  z-index: 6;
+  animation-delay: 1.05s;
+}
+
+.pinPos5 {
+  left: 2.62%;
+  top: 74.97%;
+  width: 4.87%;
+  z-index: 8;
+  animation-delay: 1.15s;
+}
+
+/* Petit coeur qui bat doucement en continu, seule touche "vivante" en dehors du
+   flottement - clin d'oeil discret plutot qu'un effet appuye. */
+.heart {
+  left: 37.34%;
+  top: 2.24%;
+  width: 5.43%;
+  z-index: 15;
+  animation: heartBeat 2.6s ease-in-out infinite;
+}
+
+@keyframes floatSoft1 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes floatSoft2 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-11px);
+  }
+}
+
+@keyframes floatSoft3 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes heartBeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+/* Petit écran (30/08/2026, "il faut absolument que je vois la composition, adapte la
+   hauteur par rapport à ça") : toute la colonne au-dessus de la compo (nav + padding +
+   titre + boutons de stores) prend une part disproportionnée de la hauteur visible sur
+   un petit téléphone (ex. iPhone SE) une fois cumulée, au point que la compo pouvait se
+   retrouver quasi hors champ au chargement. On resserre chaque étage : moins de padding
+   en haut du Hero, titre plus compact (voir aussi .badge des stores dans
+   StoreButtons.module.css, réduit à 46px ici pour rester sur une seule ligne), marge
+   réduite avant le collage. */
+@media (max-width: 640px) {
+  .hero {
+    padding-top: var(--space-3);
+  }
+
+  .title {
+    font-size: 26px;
+    margin-bottom: var(--space-2);
+  }
+
+  .actions {
+    margin-top: 0;
+  }
+
+  .rating {
+    margin-top: var(--space-1);
+  }
+
+  .collageWrap {
+    margin-top: var(--space-2);
+  }
+
+  /* Compo complète trop petite pour être lisible sur mobile (30/08/2026, "on voit
+     rien") : à peine plus de 300px de large, ses 18 éléments (dont certains à 3-4% de
+     large) deviennent minuscules quel que soit le padding qu'on regagne autour. Plutôt
+     que de la rapetisser encore, elle est masquée sous ce seuil au profit de
+     .mobilePhones (voir Hero.tsx), qui montre en grand les 3 vrais écrans d'appli. */
+  .collage {
+    display: none;
+  }
+
+  .mobilePhones {
+    display: block;
+  }
+}
+
+/* Écran bas en plus d'être étroit (mobile en paysage, petits appareils anciens) :
+   resserre encore un cran la compo elle-même pour qu'elle reste dans le premier écran. */
+@media (max-width: 640px) and (max-height: 700px) {
+  .hero {
+    padding-top: var(--space-2);
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .collageWrap {
+    margin-top: var(--space-1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phoneMap,
+  .phonePapotage,
+  .phoneChloe,
+  .bubbleMeuf,
+  .bubbleMaisNon,
+  .bubbleAssure,
+  .cardQueen,
+  .cardAmitie,
+  .postLoulou,
+  .postCafe,
+  .postLea,
+  .heart {
+    animation: none;
+  }
+
+  .badge,
+  .pinPos1,
+  .pinPos2,
+  .pinPos3,
+  .pinPos4,
+  .pinPos5,
+  .cardMia,
+  .cardJulie {
+    animation: none;
+    transform: scale(1);
+    opacity: 1;
+  }
+}

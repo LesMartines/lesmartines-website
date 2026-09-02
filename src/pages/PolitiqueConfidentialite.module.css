@@ -1,0 +1,127 @@
+/* .page / .card / .title sont maintenant gérés par LegalPage (composant partagé des 3
+   pages légales, 29/08/2026, "c'est pas très moderne là") : ce module ne garde que les
+   styles propres au contenu de cette page. */
+
+.intro {
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: var(--space-2);
+}
+
+.intro a {
+  color: var(--color-primary);
+}
+
+.section {
+  margin: var(--space-4) 0;
+  scroll-margin-top: 96px;
+}
+
+.section h2 {
+  font-size: 19px;
+  margin-bottom: var(--space-1);
+  padding-left: 14px;
+  border-left: 3px solid var(--color-lime);
+}
+
+.section p {
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: var(--space-1);
+}
+
+.section a {
+  color: var(--color-primary);
+}
+
+.section ul {
+  margin: 4px 0 var(--space-1);
+  padding-left: 20px;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.section li {
+  margin-bottom: 2px;
+}
+
+/* Listes à puces "✅" (durées de conservation) : l'emoji fait déjà office de puce, donc
+   pas de liste à puces native par-dessus. */
+.checkList {
+  list-style: none;
+  margin: 4px 0 var(--space-2);
+  padding-left: 4px;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.checkList li {
+  margin-bottom: 4px;
+}
+
+/* Tableaux repris du site actuel : wrapper à défilement horizontal pour ne jamais casser
+   la mise en page sur mobile (certains tableaux ont 7 colonnes), style discret cohérent
+   avec la palette du site (lavande pâle en en-tête, bordures fines). */
+.tableWrap {
+  overflow-x: auto;
+  margin: var(--space-2) 0 var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-lavender-pale);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.55;
+  min-width: 480px;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--color-lavender-pale);
+  border-right: 1px solid var(--color-lavender-pale);
+}
+
+.table th:last-child,
+.table td:last-child {
+  border-right: none;
+}
+
+.table tbody tr:last-child th,
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table thead th {
+  background: var(--color-lavender-pale);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.table td {
+  color: var(--color-text-secondary);
+}
+
+.table tbody tr:nth-child(even) {
+  background: var(--color-peach-light);
+}
+
+.table td ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.updated {
+  color: var(--color-muted);
+  font-size: 13px;
+  margin-top: var(--space-3);
+}

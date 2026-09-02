@@ -1,0 +1,328 @@
+.section {
+  padding: 0 0 var(--space-6);
+  background: linear-gradient(160deg, var(--color-lavender) 0%, var(--color-peach-light) 100%);
+}
+
+/* Même recette de bandeau que Faq.module.css (01/09/2026) : fond poudré + grain bord à
+   bord, seulement sur le haut de page, pour rester cohérent avec le reste du site plutôt
+   que d'inventer un nouveau traitement pour cette page. */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: var(--space-4) var(--space-4) var(--space-5);
+  background: var(--color-peach);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-bottom: var(--space-5);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.28;
+  background-image: url('../assets/texture/grain-tile.png');
+  background-repeat: repeat;
+}
+
+.heroInner {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* Badge "sur candidature" (01/09/2026, "renforcer l'effet rareté dans le texte et la mise
+   en page") : contour plutôt que fond plein, pour rester discret et ne pas concurrencer
+   le titre juste en dessous — le but est de planter le ton avant même de lire le titre,
+   pas de crier plus fort que lui. Réutilisé aussi sur le bloc de clôture ("Places
+   limitées") pour rappeler le même message des deux côtés de la page. */
+/* Verre dépoli (01/09/2026, "on peut mettre un effet glassmorphisme") : fond blanc
+   semi-transparent + flou du fond derrière (le grain du hero, visible mais adouci) plutôt
+   qu'un simple contour plein — reste discret comme demandé au 1er passage, juste avec plus
+   de texture/matière. */
+/* Contraste renforcé (02/09/2026, "on le voit pas très bien") : fond plus opaque + bordure
+   colorée (au lieu de blanche, à peine visible sur le fond pêche) pour que le badge se
+   détache vraiment, tout en gardant le principe du glassmorphisme. */
+.badge {
+  display: inline-block;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--color-primary-dark);
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(96, 102, 216, 0.35);
+  border-radius: var(--radius-pill);
+  padding: 6px 16px;
+  margin-bottom: var(--space-2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 12px rgba(47, 50, 74, 0.12);
+}
+
+.title {
+  font-size: clamp(32px, 5vw, 48px);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+/* Écusson "N+ marques partenaires" (02/09/2026) : façon tampon/sceau, pour donner un
+   chiffre concret et mémorisable en un coup d'œil, en plus de la phrase déjà présente
+   dans le sous-titre. Contour en pointillés (plutôt qu'un plein) pour garder le ton
+   "certification/sceau" sans faire un gros pavé de couleur qui concurrence le titre. */
+.seal {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: var(--color-white);
+  border: 2px dashed var(--color-primary);
+  box-shadow: var(--shadow-card);
+  animation: sealFloat 3.4s ease-in-out infinite;
+}
+
+/* Rotation fixe (8deg) intégrée à chaque étape du keyframe plutôt que laissée en
+   transform statique à côté : une animation sur `transform` écrase toute valeur posée
+   par ailleurs, il faut donc que l'inclinaison du tampon vive ICI pour survivre au
+   flottement. */
+@keyframes sealFloat {
+  0%,
+  100% {
+    transform: rotate(8deg) translateY(0);
+  }
+  50% {
+    transform: rotate(8deg) translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seal {
+    animation: none;
+    transform: rotate(8deg);
+  }
+}
+
+.sealNumber {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.sealLabel {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-primary-dark);
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+@media (max-width: 640px) {
+  .seal {
+    position: static;
+    margin: 0 auto var(--space-2);
+    animation-name: sealFloatMobile;
+  }
+}
+
+@keyframes sealFloatMobile {
+  0%,
+  100% {
+    transform: rotate(-4deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-4deg) translateY(-8px);
+  }
+}
+
+.subtitle {
+  font-size: 17px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-3);
+}
+
+/* Bouton principal repris de StoreButtons/CtaFinal (couleur, forme pilule, hover
+   "premium" en léger soulèvement + ombre) pour rester dans le même vocabulaire visuel
+   que le reste du site plutôt que d'inventer un nouveau style de bouton. */
+.becomeButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 28px;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-soft);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.becomeButton:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+/* Grille de cartes (01/09/2026, "rendre la page plus sympa, qu'elles donnent envie") :
+   chaque marque a son propre bloc avec logo + descriptif + lien, plutôt qu'un simple mur
+   de logos comme sur le bandeau de l'accueil — l'idée ici est de donner envie de cliquer,
+   pas juste de montrer qu'on a des partenaires. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+  max-width: var(--container-width);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Hauteur fixe (01/09/2026, "il faut que tous les blocs marques fassent la même
+     taille") : les descriptifs récupérés du site en prod n'ont pas tous la même
+     longueur, donc sans ça les cartes s'étiraient chacune à la hauteur de leur propre
+     texte. Le nombre de lignes du descriptif est clampé plus bas (.description) pour
+     que le texte ne déborde jamais de cette hauteur fixe. */
+  height: 100%;
+  min-height: 296px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  text-decoration: none;
+  color: inherit;
+}
+
+a.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-card);
+}
+
+/* Fond blanc plein (02/09/2026, "on voit les carrés blancs des logos [...] on va faire
+   la partie logo avec un fond blanc") : beaucoup de logos sources ont déjà leur propre
+   carré blanc, un fond transparent derrière aurait juste déplacé le problème. */
+.logoWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 132px;
+  padding: var(--space-2);
+  background: var(--color-white);
+}
+
+/* Zone texte en glassmorphisme (02/09/2026) : fond blanc semi-transparent + flou du
+   dégradé de la section derrière — même famille que le badge "Sur candidature
+   uniquement" plus haut sur cette page. */
+.textZone {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-3);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background-color 0.25s ease;
+}
+
+a.card:hover .textZone {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+/* Niveaux de gris au repos, couleur au survol (01/09/2026, même recette que le bandeau
+   défilant de l'accueil) : 30 cartes identiques avec des logos déjà très colorés font
+   vite "mur uniforme" à plat, la couleur redevient une vraie récompense au survol. */
+.logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+.card:hover .logo {
+  filter: grayscale(0%);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 19px;
+  color: var(--color-primary-dark);
+  margin-bottom: 6px;
+}
+
+.description {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+  /* Clampé à 4 lignes (01/09/2026) : les descriptifs du site en prod n'ont pas tous la
+     même longueur, sans ça un texte plus long aurait dépassé la hauteur fixe de .card. */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+.closing {
+  max-width: var(--container-width);
+  margin: var(--space-6) auto 0;
+  text-align: center;
+  background: var(--color-lavender-pale);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-3);
+  box-shadow: var(--shadow-soft);
+}
+
+.closingTitle {
+  font-size: clamp(24px, 3.5vw, 34px);
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-2);
+}
+
+.closingText {
+  max-width: 480px;
+  margin: 0 auto var(--space-3);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+@media (max-width: 980px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: var(--space-4) var(--space-3) var(--space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.card:hover,
+  .becomeButton:hover {
+    transform: none;
+  }
+}

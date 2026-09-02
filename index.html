@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- Inter (texte courant) : remplacement définitif de Graphik, non fourni (30/08/2026).
+         Caveat (03/09/2026, "tu peux aussi utliser la typo caveat") : police manuscrite pour
+         les petites annotations à la main façon post-it, dans le même esprit que les
+         légendes manuscrites déjà présentes SUR les photos du Hero (celles-là sont cuites
+         dans les images fournies par Marine, pas du texte HTML — Caveat sert aux annotations
+         qu'on ajoute nous-mêmes en dehors des photos, ex. EventDetail.tsx). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!--
+      Le titre et les meta description/OG sont injectés par page via vite-react-ssg
+      (voir src/lib/useHead.ts et l'appel dans chaque page). Ceci est le titre par défaut
+      si une page n'en fournit pas.
+    -->
+    <title>Les Martines — le club des meufs qui prennent toute la place</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+.widget {
+  position: fixed;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 156px;
+  padding: 12px;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  text-decoration: none;
+  color: var(--color-charcoal);
+  transition: transform 0.15s ease;
+}
+
+.widget:hover {
+  transform: translateY(-2px);
+}
+
+.code {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+}
+
+/* Cible desktop uniquement : sur mobile/tablette, la visiteuse est déjà sur son téléphone,
+   scanner un QR n'a pas de sens et le widget prendrait de la place sur un petit écran. */
+@media (max-width: 768px) {
+  .widget {
+    display: none;
+  }
+}
