@@ -165,13 +165,16 @@ export default function Avis() {
     <section className={styles.section} aria-labelledby="avis-title">
       <div className="container">
         <Reveal>
+          {/* Étoiles entre le nombre d'avis et la note (03/09/2026, "mets les etoiles
+              entre les avis et la note") : même .stats flex-column pour desktop et
+              responsive, donc un seul réordonnancement du JSX suffit pour les deux. */}
           <div ref={statsRef} className={`${styles.stats} ${starsInView ? styles.inView : ''}`}>
-            <p className={styles.stars} aria-hidden="true">
-              ★★★★★
-            </p>
             <h2 id="avis-title" ref={ref} className={styles.count}>
               {value}+ avis
             </h2>
+            <p className={styles.stars} aria-hidden="true">
+              ★★★★★
+            </p>
             <p className={styles.breakdown}>
               <span className={styles.score}>4,8/5</span> App Store &amp; Google Play
             </p>

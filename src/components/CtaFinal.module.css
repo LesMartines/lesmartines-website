@@ -23,3 +23,11 @@
 .title {
   font-size: clamp(28px, 4vw, 44px);
 }
+
+.groupPhoto {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin-top: var(--space-2);
+}

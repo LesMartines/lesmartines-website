@@ -3,6 +3,19 @@
   overflow: hidden;
 }
 
+/* Enveloppe centrée + enveloppe interne "shrink-to-fit" (03/09/2026) : la 2e enveloppe
+   passe en inline-block pour ne prendre que la largeur réelle du titre, seul moyen fiable
+   de positionner l'écusson près du coin du texte plutôt que du bord du container entier
+   (qui peut être bien plus large que le titre lui-même selon le viewport). */
+.titleWrap {
+  text-align: center;
+}
+
+.titleWrapInner {
+  position: relative;
+  display: inline-block;
+}
+
 .title {
   text-align: center;
   /* Aligné sur ValeursBloc (31/08/2026, "pas à la même taille que Nos green flags") :
@@ -11,6 +24,92 @@
   font-size: clamp(32px, 5vw, 52px);
   margin-bottom: var(--space-4);
   padding: 0 var(--space-3);
+}
+
+/* Même recette que src/pages/Partenaires.module.css .seal (garder les deux en phase si
+   l'une des deux change). */
+/* right décalé bien plus que sur /partenaires/ (03/09/2026, "il est sur le titre") :
+   là-bas, .heroInner (le conteneur relatif) est plus large que le titre lui-même (il
+   contient aussi le sous-titre et le bouton), donc -12px restait déjà largement en dehors
+   du texte. Ici, .titleWrapInner épouse exactement la largeur du titre (inline-block), du
+   coup le même -12px plaçait l'écusson à 80px À L'INTÉRIEUR du texte plutôt qu'à côté. */
+.seal {
+  position: absolute;
+  top: -18px;
+  right: -88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: var(--color-white);
+  border: 2px dashed var(--color-primary);
+  box-shadow: var(--shadow-card);
+  animation: sealFloat 3.4s ease-in-out infinite;
+}
+
+@keyframes sealFloat {
+  0%,
+  100% {
+    transform: rotate(8deg) translateY(0);
+  }
+  50% {
+    transform: rotate(8deg) translateY(-8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seal {
+    animation: none;
+    transform: rotate(8deg);
+  }
+}
+
+.sealNumber {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+.sealLabel {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-primary-dark);
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+@media (max-width: 640px) {
+  .seal {
+    position: static;
+    margin: 0 auto var(--space-2);
+    animation-name: sealFloatMobile;
+  }
+
+  /* column-reverse (03/09/2026, "en responsive faut que ce soit au-dessus du titre") :
+     l'écusson reste après le titre dans le HTML (ordre de lecture logique, aria-hidden
+     de toute façon), column-reverse l'affiche juste visuellement en premier. */
+  .titleWrapInner {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}
+
+@keyframes sealFloatMobile {
+  0%,
+  100% {
+    transform: rotate(-4deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-4deg) translateY(-8px);
+  }
 }
 
 /* Défilement sur 2 lignes plutôt qu'une grille statique (31/08/2026, "trop petits, on
@@ -144,14 +243,62 @@ a.card:hover {
   margin-top: var(--space-4);
 }
 
-.cta a {
+/* Pill discret plutôt qu'un lien simplement souligné (03/09/2026, "mettre un plus jolie
+   bouton discret") : contour fin + fond blanc, pas de remplissage plein comme un CTA
+   principal (celui de /contact/ ou /partenaires/ garde ce traitement plus fort), pour
+   rester secondaire sous le bandeau défilant. */
+/* Fond retiré (03/09/2026, "enlever le blanc du bouton pour que ce soit plus leger") :
+   transparent + juste un contour, même famille que .successReset dans
+   Contact.module.css, pour un rendu plus discret qu'un pill plein blanc avec ombre. */
+.ctaButton {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  background: none;
+  border: 1.5px solid rgba(96, 102, 216, 0.35);
+  border-radius: var(--radius-pill);
+  padding: 12px 24px;
+  font-weight: 700;
+  font-size: 14.5px;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.ctaButton span {
+  transition: transform 0.15s ease;
+}
+
+.ctaButton:hover {
+  border-color: var(--color-primary);
+  background-color: rgba(96, 102, 216, 0.06);
+}
+
+.ctaBrand {
+  margin-top: var(--space-2);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.ctaBrand a {
   font-weight: 700;
   color: var(--color-primary);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+.ctaButton:hover span {
+  transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaButton:hover {
+    transform: none;
+  }
+
+  .ctaButton:hover span {
+    transform: none;
+  }
 }
 
 @media (max-width: 640px) {

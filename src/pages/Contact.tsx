@@ -6,6 +6,8 @@ import Reveal from '../components/Reveal'
 import HighlightedText from '../components/HighlightedText'
 import heartIcon from '../assets/hero/heart.png'
 import { SOCIALS } from '../components/SocialIcons'
+import StoreButtons from '../components/StoreButtons'
+import { StarRating } from './Events'
 import styles from './Contact.module.css'
 
 // Contenu repris de la page /contact/ du site en prod (31/08/2026, "faut que tu me fasses
@@ -115,7 +117,52 @@ function SuccessCelebration({ onReset }: { onReset: () => void }) {
       <button type="button" className={styles.successReset} onClick={onReset}>
         J&rsquo;envoie un autre message
       </button>
+      {/* Deuxième geste pendant l'attente (03/09/2026, "après 'C'est envoyé !', le seul
+          bouton est 'envoyer un autre message' [...] c'est le moment idéal pour proposer
+          un deuxième geste pendant que la personne attend une réponse") : plutôt qu'un
+          cul-de-sac, on garde la visiteuse engagée le temps qu'on lui réponde. */}
+      <div className={styles.successNext}>
+        <p className={styles.successNextText}>En attendant notre réponse&nbsp;:</p>
+        <div className={styles.successNextLinks}>
+          {SOCIALS.slice(0, 1).map(({ label, href, Icon }) => (
+            <a key={label} href={href} target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+              <Icon />
+              Suis-nous sur {label}
+            </a>
+          ))}
+        </div>
+        <StoreButtons size="small" />
+      </div>
     </div>
+  )
+}
+
+// Fallback si le mailto échoue silencieusement (03/09/2026, "sur mobile, si aucune appli
+// mail n'est configurée par défaut [...] la personne croit avoir un bug, abandonne") :
+// l'adresse reste affichée en clair et copiable, pour ne pas perdre un contact à cause
+// d'un client mail non configuré, sans dépendre d'un backend pour vérifier l'envoi.
+function EmailFallback() {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(CONTACT_EMAIL)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // Presse-papier indisponible (permissions navigateur) : l'adresse reste visible et
+      // sélectionnable à la main juste au-dessus, rien de plus à faire.
+    }
+  }
+
+  return (
+    <p className={styles.emailFallback}>
+      Ta messagerie ne s&rsquo;ouvre pas&nbsp;? Écris-nous à{' '}
+      <span className={styles.emailFallbackAddress}>{CONTACT_EMAIL}</span>
+      <button type="button" className={styles.emailFallbackCopy} onClick={handleCopy}>
+        {copied ? 'Copié !' : 'Copier'}
+      </button>
+    </p>
   )
 }
 
@@ -234,8 +281,22 @@ export default function Contact() {
             </h1>
             <p className={styles.subtitle}>
               Une question pour Les Martines&nbsp;? T&rsquo;es une marque qui veut nous
-              rejoindre&nbsp;? Écris-nous et on te répond dès que possible&nbsp;!
+              rejoindre&nbsp;? Écris-nous, on te répond sous 48h&nbsp;!
             </p>
+            {/* Preuve sociale + délai de réponse (03/09/2026, "une visiteuse qui arrive
+                directement sur /contact/ [...] n'a aucune raison de croire que c'est un
+                vrai truc sérieux avant d'écrire") : cette page est souvent une porte
+                d'entrée directe (lien partagé, recherche Google), sans être passée par la
+                home et ses preuves sociales — on rappelle donc ici la note réelle plutôt
+                que de supposer que la confiance est déjà acquise. */}
+            <div className={styles.trustRow}>
+              <StarRating className={styles.trustStars} />
+              <strong>4,8/5</strong>
+              <span className={styles.trustDot} aria-hidden="true">
+                ·
+              </span>
+              450+ avis
+            </div>
           </div>
         </Reveal>
 
@@ -365,9 +426,25 @@ export default function Contact() {
                     J&rsquo;envoie <span aria-hidden="true">💌</span>
                   </button>
                   <p className={styles.hint}>Ça ouvre ta messagerie, avec le message déjà rempli.</p>
+                  <EmailFallback />
+                  {/* Incitation appli (03/09/2026, "quelqu'un qui écrit 'un coucou' n'est
+                      peut-être même pas encore une Martine [...] rien n'invite celles qui
+                      ne l'ont pas encore à la télécharger") : le champ pseudo optionnel
+                      juste au-dessus suppose déjà l'appli installée, sans jamais proposer
+                      de la télécharger à celles qui ne l'ont pas. */}
+                  <div className={styles.appNudge}>
+                    <p className={styles.appNudgeText}>Pas encore une Martine&nbsp;?</p>
+                    <StoreButtons size="small" />
+                  </div>
                 </form>
               ) : (
                 <form onSubmit={handleSubmitMarque} noValidate>
+                  {/* Écusson repris de /partenaires/ (03/09/2026, "l'intro dit juste 'on
+                      ne dit pas oui à tout le monde' en une ligne discrète [...] perdu au
+                      milieu du formulaire, alors que c'est l'argument qui donne envie de
+                      candidater sérieusement") : même badge que la page dédiée, pour que
+                      l'exclusivité saute aux yeux avant même de lire le texte. */}
+                  <span className={styles.exclusiveBadge}>Sur candidature uniquement · +30 marques déjà là</span>
                   <p className={styles.tabIntro}>
                     On lit chaque candidature avec attention, mais on ne dit pas oui à
                     tout le monde&nbsp;: raconte-nous ce qui rend ta marque unique.
@@ -522,6 +599,7 @@ export default function Contact() {
                     Je candidate <span aria-hidden="true">🤝</span>
                   </button>
                   <p className={styles.hint}>Ça ouvre ta messagerie, avec le message déjà rempli.</p>
+                  <EmailFallback />
                 </form>
               )}
                 </>

@@ -229,7 +229,13 @@ export default function FeatureShowcase() {
                     .blockVisual dans le CSS) : sous ce seuil le visuel sticky partagé
                     passe en display:none (plus de place pour qu'il reste sticky sans
                     recouvrir le texte qui défile dessous), donc chaque carte porte ici
-                    sa propre image plutôt que de dépendre du crossfade du visuel sticky. */}
+                    sa propre image. Dimmed/scaled via .blockActive (03/09/2026, "je ne
+                    vois pas trop la différence" — un simple fondu à l'arrivée ne rendait
+                    pas le lien "l'image bouge avec le texte" du sticky desktop) : même
+                    logique que le crossfade desktop (opacity/scale liés à activeIndex),
+                    rejouée ici sur SA PROPRE image plutôt que sur un visuel partagé qui
+                    change de contenu, puisqu'il n'y a plus de 2e colonne où le garder
+                    collé en 1 seule colonne. */}
                 <div className={styles.blockVisual} aria-hidden="true">
                   {feature.image ? (
                     <img src={feature.image} alt="" className={styles.collageImage} />

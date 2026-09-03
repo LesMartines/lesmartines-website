@@ -54,9 +54,25 @@ export default function Partenaires() {
     <section id="partenaires" className={styles.section} aria-labelledby="partenaires-title">
       <div className="container">
         <Reveal>
-          <h2 id="partenaires-title" className={styles.title}>
-            <HighlightedText text="Nos partenaires sûrs" highlight="partenaires" />
-          </h2>
+          {/* Écusson repris de /partenaires/ (03/09/2026, "on pourrait ajouter l'écusson
+              +30 marques sur la home aussi non") : donne le même chiffre concret et
+              mémorisable dès le teaser de la home, avant même que la visiteuse aille sur
+              la page dédiée. */}
+          <div className={styles.titleWrap}>
+            <div className={styles.titleWrapInner}>
+              <h2 id="partenaires-title" className={styles.title}>
+                <HighlightedText text="Nos partenaires sûrs" highlight="partenaires" />
+              </h2>
+              <span className={styles.seal} aria-hidden="true">
+                <span className={styles.sealNumber}>{PARTENAIRES.length}+</span>
+                <span className={styles.sealLabel}>
+                  marques
+                  <br />
+                  partenaires
+                </span>
+              </span>
+            </div>
+          </div>
         </Reveal>
       </div>
 
@@ -69,8 +85,27 @@ export default function Partenaires() {
 
       <div className="container">
         <Reveal delay={0.15}>
+          {/* Wording plus vendeur + vrai bouton discret (03/09/2026, "changer le wording
+              par un truc plus vendeur et mettre un plus jolie bouton discret") : le
+              chiffre concret (déjà utilisé dans l'écusson juste au-dessus) remplace un
+              "toutes les marques" vague, et un pill bordé (même famille que
+              .successReset dans Contact.module.css) remplace le simple lien souligné —
+              plus soigné, mais toujours secondaire face au CTA "Je candidate" de la
+              vraie page /partenaires/. */}
           <div className={styles.cta}>
-            <a href="/partenaires/">Je découvre toutes les marques</a>
+            <a href="/partenaires/" className={styles.ctaButton}>
+              Voir les {PARTENAIRES.length}+ marques partenaires
+              <span aria-hidden="true">→</span>
+            </a>
+            {/* Invitation dédiée aux marques (03/09/2026, "changer le wording pour que
+                les marques aient envie de nous contacter") : le bouton ci-dessus
+                s'adresse aux visiteuses (parcourir les marques déjà là), pas aux marques
+                elles-mêmes — sans cette ligne, une marque intéressée n'a ici aucun signe
+                que candidater est possible avant d'aller sur /partenaires/. */}
+            <p className={styles.ctaBrand}>
+              Toi aussi tu représentes une marque&nbsp;?{' '}
+              <a href="/contact/?type=marque">On a hâte de te découvrir →</a>
+            </p>
           </div>
         </Reveal>
       </div>

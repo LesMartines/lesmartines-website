@@ -93,6 +93,13 @@
   .visualFloat {
     animation: none;
   }
+
+  .blockVisual .collageImage {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
 }
 
 /* Boîte de taille pour le visuel sticky. Ratio 3/4 : proche du vrai collage envoyé par
@@ -263,18 +270,62 @@
     display: none;
   }
 
+  /* Resserré (03/09/2026, "il y a bcp d'espace entre Les Martines késako ? et le 1er
+     telephone") : space-5 (desktop, pensé pour laisser respirer la grille 2 colonnes)
+     restait trop grand une fois empilé en 1 colonne au-dessus d'une 1re carte qui a
+     elle-même son padding. */
+  .sectionTitle {
+    margin-bottom: var(--space-3);
+  }
+
+  /* Agrandi (03/09/2026, "grossis les telephone en responsive" puis "grossie encore") :
+     280px -> 360px -> 440px. Le conteneur (.container) a son propre padding horizontal
+     (var(--space-3)) qui plafonnait déjà la largeur réelle avant même d'atteindre
+     max-width — débordement volontaire (marges négatives) pour aller chercher toute la
+     largeur de l'écran plutôt que de rester bridé par ce padding. */
   .blockVisual {
     display: block;
-    max-width: 280px;
-    margin: 0 auto var(--space-3);
+    max-width: 440px;
+    width: calc(100% + var(--space-3) * 2);
+    margin: 0 calc(var(--space-3) * -1) var(--space-3);
   }
 
   /* Hors de .visualContent (absolute inset:0, utilisé seulement par le visuel sticky
      desktop) : ici l'image se dimensionne naturellement dans le flux normal. */
-  .blockVisual .collageImage {
-    height: auto;
+  /* Le débordement plein écran de .blockVisual n'a de sens que sur téléphone : passé
+     480px (tablette en portrait, toujours sous le seuil des 900px de ce média query),
+     la marge négative dépasserait largement max-width et décalerait la boîte au lieu de
+     la centrer — reboîte proprement centrée à la place, sans bleed. */
+  @media (min-width: 480px) {
+    .blockVisual {
+      width: 100%;
+      margin: 0 auto var(--space-3);
+    }
   }
 
+  .blockVisual .collageImage {
+    height: auto;
+    /* Même traitement que le crossfade desktop (voir .visualContent plus haut : opacity
+       1/scale 1 pour la carte active, 0.96 sinon) : ici l'opacité/l'échelle de CHAQUE
+       image suit son propre .blockActive au lieu de basculer entre plusieurs images
+       superposées, mais le principe (le visuel "répond" au scroll en même temps que le
+       texte) reste le même. */
+    opacity: 0.4;
+    transform: scale(0.94);
+    filter: grayscale(60%);
+    transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+  }
+
+  .blockActive .blockVisual .collageImage {
+    opacity: 1;
+    transform: scale(1);
+    filter: grayscale(0%);
+  }
+
+  /* Effet d'empilement sticky essayé puis retiré (03/09/2026, "c'est moche cet effet
+     reviens comme avant") : chaque carte restait collée en haut et se faisait recouvrir
+     par la suivante façon pile de fiches — jugé pas beau à l'usage, retour à la liste
+     simple d'origine (cartes qui défilent normalement, séparées par un filet). */
   .block {
     min-height: 0;
     padding: var(--space-4) 0;

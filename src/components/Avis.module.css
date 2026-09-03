@@ -20,6 +20,17 @@
   text-align: center;
 }
 
+/* Espace ajouté au-dessus (03/09/2026, "450 avis est trop près du téléphone") : sous
+   780px, le collage de CommunityStats juste au-dessus (téléphone + carte de commentaire)
+   déborde en bas de SA section (voir .phone/.floatingComment dans
+   CommunityStats.module.css, débordement volontaire pour casser la monotonie), et
+   arrivait trop près du "450+ avis" qui suit. */
+@media (max-width: 780px) {
+  .stats {
+    margin-top: 100px;
+  }
+}
+
 .stars {
   color: var(--color-lime);
   font-size: 32px;

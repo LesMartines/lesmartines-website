@@ -90,13 +90,32 @@
    cœur du Hero (src/assets/hero/heart.png). Pulse plutôt que flotte (31/08/2026, "le
    faire pulser comme un coeur et pas le faire flotter") : scale seul, pas de
    translateY, contrairement aux fleurs/à la carte de commentaire. */
+/* display:block plutôt qu'un <img> (03/09/2026, "met le coeur en violet lila") : la
+   couleur vient d'un background-color CSS derrière l'image utilisée comme masque
+   (mask-image posé en inline style dans le JSX, la valeur dépend de l'import Vite de
+   l'asset) — impossible de recolorer les pixels d'un <img> autrement qu'en filtrant
+   toute l'image (grayscale/hue-rotate imprécis), le masque isole juste sa silhouette. */
 .heart {
   position: absolute;
   z-index: 3;
   left: 78%;
   top: -134px;
   width: 52px;
-  height: auto;
+  aspect-ratio: 160 / 156;
+  display: block;
+  background-color: var(--color-violet-middle);
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  /* Ombre encore assombrie (03/09/2026, "on voit pas bien" persiste après un 1er
+     essai à 0.45) : rgba(20,20,65) est très proche de --color-primary (le fond), une
+     ombre dans cette même famille de teinte ne mordait pas assez sur l'indigo — un noir
+     pur, plus opaque, tranche vraiment. drop-shadow (pas box-shadow) toujours pour
+     épouser la silhouette réelle après le masque plutôt qu'une boîte rectangulaire. */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.55));
   animation: heartPulse 1.3s ease-in-out infinite;
 }
 
@@ -208,36 +227,91 @@
     grid-template-columns: 1fr;
   }
 
-  .visual {
-    min-height: 220px;
+  /* Titre + stats avant le visuel (03/09/2026, "Une commu ultra engagée est sous
+     l'image en responsive") : en desktop c'est une vraie grille 2 colonnes (côte à
+     côte, aucun des deux n'est "sous" l'autre), mais en 1 colonne l'ordre du DOM
+     (visuel d'abord, pour l'aria-label qui décrit l'image avant le texte) plaçait le
+     titre après l'image à l'écran. order:-1 change l'ordre VISUEL sans toucher le DOM
+     ni l'ordre de lecture pour les lecteurs d'écran. */
+  .text {
+    order: -1;
   }
 
+  /* Hauteur réduite de 50px (03/09/2026, "diminue un peu la hauteur de la bande de
+     bas") : 300px -> 250px. */
+  .visual {
+    min-height: 250px;
+    /* Le téléphone déborde par le haut (top négatif) en supposant qu'il n'y a rien
+       au-dessus dans la colonne — vrai en desktop (2 colonnes), plus vrai ici puisque
+       .text passe maintenant avant. Une marge compense l'espace que le débordement
+       attend de trouver libre. */
+    margin-top: var(--space-3);
+  }
+
+  /* Halo doux derrière le collage (03/09/2026, "il donne pas envie en responsive") :
+     avant ça, un téléphone à 60% de large flottait seul sur un grand aplat indigo uni —
+     beaucoup de vide, aucune profondeur. Rétréci et éclairci (03/09/2026, "il est un peu
+     flou" juste après ce halo) : à 85% de large et 0.22 d'opacité, il débordait large
+     autour du téléphone et le lavait visuellement (bords qui semblent flous/délavés
+     plutôt qu'un vrai halo DERRIÈRE) — plus petit et plus discret, il reste un accent de
+     profondeur sans jamais recouvrir visuellement le téléphone. */
+  .visual::before {
+    content: '';
+    position: absolute;
+    z-index: 0;
+    top: 18%;
+    left: 50%;
+    width: 60%;
+    aspect-ratio: 1 / 1;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.14) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Retour à 70% (03/09/2026, "bcp trop gros [...] c'est pas la mm taille que le
+     responsive") : passer .phone à 100vw pour matcher la LARGEUR des visuels de "Les
+     Martines késako ?" ignorait que ce screen de téléphone est bien plus vertical
+     (1156×1909, ratio ~0,6) que ces visuels-là (~0,73-0,81) — même largeur donnait un
+     élément visiblement beaucoup plus grand/haut à l'écran, pas "la même taille". */
   .phone {
     left: 50%;
-    top: -56px;
-    width: 60%;
-    transform: translateX(-72%) rotate(-4deg);
+    top: -114px;
+    width: 70%;
+    transform: translateX(-68%) rotate(-4deg);
   }
 
   .flowers {
-    left: 4%;
-    top: -70px;
-    width: 34%;
+    left: 2%;
+    top: -84px;
+    width: 42%;
   }
 
   .heart {
-    left: 70%;
-    top: -46px;
-    width: 30px;
+    left: 76%;
+    top: -50px;
+    width: 36px;
   }
 
   .floatingComment {
-    right: -4%;
-    bottom: 4%;
-    width: 60%;
+    right: -8%;
+    bottom: 2%;
+    width: 68%;
+  }
+
+  /* Centré + chiffres agrandis (03/09/2026, "il faudrait centrer les textes et faire
+     les chiffres plus gros") : le titre et les stats gardaient l'alignement à gauche du
+     desktop (pensé pour être à côté du visuel), qui ne s'imposait plus une fois les 2
+     empilés en 1 colonne. */
+  .text {
+    text-align: center;
   }
 
   .stats {
     gap: var(--space-3);
+    justify-content: center;
+  }
+
+  .statNumber {
+    font-size: clamp(46px, 13vw, 64px);
   }
 }

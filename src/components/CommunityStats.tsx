@@ -55,7 +55,17 @@ export default function CommunityStats() {
         >
           <img src={flowers} alt="" className={styles.flowers} />
           <img src={phoneCommentaires} alt="" className={styles.phone} />
-          <img src={heartIcon} alt="" className={styles.heart} />
+          {/* Recoloré en violet lilas (03/09/2026, "met le coeur en violet lila") : le
+              PNG source est un cœur "brut" (une seule couleur cuite dans l'image),
+              recolorable seulement en le traitant comme un masque plutôt qu'une image —
+              un <img> classique afficherait toujours ses pixels d'origine quelle que
+              soit la couleur CSS posée dessus. */}
+          <span
+            className={styles.heart}
+            style={{ WebkitMaskImage: `url(${heartIcon})`, maskImage: `url(${heartIcon})` }}
+            role="img"
+            aria-label=""
+          />
           <img src={commentAmira} alt="" className={styles.floatingComment} />
         </div>
 
