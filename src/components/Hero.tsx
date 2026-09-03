@@ -61,7 +61,12 @@ export default function Hero() {
             29/08/2026 sur demande de Marine. */}
         <Reveal immediate>
           <h1 className={styles.title}>
-            Le club des meufs qui <br className={styles.breakDesktop} />
+            {/* Coupure différente en mobile (03/09/2026, "faut que tu mette Le club des
+                meufs à la ligne qui prennent toute la place") : .breakMobile casse après
+                "meufs" sous 640px, .breakDesktop garde la coupure existante après "qui"
+                à partir de 640px — les deux <br> ne sont jamais visibles en même temps. */}
+            Le club des meufs
+            <br className={styles.breakMobile} /> qui <br className={styles.breakDesktop} />
             prennent toute la place
           </h1>
         </Reveal>

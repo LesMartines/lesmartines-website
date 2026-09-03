@@ -58,8 +58,10 @@
   max-width: 1320px;
 }
 
+/* Plancher mobile relevé une 3e fois (03/09/2026, "grossir le texte" encore après
+   40px -> 48px) : 48px -> 56px, tout proche maintenant du plafond desktop (60px). */
 .title {
-  font-size: clamp(32px, 5vw, 60px);
+  font-size: clamp(56px, 5vw, 60px);
   color: var(--color-primary);
   letter-spacing: 0.02em;
   max-width: 900px;
@@ -70,9 +72,17 @@
   display: none;
 }
 
+.breakMobile {
+  display: inline;
+}
+
 @media (min-width: 640px) {
   .breakDesktop {
     display: inline;
+  }
+
+  .breakMobile {
+    display: none;
   }
 }
 
@@ -539,8 +549,11 @@
     padding-top: var(--space-3);
   }
 
+  /* 56px -> 40px -> 35px -> 25px -> 30px -> 28px (03/09/2026). Toujours au-dessus du
+     seuil de ~24-25px calculé pour garantir 2 lignes avec ce texte : à vérifier si 3
+     lignes reste acceptable à cette taille. */
   .title {
-    font-size: 26px;
+    font-size: 28px;
     margin-bottom: var(--space-2);
   }
 
@@ -577,8 +590,11 @@
     padding-top: var(--space-2);
   }
 
+  /* Resserré mais pas autant que l'ancien 22px (03/09/2026, même correctif que le
+     @media max-width:640px juste au-dessus) : reste plus compact que 56px pour les
+     écrans bas, sans retomber à une taille minuscule. */
   .title {
-    font-size: 22px;
+    font-size: 42px;
   }
 
   .collageWrap {
