@@ -82,9 +82,29 @@
   width: auto;
   /* "passe tout en gris" — logos réels convertis en niveaux de gris, quelle que soit leur
      couleur d'origine (rouge Her Story/Cosmo, vert Leptidigital, rose BFM Tech&Co...), pour
-     une bande presse discrète et homogène. */
+     une bande presse discrète et homogène. Couleur au survol (03/09/2026, "je voudrais que
+     les logos des medias se colore au hover") : même recette que .logo dans
+     Partenaires.module.css (grayscale au repos, vraie couleur seulement en interaction). */
   filter: grayscale(1);
   opacity: 0.55;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Revenu sur le noir/gris au lieu de la couleur (03/09/2026, "finalement on va rester
+   sur le noir pour les logos et on fonce au hover") : plus de grayscale(0) qui ramenait
+   les couleurs d'origine, le survol assombrit à la place (brightness réduite) tout en
+   restant en niveaux de gris. .item:hover (pas .item a:hover) : Cosmopolitan n'a pas de
+   lien fourni (voir PressLogos.tsx, "logo.url ? <a>...</a> : img" sans <a>), donc pas de
+   <a> à cibler pour ce logo précis — .item fonctionne dans les deux cas. */
+.item:hover img {
+  filter: grayscale(1) brightness(0.4);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item img {
+    transition: none;
+  }
 }
 
 @keyframes scroll {
