@@ -310,7 +310,7 @@ const EVENTS_FAQ = [
   {
     question: 'Les events sont-ils vraiment réservés aux femmes ?',
     answer:
-      "Oui. Comme tout Les Martines, l'accès aux events passe par une vérification d'identité par selfie : ce sont des rencontres 100% entre femmes, en ligne ou en présentiel (brunchs, ateliers créatifs, yoga, coaching, cafés networking...), partout en France.",
+      "Oui. Comme tout Les Martines, l'accès aux events passe par une vérification d'identité par selfie : ce sont des rencontres 100% entre femmes, en ligne (papotages) ou en présentiel (Martinades organisées par des Martines, ou sorties chez nos partenaires), partout en France.",
   },
   {
     question: "Y a-t-il des events en ligne si je ne peux pas me déplacer ?",
@@ -381,9 +381,15 @@ export default function Events() {
     // Google") : "meufs" porte la voix de marque, "femmes" porte le volume de recherche
     // réel ("events entre femmes", "sorties entre femmes" — personne ne tape "meufs"
     // dans Google, mais Marine tient à ce mot partout ailleurs sur le site).
-    title: 'Events entre femmes (meufs) : brunchs, ateliers, yoga...',
+    // Taxonomie corrigée (04/09/2026, "check le seo") : le title/description listaient
+    // encore une liste d'activités fixes (brunchs, ateliers, yoga...) abandonnée le
+    // 03/09/2026 ("pour l'instant on n'aura pas ce genre de choses [...] c'est vraiment
+    // soit entre Martine, des Martinades [...] soit des événements en ligne [...] soit
+    // des événements partenaires") — le sous-titre visible avait été corrigé sur le
+    // moment, ces métadonnées étaient restées à l'ancienne version.
+    title: 'Events entre femmes (meufs) : Martinades, en ligne, partenaires',
     description:
-      "Tous les events 100% entre femmes organisés par Les Martines ou chez des lieux partenaires : brunchs, ateliers créatifs, yoga, cafés networking, papotage en visio... En présentiel à Paris, Lyon, Bordeaux et ailleurs, ou en ligne.",
+      'Tous les events 100% entre femmes : les Martinades organisées par des Martines, des papotages en visio, ou des sorties chez nos partenaires. Près de chez toi ou en ligne.',
     path: '/events/',
     // Page pas encore publiée (voir routes.tsx) : à retirer quand Marine décide de la
     // sortir, en même temps que l'ajout du lien dans Nav.tsx et de la route dans

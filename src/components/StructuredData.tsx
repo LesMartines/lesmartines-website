@@ -38,7 +38,10 @@ const APP = {
   aggregateRating: {
     '@type': 'AggregateRating',
     ratingValue: '4.8',
-    reviewCount: '400',
+    // Désynchronisé du "450+" affiché partout ailleurs sur le site (04/09/2026, "check
+    // le seo") : Google/les IA lisent ce chiffre en priorité sur le texte visible, une
+    // incohérence ici sème le doute sur la fiabilité des autres données structurées.
+    reviewCount: '450',
   },
 }
 

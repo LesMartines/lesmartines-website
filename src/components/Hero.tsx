@@ -25,14 +25,14 @@ import cardAmitie from '../assets/hero/card-amitie.webp'
 // d'anciens exports moins nets — remplacés par ces mêmes fichiers Figma partout où un
 // équivalent existe (phoneChloe, les pins génériques, cardMia/cardJulie/cardQueenEnergy
 // et cardAmitie n'ont pas d'équivalent dans la compo mobile, laissés tels quels).
-import mobilePhoneMap from '../assets/hero/mobile-compo/phone-map-tilted.png'
-import mobilePhonePapotage from '../assets/hero/mobile-compo/phone-papotage-empty.png'
-import mobileCardLeaDreamer from '../assets/hero/mobile-compo/card-lea-dreamer.png'
-import mobileCardLoulou from '../assets/hero/mobile-compo/card-loulou.png'
-import mobileCardEvent from '../assets/hero/mobile-compo/card-event-cafe.png'
-import mobileBadge19 from '../assets/hero/mobile-compo/badge-19-martines-coin.png'
-import mobilePin2 from '../assets/hero/mobile-compo/pin-2.png'
-import mobileHeart from '../assets/hero/mobile-compo/heart-solid.png'
+import mobilePhoneMap from '../assets/hero/mobile-compo/phone-map-tilted.webp'
+import mobilePhonePapotage from '../assets/hero/mobile-compo/phone-papotage-empty.webp'
+import mobileCardLeaDreamer from '../assets/hero/mobile-compo/card-lea-dreamer.webp'
+import mobileCardLoulou from '../assets/hero/mobile-compo/card-loulou.webp'
+import mobileCardEvent from '../assets/hero/mobile-compo/card-event-cafe.webp'
+import mobileBadge19 from '../assets/hero/mobile-compo/badge-19-martines-coin.webp'
+import mobilePin2 from '../assets/hero/mobile-compo/pin-2.webp'
+import mobileHeart from '../assets/hero/mobile-compo/heart-solid.webp'
 
 export default function Hero() {
   const collageRef = useRef<HTMLDivElement>(null)

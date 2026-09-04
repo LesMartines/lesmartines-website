@@ -63,17 +63,31 @@
    hauteur auto) : les 2 badges se partagent TOUJOURS la largeur disponible à parts
    égales et rétrécissent ensemble plutôt que de risquer un retour à la ligne, quelle
    que soit la largeur de l'écran. */
+/* Généralisé à TOUTES les tailles (04/09/2026, "les boutons [...] doivent être à côté.
+   Donc tu peux les réduire s'il faut") : le CtaFinal ("Alors, tu nous rejoins ?") utilise
+   la taille par défaut (52px, ratio ~3:1) qui risque le même repli à la ligne que le
+   Hero — même règle nowrap + flex:1 pour rester côte à côte partout sur mobile, quelle
+   que soit la taille demandée. */
 @media (max-width: 640px) {
-  .wrap.sizeLarge {
+  .wrap {
     flex-wrap: nowrap;
   }
 
-  .wrap.sizeLarge .button {
+  .wrap .button {
     flex: 1 1 0;
     min-width: 0;
   }
 
-  .wrap.sizeLarge .badge {
+  /* Répété avec les MÊMES sélecteurs composés que les règles de hauteur fixe plus haut
+     (04/09/2026, "les boutons du heros sont deformé") : `.wrap .badge` seul seule est
+     MOINS spécifique que `.wrap.sizeLarge .badge`/`.wrap.sizeSmall .badge` (3 classes
+     contre 2), donc perdait le bras de fer sur `height` tout en gagnant sur `width`
+     (elle est la SEULE à en définir un) — d'où des badges avec une hauteur fixe ET une
+     largeur à 100%, donc étirés hors de leur vrai ratio. Même spécificité que les
+     règles d'origine ici, l'ordre dans le fichier (cette règle vient après) tranche. */
+  .wrap.sizeLarge .badge,
+  .wrap.sizeSmall .badge,
+  .wrap .badge {
     height: auto;
     width: 100%;
   }

@@ -4,8 +4,8 @@
 
 Les Martines se distingue des groupes Facebook privés et des applications d'amitié généralistes par une architecture de confiance intégrée au produit : vérification par selfie avec validation humaine (pas d'IA), modération humaine active, politique anti-capture d'écran, posts anonymes avec floutage des sujets sensibles, consentement requis avant tout message privé, aucun compteur d'abonné·es visible, et une carte communautaire par code postal (jamais de géolocalisation précise).
 
-Fonctionnalités principales : le Papotage (forum thématique par centres d'intérêt : santé, sexualité, société, love, amitiés, loisirs, voyages), la Map'Tine (retrouver des Martines près de chez soi), la Mar'Team (petit groupe de confiance), le Journal (recommandations culturelles, bons plans de marques partenaires, numéros d'urgence), et les Events IRL (rencontres organisées gratuitement par les membres elles-mêmes, appelées Hôtes).
+Fonctionnalités principales : le Papotage (forum thématique par centres d'intérêt : santé, sexualité, société, love, amitiés, loisirs, voyages), la Map'Tine (retrouver des Martines près de chez soi), la Mar'Team (petit groupe de confiance), le Journal (recommandations culturelles, bons plans de marques partenaires, numéros d'urgence), et les Events (rencontres 100% entre femmes : les Martinades organisées par des Martines elles-mêmes, des papotages en visio, ou des sorties chez des marques partenaires).
 
-Disponible sur l'App Store et Google Play. Note moyenne 4,8/5 sur plus de 400 avis.
+Disponible sur l'App Store et Google Play. Note moyenne 4,8/5 sur plus de 450 avis.
 
 Site officiel : https://www.lesmartines.app

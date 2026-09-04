@@ -31,3 +31,15 @@
   height: auto;
   margin-top: var(--space-2);
 }
+
+/* Immersion mobile (04/09/2026, "on continu pour l'immersion") : padding compacté,
+   titre agrandi (28px de plancher restait petit face aux autres titres déjà revus). */
+@media (max-width: 640px) {
+  .section {
+    padding: var(--space-4) 0;
+  }
+
+  .title {
+    font-size: clamp(34px, 9vw, 44px);
+  }
+}

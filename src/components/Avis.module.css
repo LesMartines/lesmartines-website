@@ -26,12 +26,26 @@
    CommunityStats.module.css, débordement volontaire pour casser la monotonie), et
    arrivait trop près du "450+ avis" qui suit. */
 @media (max-width: 780px) {
+  /* Rapproché du slider (04/09/2026, "remonte un peu les temoignages vers la note") :
+     margin-bottom de .stats (space-5, 64px) resserré, en plus du margin-top déjà
+     présent ici. */
   .stats {
     margin-top: 100px;
+    margin-bottom: var(--space-3);
+  }
+
+  /* Réduites (04/09/2026, "diminue un peu les etoiles") : 32px -> 26px. */
+  .stars {
+    font-size: 26px;
   }
 }
 
+/* Halo derrière les étoiles (04/09/2026, "mets-moi un petit halo stylé derrière les
+   étoiles") : radial-gradient plutôt qu'un filter:blur (qui aurait aussi flouté les
+   étoiles elles-mêmes, portées par ce même élément) — dégradé posé en ::before,
+   z-index négatif pour rester DERRIÈRE le texte des étoiles. */
 .stars {
+  position: relative;
   color: var(--color-lime);
   font-size: 32px;
   /* Fin contour plutôt qu'un drop-shadow décalé (rendait un bord dur/moche sur les glyphes
@@ -51,6 +65,22 @@
      bloc ; ce pop est un mouvement propre aux étoiles, à part). */
   transform: scale(0);
   opacity: 0;
+}
+
+/* Réduit (04/09/2026, "ton hallo est beaucoup trop gros [...] c'est moche") : 160% ->
+   115%, opacité 0.55 -> 0.28 — un accent discret plutôt qu'un aplat qui écrase les
+   étoiles. */
+.stars::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 115%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(219, 255, 115, 0.16) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .stats.inView .stars {
@@ -194,7 +224,10 @@
   box-shadow: var(--shadow-card);
 }
 
+/* Même halo que .stars plus haut (04/09/2026, "que ce soit dans les temoignages ou
+   dans les 450 avis"). */
 .cardStars {
+  position: relative;
   color: var(--color-lime);
   font-size: 12px;
   letter-spacing: 1px;
@@ -214,6 +247,19 @@
 
 .card:hover .cardStars {
   transform: scale(1.15);
+}
+
+.cardStars::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 110%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(219, 255, 115, 0.14) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .quote {

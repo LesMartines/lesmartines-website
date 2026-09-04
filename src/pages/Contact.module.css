@@ -40,11 +40,28 @@
   color: var(--color-primary-dark);
 }
 
+/* Halo (04/09/2026, "fais pareil derriere toutes les etoiles dans le site") : même
+   recette que Avis.module.css .stars. */
 .trustStars {
+  position: relative;
+  display: inline-block;
   font-size: 16px;
   letter-spacing: 1px;
   color: var(--color-lime);
   -webkit-text-stroke: 0.5px var(--color-primary);
+}
+
+.trustStars::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 95%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(219, 255, 115, 0.16) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .trustDot {

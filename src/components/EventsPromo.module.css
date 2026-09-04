@@ -415,4 +415,12 @@
   .inner {
     padding: 0 var(--space-2);
   }
+
+  /* Agrandie seule, pas les autres éléments (04/09/2026, "grossi l'ecran de la map mais
+     pas les autres elements") : 47% -> 62%, recentrée (left ajusté pour garder le même
+     centre horizontal ~42.5%). */
+  .mapGroup {
+    left: 11%;
+    width: 62%;
+  }
 }

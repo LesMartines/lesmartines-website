@@ -109,7 +109,12 @@
   text-align: center;
 }
 
+/* Halo derrière les étoiles (04/09/2026, "fais pareil derriere toutes les etoiles dans
+   le site") : même recette partout (radial-gradient discret en ::before, voir
+   Avis.module.css .stars pour le détail du raisonnement). */
 .ratingStars {
+  position: relative;
+  display: inline-block;
   color: var(--color-lime);
   font-size: 15px;
   letter-spacing: 1px;
@@ -119,6 +124,19 @@
     0.5px -0.5px 0 var(--color-primary),
     -0.5px 0.5px 0 var(--color-primary),
     0.5px 0.5px 0 var(--color-primary);
+}
+
+.ratingStars::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 95%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(219, 255, 115, 0.16) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .ratingScore {
@@ -224,7 +242,7 @@
 .mobilePhones {
   display: none;
   position: relative;
-  width: 115%;
+  width: 95%;
   max-width: 460px;
   /* left:50% + translateX(-50%) plutôt qu'une margin négative : le parent (.inner) est
      un flex column avec align-items:center, qui centre sur la boîte MARGE COMPRISE —

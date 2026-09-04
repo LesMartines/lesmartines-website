@@ -63,12 +63,16 @@ export default function Partenaires() {
               <h2 id="partenaires-title" className={styles.title}>
                 <HighlightedText text="Nos partenaires sûrs" highlight="partenaires" />
               </h2>
+              {/* "partenaires" retiré du badge (04/09/2026, "on a une répétition avec
+                  le badge [...] je n'ai pas envie de changer le titre") : le titre
+                  juste à côté dit déjà "Nos partenaires sûrs", inutile de répéter le
+                  mot dans les 2 endroits. */}
               <span className={styles.seal} aria-hidden="true">
                 <span className={styles.sealNumber}>{PARTENAIRES.length}+</span>
                 <span className={styles.sealLabel}>
                   marques
                   <br />
-                  partenaires
+                  choisies
                 </span>
               </span>
             </div>
@@ -102,9 +106,12 @@ export default function Partenaires() {
                 s'adresse aux visiteuses (parcourir les marques déjà là), pas aux marques
                 elles-mêmes — sans cette ligne, une marque intéressée n'a ici aucun signe
                 que candidater est possible avant d'aller sur /partenaires/. */}
+            {/* "découvrir" à la ligne (04/09/2026, "tu n'as pas mis de découvrir à la
+                ligne") : espace insécable avant pour garder "te découvrir" ensemble au
+                lieu de laisser "te" seul en fin de ligne. */}
             <p className={styles.ctaBrand}>
               Toi aussi tu représentes une marque&nbsp;?{' '}
-              <a href="/contact/?type=marque">On a hâte de te découvrir →</a>
+              <a href="/contact/?type=marque">On a hâte de te&nbsp;découvrir →</a>
             </p>
           </div>
         </Reveal>

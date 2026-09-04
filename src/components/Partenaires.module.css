@@ -86,9 +86,30 @@
 }
 
 @media (max-width: 640px) {
+  /* Immersion mobile (04/09/2026, "on continu pour l'immersion") : padding vertical
+     (96px, pensé desktop) compacté, marges du titre resserrées. */
+  .section {
+    padding: var(--space-4) 0;
+  }
+
+  /* Taille vérifiée (04/09/2026, "vérifier la taille du titre" puis "il faut que nos
+     partenaires sûrs rentrent sur deux lignes") : 36px passait à 3 lignes (mesuré via
+     hauteur réelle / line-height), 34px est la plus grande taille qui tient encore sur
+     2 lignes. */
+  /* Marges équilibrées (04/09/2026, "centre les deux lignes de logo entre le titre et
+     le bouton") : mesuré 40px au-dessus du bandeau défilant contre 16px en dessous
+     (avant le bouton) — les deux ramenés à 28px pour que le bandeau soit à mi-chemin. */
+  .title {
+    font-size: 34px;
+    padding: 0 var(--space-2);
+    margin-bottom: 28px;
+  }
+
+  /* Rapproché du titre (04/09/2026, "rapprocher le logo du titre" puis "encore un tout
+     petit peu") : space-2 -> space-1 -> 4px. */
   .seal {
     position: static;
-    margin: 0 auto var(--space-2);
+    margin: 0 auto 4px;
     animation-name: sealFloatMobile;
   }
 
@@ -238,9 +259,18 @@ a.card:hover {
 /* Lien vers la page dédiée (01/09/2026, "faire la page partenaire") : le bandeau défilant
    de l'accueil reste un teaser (logos seuls, pas de descriptif), la page /partenaires/
    présente chaque marque en détail. */
+/* Rapproché du bandeau défilant (04/09/2026, "rapprocher le bouton, voir les 30
+   partenaires") : space-4 -> space-2, puis équilibré à 28px pour centrer le bandeau
+   entre le titre et ce bouton (voir .title margin-bottom dans le @media mobile). */
 .cta {
   text-align: center;
-  margin-top: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 640px) {
+  .cta {
+    margin-top: 28px;
+  }
 }
 
 /* Pill discret plutôt qu'un lien simplement souligné (03/09/2026, "mettre un plus jolie
@@ -274,10 +304,14 @@ a.card:hover {
   background-color: rgba(96, 102, 216, 0.06);
 }
 
+/* text-align:center explicite (04/09/2026, "il faudrait que 'on a hâte de te
+   découvrir' [...] soit centré") : hérite déjà du text-align:center de .cta parent en
+   temps normal, posé ici en dur pour lever tout doute/dépendance à l'héritage. */
 .ctaBrand {
   margin-top: var(--space-2);
   font-size: 14px;
   color: var(--color-text-secondary);
+  text-align: center;
 }
 
 .ctaBrand a {
