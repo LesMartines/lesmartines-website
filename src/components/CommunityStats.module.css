@@ -219,8 +219,35 @@
 }
 
 @media (max-width: 780px) {
+  /* Réduite (04/09/2026, "diminue la bande violette pour que le telephone depasse
+     expres") : moins de padding = bande plus courte = le téléphone (qui déborde déjà
+     volontairement au-dessus via .phone, top négatif) ressort davantage plutôt que
+     d'être presque entièrement contenu dedans. */
+  /* Correction (04/09/2026, "le bandeau violet est descendu [...] le titre du haut est
+     hyper proche du bord") : padding:0 des 2 côtés collait le titre pile au bord haut
+     de la bande, pas beau. Un peu de padding-top remis (le titre respire), padding-bottom
+     gardé à 0 pour rester compact "par le bas" comme demandé. */
+  /* margin-top: var(--space-5) (64px, règle de base plus haut, pensée pour le desktop)
+     recréait tout l'espace vide qu'on venait de retirer sur ValeursBloc juste au-dessus
+     (04/09/2026, "il y a encore plein d'espaces alors qu'on en avait supprimé") — pas
+     touchée par les réglages précédents, qui portaient sur le padding, pas la margin. */
   .section {
-    padding: var(--space-4) 0;
+    margin-top: 0;
+    padding: 44px 0 0;
+  }
+
+  /* Immersion mobile (04/09/2026, "on continu pour l'immersion") : marges resserrées,
+     même traitement que les autres sections passées en revue (FeatureShowcase,
+     EventsPromo, ValeursBloc). */
+  .section :global(.container) {
+    padding: 0 var(--space-2);
+  }
+
+  /* Titre harmonisé (04/09/2026, "un peu petit comme texte par rapport aux autres") :
+     30px restait sous le plancher de 34-36px déjà appliqué aux autres titres de
+     section revus juste avant. */
+  .title {
+    font-size: clamp(36px, 9vw, 46px);
   }
 
   .inner {
@@ -240,7 +267,7 @@
   /* Hauteur réduite de 50px (03/09/2026, "diminue un peu la hauteur de la bande de
      bas") : 300px -> 250px. */
   .visual {
-    min-height: 250px;
+    min-height: 160px;
     /* Le téléphone déborde par le haut (top négatif) en supposant qu'il n'y a rien
        au-dessus dans la colonne — vrai en desktop (2 colonnes), plus vrai ici puisque
        .text passe maintenant avant. Une marge compense l'espace que le débordement

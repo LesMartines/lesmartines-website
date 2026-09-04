@@ -166,6 +166,11 @@
    centré à ~49%/34% du canvas, diamètre ~67%, pas inset:0 = centre du canvas à 50%/50%).
    Les valeurs top/left/right/bottom ci-dessous calent l'anneau exactement sur la bbox du
    disque plein plutôt que sur toute la boîte .dotWrap. */
+/* Rendu plus voyant (04/09/2026, "met un effet plus voyant sur l'effet radar") : contour
+   plus épais + fond légèrement rempli (plus juste un anneau fin), opacité de départ et
+   amplitude de grossissement augmentées, pour un vrai "ping" qui se remarque plutôt que
+   l'effet discret demandé le 29/08/2026 — préférence de Marine visiblement changée entre
+   les deux passes. */
 .dotRing {
   position: absolute;
   top: 1%;
@@ -173,10 +178,10 @@
   right: 18%;
   bottom: 32%;
   border-radius: 50%;
-  border: 1.5px solid var(--color-primary-dark);
-  background: transparent;
-  opacity: 0.4;
-  animation: dotPing 2.8s ease-out infinite;
+  border: 2.5px solid var(--color-primary-dark);
+  background: rgba(96, 102, 216, 0.25);
+  opacity: 0.7;
+  animation: dotPing 2.2s ease-out infinite;
   z-index: 0;
 }
 
@@ -192,10 +197,10 @@
 @keyframes dotPing {
   0% {
     transform: scale(0.9);
-    opacity: 0.4;
+    opacity: 0.7;
   }
   100% {
-    transform: scale(1.8);
+    transform: scale(2.4);
     opacity: 0;
   }
 }
@@ -364,8 +369,50 @@
     grid-template-columns: 1fr;
   }
 
+  /* Les passages précédents (420px -> 480px -> 540px -> 600px de max-width) n'avaient
+     AUCUN effet visible (04/09/2026, "je vois pas l'agrandissement") : le vrai frein
+     n'était pas max-width mais le padding de .inner (var(--space-3) de chaque côté,
+     jamais retiré ici), qui limite déjà .visual (width:100%) bien en dessous de
+     n'importe laquelle de ces valeurs. Débordement volontaire du padding (même recette
+     que .blockVisual dans FeatureShowcase.module.css) pour vraiment gagner en largeur. */
   .visual {
-    max-width: 420px;
-    margin: 0 auto;
+    width: calc(100% + var(--space-2) * 2);
+    max-width: 480px;
+    margin: -50px calc(var(--space-2) * -1) 0;
+    /* Grandie encore (04/09/2026, "faut grandire encore le visuel" une fois la largeur
+       déjà au maximum physique de l'écran) : ratio rehaussé (plus haut que large que le
+       920/810 desktop) pour que la compo occupe plus de hauteur, seul axe qui pouvait
+       encore grandir une fois la largeur pleine écran atteinte. */
+    aspect-ratio: 920 / 1050;
+    position: relative;
+  }
+
+  /* Halo derrière la compo (04/09/2026, "plus immersif en responsive") : même recette
+     que .visual::before dans CommunityStats.module.css, pour donner de la profondeur au
+     lieu d'un aplat indigo uni derrière la carte + les cartes flottantes. */
+  .visual::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 10%;
+    left: 50%;
+    width: 90%;
+    aspect-ratio: 1 / 1;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Titre agrandi + colonne texte qui respire davantage des bords (04/09/2026, "plus
+     immersif en responsive") : le plancher du clamp() (28px) n'avait jamais vraiment
+     été pensé pour mobile (3.6vw n'y suffit jamais, même souci que le titre du Hero —
+     voir Hero.module.css), et le padding standard du container faisait paraître ce
+     bandeau plein écran comme un bloc de texte "en retrait" plutôt qu'immersif. */
+  .title {
+    font-size: clamp(34px, 9vw, 44px);
+  }
+
+  .inner {
+    padding: 0 var(--space-2);
   }
 }

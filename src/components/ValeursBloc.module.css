@@ -121,6 +121,23 @@
   }
 }
 
+/* Immersion mobile (04/09/2026, "immersion green flags") : titre agrandi (plancher du
+   clamp() relevé, même correctif que les autres sections passées en revue), marges
+   resserrées — cohérent avec le traitement déjà appliqué à FeatureShowcase/EventsPromo. */
+@media (max-width: 640px) {
+  .title {
+    font-size: clamp(36px, 9vw, 52px);
+    padding: 0 var(--space-2);
+  }
+
+  /* Compacté (04/09/2026, "le bloc poudré est tjs plutot haut" -> trop de hauteur) :
+     space-4/space-6 (16/96px) pensé pour desktop restait bien trop généreux en
+     vertical sur mobile. */
+  .section {
+    padding: var(--space-3) 0 var(--space-4);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .track {
     animation: none;

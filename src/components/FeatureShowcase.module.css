@@ -273,21 +273,38 @@
   /* Resserré (03/09/2026, "il y a bcp d'espace entre Les Martines késako ? et le 1er
      telephone") : space-5 (desktop, pensé pour laisser respirer la grille 2 colonnes)
      restait trop grand une fois empilé en 1 colonne au-dessus d'une 1re carte qui a
-     elle-même son padding. */
+     elle-même son padding. Titre agrandi (04/09/2026, "il faut que tout soit immersif
+     en mobile") : même plancher de clamp() trop petit sur mobile que le titre du Hero
+     (3vw n'y suffit jamais, voir Hero.module.css). */
   .sectionTitle {
+    font-size: clamp(30px, 8vw, 32px);
     margin-bottom: var(--space-3);
+  }
+
+  /* Marges du container resserrées (04/09/2026, "immersif en mobile") : le texte de
+     chaque carte (titre + description) respire moins des bords, cohérent avec le
+     bleed déjà en place sur .blockVisual juste en dessous. */
+  .section :global(.container) {
+    padding: 0 var(--space-2);
   }
 
   /* Agrandi (03/09/2026, "grossis les telephone en responsive" puis "grossie encore") :
      280px -> 360px -> 440px. Le conteneur (.container) a son propre padding horizontal
-     (var(--space-3)) qui plafonnait déjà la largeur réelle avant même d'atteindre
-     max-width — débordement volontaire (marges négatives) pour aller chercher toute la
-     largeur de l'écran plutôt que de rester bridé par ce padding. */
+     (réduit à var(--space-2) juste au-dessus) qui plafonnait déjà la largeur réelle
+     avant même d'atteindre max-width — débordement volontaire (marges négatives) pour
+     aller chercher toute la largeur de l'écran plutôt que de rester bridé par ce
+     padding. */
   .blockVisual {
     display: block;
     max-width: 440px;
-    width: calc(100% + var(--space-3) * 2);
-    margin: 0 calc(var(--space-3) * -1) var(--space-3);
+    width: calc(100% + var(--space-2) * 2);
+    margin: 0 calc(var(--space-2) * -1) var(--space-3);
+  }
+
+  /* Remonté de 70px (04/09/2026, "remonter le 1er telephone après Les Martines késako ?
+     de 70px") : seule la 1re carte, pas les autres. */
+  .block:first-child .blockVisual {
+    margin-top: -70px;
   }
 
   /* Hors de .visualContent (absolute inset:0, utilisé seulement par le visuel sticky

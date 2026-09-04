@@ -25,19 +25,29 @@ interface RevealProps {
  */
 export default function Reveal({ children, delay = 0, className, immediate = false }: RevealProps) {
   const motionProps = immediate
-    ? { animate: { opacity: 1, y: 0 } }
+    ? { animate: { opacity: 1, y: 0, scale: 1 } }
     : {
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: true, margin: '-80px' },
+        whileInView: { opacity: 1, y: 0, scale: 1 },
+        // Marge réduite (04/09/2026, "ça ne zoom pas vraiment au moment où je suis
+        // dessus") : -80px déclenchait l'animation bien avant que la section soit
+        // vraiment sous les yeux (elle était déjà terminée en arrivant dessus au
+        // scroll normal) — -20px la fait jouer plus près du moment où on la regarde
+        // réellement.
+        viewport: { once: true, margin: '-20px' },
       }
 
   return (
     <LazyMotion features={domAnimation}>
       <m.div
         className={className}
-        initial={{ opacity: 0, y: 24 }}
+        // Apparition plus marquée (04/09/2026, "est-ce qu'on peut améliorer
+        // l'apparition des sections") : translateY et durée augmentés (24px/0.5s ->
+        // 32px/0.65s) + un léger scale (0.97 -> 1) en plus du fondu, pour une entrée
+        // qui se remarque davantage qu'un simple fondu-glissé. Un seul endroit à
+        // ajuster : tout le site réutilise ce composant partagé.
+        initial={{ opacity: 0, y: 32, scale: 0.92 }}
         {...motionProps}
-        transition={{ duration: 0.5, delay, ease: 'easeOut' }}
+        transition={{ duration: 0.65, delay, ease: [0.16, 1, 0.3, 1] }}
       >
         {children}
       </m.div>

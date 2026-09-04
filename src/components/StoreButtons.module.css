@@ -55,8 +55,26 @@
    adapte la hauteur") : moins haut pour laisser plus de place verticale à la compo du
    Hero, et surtout pour que les 2 badges tiennent côte à côte sans repasser à la ligne
    (qui coûterait une hauteur de badge entière en plus). */
+/* 46px -> 58px ("agrandire...") : cassait le côte à côte (04/09/2026, "les boutons
+   doivent etre a cote" puis "mettre la place toujours accroché ensemble") — une
+   hauteur FIXE en px reste fragile : elle dépend de la largeur d'écran exacte pour
+   savoir si les 2 badges tiennent encore côte à côte (déjà cassé une fois en passant de
+   46 à 58px). Remplacé par flex-wrap:nowrap + chaque bouton en flex:1 (largeur %,
+   hauteur auto) : les 2 badges se partagent TOUJOURS la largeur disponible à parts
+   égales et rétrécissent ensemble plutôt que de risquer un retour à la ligne, quelle
+   que soit la largeur de l'écran. */
 @media (max-width: 640px) {
+  .wrap.sizeLarge {
+    flex-wrap: nowrap;
+  }
+
+  .wrap.sizeLarge .button {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
   .wrap.sizeLarge .badge {
-    height: 46px;
+    height: auto;
+    width: 100%;
   }
 }

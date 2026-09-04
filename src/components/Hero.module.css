@@ -92,6 +92,10 @@
    (même recette que .stars dans Avis.module.css) pour que la note du Hero et celle de la
    section Avis plus bas se fassent écho visuellement. flex-wrap + text-align: center pour
    rester lisible si le texte doit passer sur 2 lignes en très petit écran. */
+/* Boîte blanche + ombre retirées (04/09/2026, "on fait pareil pour le desktop" après
+   avoir allégé la version mobile, "j'aime toujours pas la reassurance [...] c'est trop
+   voyant") : redescendu en texte simple, sans rivaliser en poids visuel avec le CTA
+   App Store/Google Play juste au-dessus, sur les deux tailles d'écran désormais. */
 .rating {
   margin-top: var(--space-2);
   display: inline-flex;
@@ -99,10 +103,6 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 6px;
-  background: var(--color-white);
-  border-radius: var(--radius-pill);
-  padding: 9px 18px;
-  box-shadow: var(--shadow-soft);
   color: var(--color-text-secondary);
   font-size: 14px;
   font-weight: 600;
@@ -128,6 +128,11 @@
 
 .ratingSep {
   color: var(--color-muted);
+}
+
+.ratingSource {
+  color: var(--color-muted);
+  font-weight: 500;
 }
 
 /* Wrapper autour de StoreButtons + la note, remplace un simple enchaînement d'enfants du
@@ -190,87 +195,178 @@
   height: auto;
 }
 
-/* Version mobile simplifiée (30/08/2026, "on voit rien" sur la compo complète), voir le
-   commentaire dans Hero.tsx : cachée par défaut, affichée uniquement sous 640px (voir
-   media query plus bas), où elle remplace .collage. Les 3 vrais écrans d'appli, en
-   grand, en éventail (Chloé et la carte de proximité qui dépassent légèrement derrière
-   Papotage, au premier plan et pleine largeur). Pas de filter/drop-shadow ajouté sur les
-   téléphones : l'ombre est déjà cuite dans chaque PNG (même remarque que pour .el
-   ci-dessus). */
+/* Nouvelle compo mobile (04/09/2026, reprise du frame Figma node 12119:6050 fourni par
+   Marine avec ses exports PNG). Positions recalculées le 04/09/2026 ("le placement
+   n'est pas bon, tu as bien regardé figma") à partir des vraies coordonnées x/y/largeur/
+   hauteur retournées par get_metadata (pas une estimation visuelle sur la capture) :
+   bbox englobante de tous les éléments recalculée à la main (min/max des x/y/x+w/y+h de
+   chaque élément dans l'espace du canevas Figma), puis chaque position exprimée en %
+   de CETTE bbox (0% = bord du contenu réel, pas du frame Figma d'origine qui a sa
+   propre marge/ancrage arbitraire sans rapport avec le contenu visible). Rotation
+   laissée en CSS seulement pour les éléments dont l'export PNG est resté "à plat"
+   (vérifié en ouvrant chaque PNG) ; les autres ont leur inclinaison déjà cuite dans
+   l'image. */
+/* Agrandie (04/09/2026, "grossi la composition" x2) : 92%/340px -> 100%/400px ->
+   115%/460px, avec débordement volontaire du padding du container (marge négative)
+   pour la 2e passe. */
+/* Hauteur ajustée (04/09/2026, "ON A UN PROBLEME SUR LE MOBILE AVEC la bande violette
+   et la bande de media") : le vrai bug était ICI, pas sur les sections suivantes. Le
+   ratio 384/577 réservait la hauteur de la bbox Figma d'ORIGINE, mais les vrais exports
+   PNG (rotation + ombre cuites dedans, puis remplacés plusieurs fois par Marine avec
+   des recadrages différents) ne descendent en réalité qu'à ~71% de cette hauteur —
+   les ~29% du bas restaient un espace mort qui poussait toutes les sections suivantes
+   vers le bas, "corrigé" jusque-là par des margin-top négatifs devinés au pif sur
+   PressLogos/EventsPromo (fragile : à refaire à chaque fois qu'une image changeait de
+   proportions). Hauteur recalculée à partir du point le plus bas réellement mesuré
+   (vérifié via getBoundingClientRect sur chaque image) : 577 -> ~410, pour que la boîte
+   épouse le vrai contenu et que les sections suivantes s'enchaînent SANS marge
+   négative ailleurs à deviner. */
 .mobilePhones {
   display: none;
   position: relative;
-  width: 76%;
-  max-width: 280px;
-  margin: 0 auto;
-  aspect-ratio: 801 / 1040;
+  width: 115%;
+  max-width: 460px;
+  /* left:50% + translateX(-50%) plutôt qu'une margin négative : le parent (.inner) est
+     un flex column avec align-items:center, qui centre sur la boîte MARGE COMPRISE —
+     une margin-left négative asymétrique aurait décalé le centrage au lieu de l'élargir
+     symétriquement des deux côtés. */
+  left: 50%;
+  transform: translateX(-50%);
+  aspect-ratio: 384 / 410;
 }
 
-.mobilePhoneImg {
-  display: block;
-  width: 100%;
-  height: auto;
+.mobileMapPhone {
+  position: absolute;
+  z-index: 1;
+  width: 73%;
+  left: -7.5%;
+  top: 26%;
+  animation: floatSoftC 7s ease-in-out infinite;
 }
 
-.mobilePhonePapotageWrap {
-  position: relative;
-  z-index: 2;
-  width: 100%;
-}
-
-.mobilePhoneMapWrap {
+/* Agrandi (04/09/2026, "grossir l'ecran papotage") : 51% -> 60%, recentré sur le même
+   axe (left ajusté pour garder le même centre horizontal). */
+.mobilePapotagePhone {
   position: absolute;
   z-index: 1;
   width: 60%;
-  left: -18%;
-  bottom: 4%;
+  left: 33%;
+  top: 13%;
+  animation: floatSoftA 8s ease-in-out infinite 0.4s;
 }
 
-.mobilePhoneChloeWrap {
+.mobileHeart {
   position: absolute;
-  z-index: 1;
-  width: 58%;
-  right: -20%;
-  bottom: 8%;
+  z-index: 4;
+  width: 12%;
+  left: 81%;
+  top: 6%;
+  animation: heartBeat 2.6s ease-in-out infinite;
 }
 
-/* Post + bulles positionnés en % DE LEUR TÉLÉPHONE (le wrap fait exactement la taille de
-   l'image du téléphone, voir .mobilePhoneImg), pour rester calés sur l'écran quelle que
-   soit la taille finale. Un seul post choisi parmi les 3 de la compo desktop (Lou_Lou),
-   pas besoin des 3 sur un mockup aussi petit. */
-.mobilePostLoulou {
+/* Pin animé différemment des autres éléments (04/09/2026, "anime les elements de facon
+   organique, avec un truc different pour les pins") : un petit rebond/pop façon
+   goutte de géoloc qui "signale" un point sur la carte, plutôt que le flottement doux
+   utilisé pour les cartes/téléphones — cohérent avec ce que représente un pin. */
+/* Animation retirée (04/09/2026, "pas fan de l'anim du pin") : reste fixe comme un
+   vrai repère posé sur la carte, plutôt que d'attirer l'œil avec un mouvement. */
+.mobilePin2 {
   position: absolute;
-  z-index: 1;
-  display: block;
-  width: 84%;
-  left: 8%;
+  z-index: 4;
+  width: 15%;
+  left: 24%;
   top: 22%;
 }
 
-.mobileBubbleMeuf {
+/* Remontée de 70px (04/09/2026, 22% -> 8%), redescendue de 30px (8% -> 14%), puis
+   agrandie deux fois (56% -> 64% -> 74%), recentrée sur le même axe à chaque fois. */
+/* Ordre d'empilement (04/09/2026, "la card lea dreamer soit au dessus de loulou mais en
+   dessous de café et networking") : Loulou(2) < Lea(4) < Event(5). */
+.mobileCardLea {
   position: absolute;
-  z-index: 1;
-  display: block;
+  z-index: 4;
   width: 74%;
-  right: 6%;
-  top: 32%;
+  left: 28%;
+  top: 14%;
+  animation: floatSoftB 6.5s ease-in-out infinite 0.2s;
 }
 
-.mobileBubbleAssure {
+.mobileCardLoulou {
   position: absolute;
-  z-index: 1;
-  display: block;
-  width: 54%;
-  right: 10%;
-  top: 48%;
+  z-index: 2;
+  width: 55%;
+  left: 45%;
+  top: 39%;
 }
 
-/* Les 3 telephones (carte de proximite, Papotage, Chloe) + les 3 bulles de conversation
-   restent aux positions exactes du frame Figma source (verifiees sur deux appels MCP
-   separes, non bougees entre-temps). Plus de flottement du tout sur ces 6 elements
-   (30/08/2026, "il faudrait empecher les trois ecrans de bouger") : les 3 bulles restent
-   sans animation elles aussi pour ne pas se decoller du telephone Chloe sur lequel elles
-   sont posees. */
+.mobileBadge19 {
+  position: absolute;
+  z-index: 2;
+  width: 56%;
+  left: -1%;
+  top: 15%;
+  animation: floatSoftC 6s ease-in-out infinite 0.3s;
+}
+
+.mobileCardEvent {
+  position: absolute;
+  z-index: 5;
+  width: 52%;
+  left: 11%;
+  top: 32%;
+  filter: drop-shadow(0 12px 24px rgba(47, 50, 106, 0.25));
+  animation: floatSoftB 8.5s ease-in-out infinite 0.1s;
+}
+
+/* 3 flottements légèrement différents (amplitude/rotation/durée) plutôt qu'une seule
+   animation partagée (04/09/2026, "de facon organique") : des éléments qui bougent
+   tous pile à l'unisson lisent comme un seul bloc animé, pas comme un vrai collage
+   vivant — de petits décalages (durée + delay + amplitude/rotation propres) cassent la
+   synchronisation visuelle. */
+@keyframes floatSoftA {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0.6deg);
+  }
+}
+
+@keyframes floatSoftB {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(9px) rotate(-0.7deg);
+  }
+}
+
+@keyframes floatSoftC {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .mobileMapPhone,
+  .mobilePapotagePhone,
+  .mobileCardLea,
+  .mobileBadge19,
+  .mobileCardEvent {
+    animation: none;
+  }
+
+  .mobileHeart {
+    animation: none;
+  }
+}
 
 /* Descendu (30/08/2026, "meme chose pour phone-map-maptine") de la meme facon que
    phonePapotage, pour qu'il passe lui aussi sous la bande des logos presse. Les elements
@@ -549,24 +645,38 @@
     padding-top: var(--space-3);
   }
 
-  /* 56px -> 40px -> 35px -> 25px -> 30px -> 28px (03/09/2026). Toujours au-dessus du
-     seuil de ~24-25px calculé pour garantir 2 lignes avec ce texte : à vérifier si 3
-     lignes reste acceptable à cette taille. */
+  /* 56 -> 40 -> 35 -> 25 -> 30 -> 28 -> 52px (03-04/09/2026), puis "grossi au max pour
+     que ca tienne sur 3 ligne" : calculé précisément via canvas measureText (simulation
+     du retour à la ligne du navigateur) sur un container de 327px — 34px est la plus
+     grande taille qui tient encore sur 3 lignes ("Le club des meufs" / "qui prennent" /
+     "toute la place"), 35px fait déjà basculer sur 4. */
   .title {
-    font-size: 28px;
-    margin-bottom: var(--space-2);
+    font-size: 34px;
+    margin-bottom: var(--space-3);
   }
 
+  /* Desserré (04/09/2026, "C'est très serré") : le resserrement du 30/08/2026 (pour
+     garder la compo dans le premier écran d'un petit téléphone) allait trop loin une
+     fois le reste du Hero retravaillé — titre, boutons et avis se touchaient presque. */
   .actions {
-    margin-top: 0;
+    margin-top: var(--space-2);
   }
 
+  /* Réduit (04/09/2026, "la note et avis [...] prend bcp de place par rapport au
+     bouton") : padding/police ramenés à une échelle plus modeste que le bouton de
+     téléchargement juste au-dessus, plutôt que de rivaliser avec lui en taille. */
   .rating {
     margin-top: var(--space-1);
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  .ratingStars {
+    font-size: 12px;
   }
 
   .collageWrap {
-    margin-top: var(--space-2);
+    margin-top: var(--space-3);
   }
 
   /* Compo complète trop petite pour être lisible sur mobile (30/08/2026, "on voit

@@ -74,19 +74,15 @@ export default function EventsPromo() {
               texte plutôt que dans la compo carte : Marine a déjà demandé de réduire le
               nombre d'éléments qui flottent dans la compo, pas d'en rajouter un de plus. */}
           <span className={styles.comingSoon}>
-            <span aria-hidden="true">👀</span> Ça arrive bientôt
+            <span aria-hidden="true">👀</span> Ça arrive soon
           </span>
           <h2 id="events-title" className={styles.title}>
-            Découvre les events 100% entre meufs près de chez toi
+            Découvre bientôt les events 100% entre meufs près de chez toi
           </h2>
           <p className={styles.body}>
-            Brunchs, ateliers créatifs, yoga, coaching, marches… Rejoins des events safe et
-            curatés dans ta ville ou en ligne. Prix négociés, ambiance chill, rencontres
-            garanties.
+            Des Martinades organisées par des Martines, des papotages en ligne, ou des
+            sorties chez nos partenaires… Rejoins des events safe près de chez toi.
           </p>
-          <a href="#appli" className={styles.cta}>
-            Je découvre les events
-          </a>
         </div>
 
         {/*

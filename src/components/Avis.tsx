@@ -69,6 +69,14 @@ export default function Avis() {
   const copyWidthRef = useRef(0)
   const statsRef = useRef<HTMLDivElement>(null)
   const [starsInView, setStarsInView] = useState(false)
+  // Points de pagination (03/09/2026, "sur mobile on comprend pas que c'est un slider") :
+  // le "peek" de la carte suivante (voir .slide, flex-basis < largeur d'écran) suffisait
+  // en théorie, mais pas assez visible sur certains téléphones/navigateurs in-app pour
+  // se faire comprendre comme un slider. Pas de flèches (retirées le 28/08/2026, "on
+  // comprend qu'on peut scroller") : les points sont un simple indicateur de position,
+  // pas des boutons de navigation, donc ne contredisent pas ce choix.
+  const [activeSlide, setActiveSlide] = useState(0)
+  const realSlideRefs = useRef<(HTMLDivElement | null)[]>([])
 
   // "Petit effet sur les etoiles" (31/08/2026) : pop déclenché au scroll, même recette
   // que .pin dans EventsPromo.tsx — indépendant du Reveal qui fait déjà fondre tout le
@@ -161,6 +169,29 @@ export default function Avis() {
     }
   }, [])
 
+  // Détecte quelle carte de la copie RÉELLE (celle non aria-hidden) est actuellement la
+  // plus visible, pour allumer le bon point. rootMargin resserré horizontalement (au
+  // lieu du resserrement vertical habituel, voir FeatureShowcase.tsx) : ne déclenche que
+  // quand une carte traverse une fine bande centrale de la largeur du slider.
+  useEffect(() => {
+    const slider = sliderRef.current
+    if (!slider) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          const index = realSlideRefs.current.findIndex((el) => el === entry.target)
+          if (index !== -1) setActiveSlide(index)
+        })
+      },
+      { root: slider, rootMargin: '0px -40% 0px -40%', threshold: 0 },
+    )
+    realSlideRefs.current.forEach((el) => {
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <section className={styles.section} aria-labelledby="avis-title">
       <div className="container">
@@ -196,6 +227,9 @@ export default function Avis() {
                 key={`${copyIndex}-${i}`}
                 className={styles.slide}
                 aria-hidden={copyIndex !== REAL_COPY_INDEX ? 'true' : undefined}
+                ref={(el) => {
+                  if (copyIndex === REAL_COPY_INDEX) realSlideRefs.current[i] = el
+                }}
               >
                 <Reveal delay={i * 0.06}>
                   <blockquote className={styles.card}>
@@ -212,6 +246,12 @@ export default function Avis() {
               </div>
             )),
           )}
+        </div>
+
+        <div className={styles.dots} aria-hidden="true">
+          {TESTIMONIALS.map((t, i) => (
+            <span key={t.author} className={`${styles.dot} ${i === activeSlide ? styles.dotActive : ''}`} />
+          ))}
         </div>
       </div>
     </section>

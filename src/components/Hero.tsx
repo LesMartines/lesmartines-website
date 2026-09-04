@@ -3,8 +3,6 @@ import Reveal from './Reveal'
 import StoreButtons from './StoreButtons'
 import styles from './Hero.module.css'
 import phoneChloe from '../assets/hero/phone-chloe.webp'
-import phoneMap from '../assets/hero/phone-map.webp'
-import phonePapotage from '../assets/hero/phone-papotage.webp'
 import bubbleAssure from '../assets/hero/bubble-assure.png'
 import bubbleMeuf from '../assets/hero/bubble-meuf.png'
 import bubbleMaisNon from '../assets/hero/bubble-mais-non.png'
@@ -15,11 +13,26 @@ import cardMia from '../assets/hero/card-mia.webp'
 import cardJulie from '../assets/hero/card-julie.webp'
 import cardQueenEnergy from '../assets/hero/card-queen-energy.webp'
 import cardAmitie from '../assets/hero/card-amitie.webp'
-import badge19Martines from '../assets/hero/badge-19-martines.webp'
-import postLoulou from '../assets/hero/post-loulou.webp'
-import postCafeNetworking from '../assets/hero/post-cafe-networking.webp'
-import postLeaDreamer from '../assets/hero/post-lea-dreamer.webp'
-import heartIcon from '../assets/hero/heart.png'
+// Nouvelle compo mobile (04/09/2026, "on va refaire la compo pour le mobile, voici le
+// lien figma [...] et les images") : remplace l'ancienne version simplifiée à 3 écrans
+// (.mobilePhones) par un vrai collage repris du frame Figma node 12119:6050, avec les
+// exports PNG fournis par Marine (déjà recadrés/inclinés pour la plupart directement
+// dans l'asset, seuls quelques éléments — event card, post Lou_Lou, pins, cœur —
+// gardent une rotation appliquée ici en CSS, comme dans le fichier source).
+// Réutilisés aussi dans le collage DESKTOP (04/09/2026, "tous les elements sont deja
+// sur le desktop en fait tu peux les remplacer") : phoneMap, phonePapotage, badge19
+// Martines, le post Lou_Lou, la carte Café&Networking et le cœur pointaient vers
+// d'anciens exports moins nets — remplacés par ces mêmes fichiers Figma partout où un
+// équivalent existe (phoneChloe, les pins génériques, cardMia/cardJulie/cardQueenEnergy
+// et cardAmitie n'ont pas d'équivalent dans la compo mobile, laissés tels quels).
+import mobilePhoneMap from '../assets/hero/mobile-compo/phone-map-tilted.png'
+import mobilePhonePapotage from '../assets/hero/mobile-compo/phone-papotage-empty.png'
+import mobileCardLeaDreamer from '../assets/hero/mobile-compo/card-lea-dreamer.png'
+import mobileCardLoulou from '../assets/hero/mobile-compo/card-loulou.png'
+import mobileCardEvent from '../assets/hero/mobile-compo/card-event-cafe.png'
+import mobileBadge19 from '../assets/hero/mobile-compo/badge-19-martines-coin.png'
+import mobilePin2 from '../assets/hero/mobile-compo/pin-2.png'
+import mobileHeart from '../assets/hero/mobile-compo/heart-solid.png'
 
 export default function Hero() {
   const collageRef = useRef<HTMLDivElement>(null)
@@ -65,9 +78,13 @@ export default function Hero() {
                 meufs à la ligne qui prennent toute la place") : .breakMobile casse après
                 "meufs" sous 640px, .breakDesktop garde la coupure existante après "qui"
                 à partir de 640px — les deux <br> ne sont jamais visibles en même temps. */}
+            {/* "la place" avec espace insécable (04/09/2026, "mettre 'la place' toujours
+                accroché ensemble pour que ça revienne a la ligne") : évite que "la" et
+                "place" se retrouvent séparés par un retour à la ligne, "la" en fin
+                d'une ligne et "place" seul au début de la suivante. */}
             Le club des meufs
             <br className={styles.breakMobile} /> qui <br className={styles.breakDesktop} />
-            prennent toute la place
+            prennent toute la&nbsp;place
           </h1>
         </Reveal>
 
@@ -82,6 +99,11 @@ export default function Hero() {
                 des arguments de confiance les plus forts de la page. Étoiles avec le même
                 traitement (contour + citron vert) que le gros chiffre de la section Avis
                 plus bas, pour que les deux se répondent visuellement. */}
+            {/* Restructuré en 2 groupes (04/09/2026, "on peut faire plus
+                compréhensible") : "note · nombre d'avis" d'un côté, puis la source des
+                avis à part — l'ancienne phrase enchaînait tout d'un bloc ("450+ avis
+                App Store & Google Play"), ambiguë à lire vite (les stores donnent
+                l'impression de qualifier autre chose que "avis"). */}
             <span className={styles.ratingStars} aria-hidden="true">
               ★★★★★
             </span>
@@ -89,7 +111,8 @@ export default function Hero() {
             <span className={styles.ratingSep} aria-hidden="true">
               ·
             </span>
-            450+ avis App Store &amp; Google Play
+            450+ avis
+            <span className={styles.ratingSource}>(App Store &amp; Google Play)</span>
           </p>
         </Reveal>
 
@@ -120,7 +143,7 @@ export default function Hero() {
             aria-label="Apercu de l'application Les Martines : conversation entre Martines, carte des Martines a proximite, fil Papotage, cartes Queen energy et Amitie, posts du fil (Cafe & Networking, Lea_Dreamer, Lou_Lou), et badge indiquant 19 Martines a proximite"
           >
             <div ref={collageRef} className={`${styles.collage} ${inView ? styles.inView : ''}`}>
-              <img src={phoneMap} alt="" className={`${styles.el} ${styles.phoneMap}`} />
+              <img src={mobilePhoneMap} alt="" className={`${styles.el} ${styles.phoneMap}`} />
               <img src={pin3} alt="" className={`${styles.el} ${styles.pinPos1}`} />
               <img src={pin1} alt="" className={`${styles.el} ${styles.pinPos2}`} />
               <img src={cardMia} alt="" className={`${styles.el} ${styles.cardMia}`} />
@@ -135,13 +158,13 @@ export default function Hero() {
               <img src={bubbleMaisNon} alt="" className={`${styles.el} ${styles.bubbleMaisNon}`} />
 
               <img src={cardQueenEnergy} alt="" className={`${styles.el} ${styles.cardQueen}`} />
-              <img src={phonePapotage} alt="" className={`${styles.el} ${styles.phonePapotage}`} />
-              <img src={heartIcon} alt="" className={`${styles.el} ${styles.heart}`} />
-              <img src={postLoulou} alt="" className={`${styles.el} ${styles.postLoulou}`} />
+              <img src={mobilePhonePapotage} alt="" className={`${styles.el} ${styles.phonePapotage}`} />
+              <img src={mobileHeart} alt="" className={`${styles.el} ${styles.heart}`} />
+              <img src={mobileCardLoulou} alt="" className={`${styles.el} ${styles.postLoulou}`} />
               <img src={cardAmitie} alt="" className={`${styles.el} ${styles.cardAmitie}`} />
-              <img src={postLeaDreamer} alt="" className={`${styles.el} ${styles.postLea}`} />
-              <img src={postCafeNetworking} alt="" className={`${styles.el} ${styles.postCafe}`} />
-              <img src={badge19Martines} alt="" className={`${styles.el} ${styles.badge}`} />
+              <img src={mobileCardLeaDreamer} alt="" className={`${styles.el} ${styles.postLea}`} />
+              <img src={mobileCardEvent} alt="" className={`${styles.el} ${styles.postCafe}`} />
+              <img src={mobileBadge19} alt="" className={`${styles.el} ${styles.badge}`} />
             </div>
 
             {/* Version mobile simplifiée (30/08/2026, "on voit rien" sur la compo complète) :
@@ -159,20 +182,20 @@ export default function Hero() {
                 visuellement. Repris ici en miniature (1 post, 2 bulles) pour que chaque
                 téléphone montre autre chose qu'un écran vide une fois isolé et agrandi. */}
             <div className={styles.mobilePhones} aria-hidden="true">
-              <div className={styles.mobilePhoneMapWrap}>
-                <img src={phoneMap} alt="" className={styles.mobilePhoneImg} />
-              </div>
-
-              <div className={styles.mobilePhoneChloeWrap}>
-                <img src={phoneChloe} alt="" className={styles.mobilePhoneImg} />
-                <img src={bubbleMeuf} alt="" className={styles.mobileBubbleMeuf} />
-                <img src={bubbleAssure} alt="" className={styles.mobileBubbleAssure} />
-              </div>
-
-              <div className={styles.mobilePhonePapotageWrap}>
-                <img src={phonePapotage} alt="" className={styles.mobilePhoneImg} />
-                <img src={postLoulou} alt="" className={styles.mobilePostLoulou} />
-              </div>
+              <img src={mobilePhoneMap} alt="" className={styles.mobileMapPhone} />
+              <img src={mobilePhonePapotage} alt="" className={styles.mobilePapotagePhone} />
+              <img src={mobileHeart} alt="" className={styles.mobileHeart} />
+              {/* Le pin "1" (mobilePin1) n'est PAS un élément séparé dans le frame Figma :
+                  il fait partie du contenu du téléphone map lui-même (deux instances
+                  "Icon/Pin Map" posées SUR le screenshot map, à l'intérieur du groupe
+                  exporté en un seul PNG) — déjà inclus dans mobilePhoneMap, pas besoin
+                  de le superposer une 2e fois. Seul le grand pin "2" est un élément à
+                  part dans la compo (04/09/2026, vérifié via get_metadata). */}
+              <img src={mobilePin2} alt="" className={styles.mobilePin2} />
+              <img src={mobileCardLeaDreamer} alt="" className={styles.mobileCardLea} />
+              <img src={mobileCardLoulou} alt="" className={styles.mobileCardLoulou} />
+              <img src={mobileBadge19} alt="" className={styles.mobileBadge19} />
+              <img src={mobileCardEvent} alt="" className={styles.mobileCardEvent} />
             </div>
           </div>
         </Reveal>

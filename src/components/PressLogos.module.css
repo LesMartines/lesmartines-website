@@ -19,6 +19,28 @@
   margin-top: -22px;
 }
 
+/* Remonté de 30px de plus en mobile (04/09/2026, "remonte la bande media de 30px"),
+   une fois le vrai bug (espace mort dans .mobilePhones, voir Hero.module.css) corrigé
+   à la source plutôt que compensé ici par une valeur devinée. */
+/* Adapté au mobile (04/09/2026, "reduire la bande des logos sur la hauteur en mobile"
+   puis "arrangé le bandeau [...] pour qu'il soit plus adapté au mobile") : logos et
+   padding vertical réduits (moins de place disponible qu'en desktop), gap resserré
+   entre les logos pour ne pas avoir l'air trop épars sur un écran étroit. */
+@media (max-width: 640px) {
+  .section {
+    margin-top: -102px;
+    padding: var(--space-1) 0 var(--space-3);
+  }
+
+  .item {
+    height: 34px;
+  }
+
+  .list {
+    gap: var(--space-3);
+  }
+}
+
 .title {
   font-weight: 700;
   font-size: 13px;
