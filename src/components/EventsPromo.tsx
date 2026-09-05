@@ -92,20 +92,29 @@ export default function EventsPromo() {
           <a href="#appli" className={styles.cta}>
             Être prévenue au lancement
           </a>
-          {/* Lien organisatrices (05/09/2026, "faut qu'on en parle dans ce bloc avec un
-              lien qui renvoie vers le formulaire") : renvoie vers le nouvel onglet
-              "J'organise des events" du formulaire de contact (voir Contact.tsx) —
-              discret, sous le CTA principal (télécharger/être prévenue), pour ne pas
-              lui faire concurrence auprès du plus large public de cette section. */}
-          <a href="/contact/?type=event" className={styles.organizerLink}>
-            Tu organises des events entre femmes&nbsp;? Fais-toi connaître →
-          </a>
-          {/* 2e lien (05/09/2026, "on peut faire un 4ème [...] et en parler aussi sur la
-              home") : même traitement discret que le lien organisatrice juste au-dessus,
-              vers l'onglet "J'ai un lieu safe" du formulaire. */}
-          <a href="/contact/?type=lieu" className={styles.organizerLink}>
-            T&rsquo;as un lieu safe pour une Martinade&nbsp;? Propose-le →
-          </a>
+          {/* Liens organisatrices/lieux (05/09/2026, "faut qu'on en parle dans ce bloc
+              avec un lien qui renvoie vers le formulaire" puis "CETTE PARTIE là en mobile
+              est vraiment pas belle avec les lien fais un truc plus premium") : d'anciens
+              liens soulignés en texte brut cassaient l'aspect propre du bandeau sur
+              mobile (soulignement qui traverse plusieurs lignes) — remplacés par de
+              petites cartes discrètes (fond translucide, coin arrondi) qui renvoient vers
+              les onglets "J'organise des events" / "J'ai un lieu safe" du formulaire. */}
+          <div className={styles.organizerLinks}>
+            <a href="/contact/?type=event" className={styles.organizerLink}>
+              <span className={styles.organizerLinkText}>
+                Tu organises des events entre femmes&nbsp;?
+                <strong>Fais-toi connaître</strong>
+              </span>
+              <span className={styles.organizerLinkArrow} aria-hidden="true">→</span>
+            </a>
+            <a href="/contact/?type=lieu" className={styles.organizerLink}>
+              <span className={styles.organizerLinkText}>
+                T&rsquo;as un lieu safe pour une Martinade&nbsp;?
+                <strong>Propose-le</strong>
+              </span>
+              <span className={styles.organizerLinkArrow} aria-hidden="true">→</span>
+            </a>
+          </div>
         </div>
 
         {/*
