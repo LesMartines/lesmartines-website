@@ -216,6 +216,21 @@
   margin-bottom: var(--space-3);
 }
 
+/* Argument "pourquoi candidater" (05/09/2026, repris de Partenaires.module.css) : même
+   traitement texte simple que .tabIntro juste au-dessus, pas un nouveau bloc de couleur
+   dans un formulaire qui en a déjà 2 (badge + bande lilas). */
+.brandBenefit {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--space-3);
+}
+
+.brandBenefit strong {
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
 /* Reprise de Partenaires.module.css (05/09/2026, "on peut le remettre dans le formulaire
    aussi comme info") mais SANS le fond lilas (05/09/2026, "trop de truc violet la on
    comprend plus rien") : ce formulaire a déjà .exclusiveBadge juste au-dessus, même

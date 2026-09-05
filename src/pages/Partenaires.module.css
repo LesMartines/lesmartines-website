@@ -157,6 +157,22 @@
   margin-bottom: var(--space-3);
 }
 
+/* Argument "pourquoi candidater" (05/09/2026) : texte simple, sans fond ni bordure,
+   pour rester au même niveau visuel que .subtitle juste au-dessus plutôt que de rivaliser
+   avec le badge/écusson qui portent déjà l'exclusivité. */
+.brandBenefit {
+  font-size: 15px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto var(--space-3);
+}
+
+.brandBenefit strong {
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
 /* Bande lilas pour le critère "au moins une femme à la tête" (05/09/2026, "faut le mettre
    en avant dans une bande lilas [...]" puis "ça ressemble trop à 'Sur candidature
    uniquement'") : une vraie bande pleine largeur (coins à peine arrondis, pas une pilule)

@@ -198,6 +198,19 @@ export default function Partenaires() {
               choisies une à une, pour ce qu&rsquo;elles apportent vraiment à notre
               communauté.
             </p>
+            {/* Argument "pourquoi candidater" (05/09/2026, "utilise tous les moyens
+                psychologiques marketing connus pour inciter les gens à candidater") :
+                la page vendait surtout l'exclusivité côté sélection ("on choisit"), sans
+                jamais dire concrètement ce que la marque y gagne. Ajouté avec des chiffres
+                déjà utilisés ailleurs sur le site (note appli, presse) plutôt que des
+                stats inventées pour l'occasion — réciprocité + autorité (la presse valide
+                déjà Les Martines) avant de demander la candidature. */}
+            <p className={styles.brandBenefit}>
+              En échange&nbsp;: une visibilité directe auprès d&rsquo;une communauté notée{' '}
+              <strong>4,8/5</strong> (450+ avis), sur une appli déjà repérée par{' '}
+              <strong>Les Echos</strong>, <strong>BFM Tech&amp;Co</strong> ou{' '}
+              <strong>Cosmopolitan</strong>.
+            </p>
             <p className={styles.womenLedBanner}>
               <svg
                 className={styles.womenLedHeart}

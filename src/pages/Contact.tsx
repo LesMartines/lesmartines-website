@@ -519,6 +519,17 @@ export default function Contact() {
                     On lit chaque candidature avec attention, mais on ne dit pas oui à
                     tout le monde&nbsp;: raconte-nous ce qui rend ta marque unique.
                   </p>
+                  {/* Même argument "pourquoi candidater" que /partenaires/ (05/09/2026) :
+                      quelqu'une qui arrive directement sur ce formulaire (lien partagé,
+                      ?type=marque) sans passer par la page dédiée n'a jamais vu cet
+                      argument — répété ici, au moment exact où elle décide de remplir
+                      le formulaire ou de repartir. */}
+                  <p className={styles.brandBenefit}>
+                    En échange&nbsp;: une visibilité directe auprès d&rsquo;une communauté
+                    notée <strong>4,8/5</strong> (450+ avis), sur une appli déjà repérée
+                    par <strong>Les Echos</strong>, <strong>BFM Tech&amp;Co</strong> ou{' '}
+                    <strong>Cosmopolitan</strong>.
+                  </p>
                   {/* Repris de /partenaires/ (05/09/2026, "on peut le remettre dans le
                       formulaire aussi comme info") : même bande/même critère, pour que la
                       marque le sache dès le formulaire, pas seulement sur la page dédiée. */}
