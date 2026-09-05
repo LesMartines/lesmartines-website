@@ -4,6 +4,13 @@ import qrCode from '../assets/qr/qr-scan-telecharger.png'
 
 const DISMISS_KEY = 'stickyQRDismissed'
 
+// ⚠️ TEMPORAIRE (05/09/2026, "pense a le changer là c'est pour tester") : lesmartines.app
+// n'est pas encore rattaché au projet Vercel (le vrai domaine sert encore l'ancien site,
+// voir la discussion du 05/09 sur le déploiement) — ce QR encode donc l'URL Vercel stable
+// du projet (https://lesmartines-website.vercel.app/telecharger/) plutôt que le vrai
+// domaine. À REGÉNÉRER (script Python qrcode/Pillow, voir l'historique de ce fichier pour
+// la recette exacte) avec https://www.lesmartines.app/telecharger/ dès que le domaine est
+// connecté dans Vercel (Settings → Domains).
 // Masqué sur mobile (voir CSS) : scanner un QR sur le téléphone qu'on tient déjà n'a pas
 // de sens, ce widget cible les visiteuses sur desktop.
 // QR régénéré (05/09/2026, "je voudrais que le QR code ramène vers une page où il y a les
