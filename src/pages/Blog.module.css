@@ -2,40 +2,53 @@
   padding: var(--space-6) 0;
 }
 
-/* Header en 2 colonnes, inspiré des blogs premium. */
+/* Header resserré (05/09/2026, "la fille avec le crayon est grave éloigné du titre [...]
+   il ne faut pas avoir un header trop gros") : en flex plutôt qu'en grid 2 colonnes —
+   l'image garde une taille fixe et modeste, collée au texte, au lieu de flotter loin au
+   centre d'une large colonne qui lui était dédiée. Marge sous le bloc réduite aussi, pour
+   un header plus compact dans l'ensemble. */
+/* Filet fin en bas (05/09/2026, "on a pas de démarcation avec le header") : même
+   traitement que .featured/.card plus bas sur cette page, pour marquer clairement la fin
+   du bloc d'intro plutôt que d'enchaîner directement sur le 1er article. */
 .header {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
+  display: flex;
   align-items: center;
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
+  justify-content: center;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid rgba(47, 50, 106, 0.14);
 }
 
 .headerText {
   text-align: left;
+  max-width: 460px;
 }
 
+/* 110px jugé trop petit ("elle sert à rien la", 05/09/2026) après le 1er resserrement —
+   190px reste collé au texte (voir .header) sans redevenir un gros bloc à part. */
 .headerImage {
-  width: 100%;
-  max-width: 320px;
-  margin: 0 auto;
+  flex: none;
+  width: 190px;
+  height: auto;
   display: block;
 }
 
 @media (max-width: 780px) {
   .header {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     text-align: center;
   }
 
   .headerText {
     text-align: center;
     order: 2;
+    max-width: none;
   }
 
   .headerImage {
     order: 1;
-    max-width: 200px;
+    width: 160px;
   }
 }
 
