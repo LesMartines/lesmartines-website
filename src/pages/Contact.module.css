@@ -175,6 +175,50 @@
   margin-bottom: var(--space-3);
 }
 
+/* Reprise de Partenaires.module.css (05/09/2026, "on peut le remettre dans le formulaire
+   aussi comme info") mais SANS le fond lilas (05/09/2026, "trop de truc violet la on
+   comprend plus rien") : ce formulaire a déjà .exclusiveBadge juste au-dessus, même
+   fond lilas — un 2e bloc lilas juste en dessous les faisait fusionner visuellement.
+   Texte simple + cœur, pas de bloc de couleur ici. */
+.womenLedBanner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: 12.5px;
+  text-align: left;
+  margin-bottom: var(--space-3);
+}
+
+.womenLedHeart {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  color: var(--color-primary);
+  animation: womenLedHeartbeat 1.6s ease-in-out infinite;
+}
+
+@keyframes womenLedHeartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.25);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .womenLedHeart {
+    animation: none;
+  }
+}
+
 /* Contraste renforcé (03/09/2026, "ça ressort pas") : le 1er essai (fond peach clair sur
    la carte blanche du formulaire) se fondait presque dans le fond. Fond plein violet +
    texte blanc, comme un vrai badge plutôt qu'une pastille discrète, pour que
@@ -321,16 +365,22 @@
   font-weight: 700;
   font-size: 16px;
   border: none;
-  border-radius: var(--radius-pill);
+  border-radius: 10px;
   padding: 15px 24px;
   margin-top: var(--space-1);
+  /* Ombre au repos ajoutée (05/09/2026, "pas d'ombre ni de hover") : avant, seul le hover
+     posait une ombre — sur tactile (donc la majorité du trafic), ce hover ne se déclenche
+     jamais, laissant le bouton plat en permanence. */
+  box-shadow: var(--shadow-soft);
   transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
-.submit:hover {
-  background: var(--color-primary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-card);
+@media (hover: hover) and (pointer: fine) {
+  .submit:hover {
+    background: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+  }
 }
 
 .hint {
@@ -470,7 +520,7 @@
   font-weight: 700;
   font-size: 14px;
   padding: 11px 22px;
-  border-radius: var(--radius-pill);
+  border-radius: 10px;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 

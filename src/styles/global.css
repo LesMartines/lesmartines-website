@@ -22,6 +22,11 @@ html {
      ce qui crée un espace visible d'une autre couleur entre la nav et le reste de la
      page au moment où on remonte. Même couleur que le fond du Hero (haut de page). */
   background: var(--color-peach);
+  /* Défilement fluide vers les ancres (05/09/2026, "mets un effet cool là c'est brut" —
+     le clic sur le bouton sticky "Je veux rejoindre Les Martines", qui pointe vers
+     "/#appli", faisait un saut instantané et sec). La règle prefers-reduced-motion
+     juste plus bas repasse en instantané pour qui a désactivé les animations. */
+  scroll-behavior: smooth;
 }
 
 body {

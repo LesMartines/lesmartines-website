@@ -51,6 +51,20 @@
   margin-bottom: var(--space-2);
 }
 
+.titleBreak {
+  display: block;
+}
+
+/* Titre forcé sur 3 lignes en desktop (04/09/2026, "je veux sur 3 lignrs en desktop") :
+   la colonne texte est bridée à 460px (voir .inner) pour laisser la place à la compo,
+   donc à 44px le titre entier retombait naturellement sur 4 lignes — on réduit un peu
+   la taille jusqu'au seuil qui tient exactement sur les 3 lignes des <br> ci-dessus. */
+@media (min-width: 781px) {
+  .title {
+    font-size: 40px;
+  }
+}
+
 .body {
   font-size: 16px;
   line-height: 1.6;
@@ -66,12 +80,17 @@
   font-weight: 700;
   text-decoration: none;
   padding: 14px 28px;
-  border-radius: var(--radius-pill);
-  transition: transform 0.15s ease;
+  border-radius: 10px;
+  /* --shadow-soft/--shadow-card (rgba sur base gris-bleu clair, pensées pour un fond
+     blanc) restent quasi invisibles sur ce bandeau indigo (05/09/2026, "sinon on le voit
+     pas") : ombre plus sombre et plus opaque ici pour vraiment se détacher du fond. */
+  box-shadow: 0 8px 24px rgba(20, 21, 46, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .cta:hover {
   transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(20, 21, 46, 0.4);
 }
 
 /* Collage : ratio calé sur la maquette envoyée par Marine (~920 x 810). Toutes les
@@ -412,8 +431,19 @@
     font-size: clamp(34px, 9vw, 44px);
   }
 
+  .titleBreak {
+    display: none;
+  }
+
   .inner {
     padding: 0 var(--space-2);
+  }
+
+  .cta {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   /* Agrandie seule, pas les autres éléments (04/09/2026, "grossi l'ecran de la map mais

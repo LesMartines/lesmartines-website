@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useHead } from '../lib/useHead'
 import Reveal from '../components/Reveal'
 import HighlightedText from '../components/HighlightedText'
@@ -15,6 +16,13 @@ import styles from './Partenaires.module.css'
 // défilant de l'accueil, voir Partenaires.module.css du dossier components) : un mur de
 // 30 logos très colorés se bat visuellement à plat, la couleur redevient une vraie
 // récompense au survol plutôt qu'un effet de plus qui s'ajoute au reste de la page.
+// Toutes les catégories utilisées par les cartes (voir data/partenaires.ts), dédupliquées
+// et dans leur ordre de première apparition (05/09/2026, "placer à un endroit toutes les
+// catégories qu'on a pour qu'elles soient visibles au début") : calculé depuis les
+// données plutôt que recopié à la main, pour ne jamais désynchroniser cette liste des
+// catégories réellement posées sur les cartes.
+const ALL_CATEGORIES = Array.from(new Set(PARTENAIRES.flatMap((p) => p.category ?? [])))
+
 function PartnerCard({ p }: { p: Partenaire }) {
   // Deux zones distinctes (02/09/2026, "on voit les carrés blancs des logos [...] on va
   // faire la partie logo avec un fond blanc et la partie texte en glassmorphisme") :
@@ -28,6 +36,13 @@ function PartnerCard({ p }: { p: Partenaire }) {
         <img src={p.logo} alt={p.name} className={styles.logo} loading="lazy" />
       </div>
       <div className={styles.textZone}>
+        {/* Catégorie(s) en discret au-dessus du nom (05/09/2026, "pour qu'on comprenne
+            direct ce que c'est [...] discret et premium") : petit texte capitalisé plutôt
+            qu'un badge/pill coloré, pour rester au niveau d'un repère visuel léger et pas
+            d'un élément qui capte l'oeil autant que le nom de la marque. */}
+        {p.category && p.category.length > 0 && (
+          <span className={styles.category}>{p.category.join(' · ')}</span>
+        )}
         <h2 className={styles.name}>{p.name}</h2>
         {p.description && <p className={styles.description}>{p.description}</p>}
       </div>
@@ -44,6 +59,23 @@ function PartnerCard({ p }: { p: Partenaire }) {
 }
 
 export default function Partenaires() {
+  // Filtre par catégorie (05/09/2026, "il faut que tu fasses des filtres finalement [...]
+  // par défaut on voit tout, et sinon on voit ce qu'on a envie de voir"). Tableau vide =
+  // état initial ET état "aucun filtre" : on voit tout et aucun bouton n'a l'air
+  // sélectionné (05/09/2026, "tant qu'on n'a pas cliqué une première fois"). Multi-sélection
+  // (05/09/2026, "on peut en sélectionner plusieurs si on veut") : une carte matche si elle
+  // porte AU MOINS UNE des catégories cochées (union, pas intersection — sélectionner
+  // "Beauté & soin" + "Mode & lingerie" élargit la vue, ne la réduit pas à 0 résultat).
+  // Pas de bouton "Toutes" séparé (retiré le 05/09/2026) : re-cliquer une catégorie déjà
+  // active la retire de la sélection, sur mobile comme sur desktop.
+  const [activeCategories, setActiveCategories] = useState<string[]>([])
+  const toggleCategory = (c: string) =>
+    setActiveCategories((prev) => (prev.includes(c) ? prev.filter((x) => x !== c) : [...prev, c]))
+  const visiblePartenaires =
+    activeCategories.length === 0
+      ? PARTENAIRES
+      : PARTENAIRES.filter((p) => p.category?.some((cat) => activeCategories.includes(cat)))
+
   useHead({
     title: 'Nos partenaires',
     description:
@@ -76,16 +108,66 @@ export default function Partenaires() {
               choisies une à une, pour ce qu&rsquo;elles apportent vraiment à notre
               communauté.
             </p>
+            {/* Critère de sélection sorti du sous-titre (05/09/2026, "il faudrait aussi
+                dire qu'on accepte les marques s'il y a au moins une femme à la tête du
+                projet" puis "faut le mettre en avant dans une bande lilas avec un coeur
+                svg au début qui clignote") : un vrai critère de candidature mérite mieux
+                qu'une phrase noyée dans un paragraphe — bande à part pour qu'il saute aux
+                yeux avant même de lire le reste. */}
+            <p className={styles.womenLedBanner}>
+              <svg
+                className={styles.womenLedHeart}
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M12 21s-6.716-4.35-9.428-8.03C.29 10.106.796 6.61 3.343 4.87c2.02-1.38 4.66-1.02 6.24.86L12 8.2l2.417-2.47c1.58-1.88 4.22-2.24 6.24-.86 2.547 1.74 3.053 5.236.771 8.1C18.716 16.65 12 21 12 21z" />
+              </svg>
+              L&rsquo;entrepreneuriat féminin à l&rsquo;honneur&nbsp;: au moins une femme
+              aux commandes de ta marque
+            </p>
             <a href="/contact/?type=marque" className={styles.becomeButton}>
               Je candidate pour être sur Les Martines
             </a>
+            {/* Filtres par catégorie (05/09/2026, "il faut que tu fasses des filtres
+                finalement [...] par défaut on voit tout, et sinon on voit ce qu'on a envie
+                de voir") : une pill par catégorie, multi-sélection possible (05/09/2026,
+                "on peut en sélectionner plusieurs si on veut"). Pas de bouton "Toutes"
+                (voir commentaire sur activeCategories plus haut) : re-cliquer une
+                catégorie déjà active la retire de la sélection. */}
+            <div className={styles.categoryLegend} role="group" aria-label="Filtrer par catégorie">
+              {ALL_CATEGORIES.map((c) => {
+                const isActive = activeCategories.includes(c)
+                return (
+                  <button
+                    key={c}
+                    type="button"
+                    className={`${styles.categoryLegendItem} ${isActive ? styles.categoryLegendItemActive : ''}`}
+                    aria-pressed={isActive}
+                    onClick={() => toggleCategory(c)}
+                  >
+                    {c}
+                    {/* "×" toujours présent mais masqué au repos (05/09/2026, "faut
+                        comprendre que ça se désélectionne" puis "ça fait sauter sur 3
+                        lignes quand on sélectionne") : afficher/masquer un texte en plus
+                        changeait la largeur de la pill au clic, ce qui décalait tout le
+                        wrap sur une ligne de plus. En réservant toujours sa place (juste
+                        invisible au repos), la largeur ne bouge jamais. */}
+                    <span className={styles.categoryLegendItemClose} aria-hidden="true">
+                      {' '}
+                      ×
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </Reveal>
       </div>
 
       <div className="container">
         <div className={styles.grid}>
-          {PARTENAIRES.map((p, i) => (
+          {visiblePartenaires.map((p, i) => (
             <Reveal key={p.name} delay={Math.min(i * 0.03, 0.3)}>
               <PartnerCard p={p} />
             </Reveal>

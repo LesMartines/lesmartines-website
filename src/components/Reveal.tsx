@@ -28,12 +28,19 @@ export default function Reveal({ children, delay = 0, className, immediate = fal
     ? { animate: { opacity: 1, y: 0, scale: 1 } }
     : {
         whileInView: { opacity: 1, y: 0, scale: 1 },
-        // Marge réduite (04/09/2026, "ça ne zoom pas vraiment au moment où je suis
-        // dessus") : -80px déclenchait l'animation bien avant que la section soit
-        // vraiment sous les yeux (elle était déjà terminée en arrivant dessus au
-        // scroll normal) — -20px la fait jouer plus près du moment où on la regarde
-        // réellement.
-        viewport: { once: true, margin: '-20px' },
+        // Marge asymétrique (05/09/2026, "il y a un espèce de bug quand on slide, ça
+        // fait des trous dans les cards, ça s'affiche pas au fur et à mesure en
+        // desktop") : sur une grille dense (ex. les 30 cartes de /partenaires/), une
+        // marge négative sur TOUS les côtés (l'ancienne '-20px', voir 04/09/2026)
+        // rétrécit aussi la zone de déclenchement en bas — le bord par lequel les
+        // cartes arrivent en scrollant. Un scroll rapide/momentum (trackpad) peut alors
+        // faire "sauter" un élément de "pas encore dans la zone" à "déjà remonté au-
+        // dessus" entre 2 callbacks IntersectionObserver, sans jamais déclencher son
+        // whileInView : la carte reste bloquée à opacity:0 pour toujours (once:true).
+        // Élargir seulement le bas (au lieu de le rétrécir) donne plus de marge à
+        // l'observer pour l'attraper avant qu'il ne soit trop tard, sans réintroduire
+        // le souci du 04/09 (top/left/right restent resserrés).
+        viewport: { once: true, margin: '-20px -20px 60px -20px' },
       }
 
   return (

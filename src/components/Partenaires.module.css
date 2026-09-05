@@ -286,7 +286,7 @@ a.card:hover {
   gap: 8px;
   background: none;
   border: 1.5px solid rgba(96, 102, 216, 0.35);
-  border-radius: var(--radius-pill);
+  border-radius: 10px;
   padding: 12px 24px;
   font-weight: 700;
   font-size: 14.5px;

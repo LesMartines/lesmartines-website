@@ -1,0 +1,109 @@
+.bar {
+  display: none;
+}
+
+@media (max-width: 780px) {
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    background: var(--color-lavender-pale);
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -10px 30px rgba(47, 50, 106, 0.18);
+    padding: 12px var(--space-2);
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.button {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-align: center;
+  /* Dégradé repris de la maquette Figma (05/09/2026, node "ct1" 10757:26508). */
+  background-image: linear-gradient(140deg, rgba(244, 180, 178, 0) 52.5%, rgb(96, 102, 216) 91.6%),
+    linear-gradient(90deg, rgb(206, 160, 188) 0%, rgb(206, 160, 188) 100%);
+  color: var(--color-white);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(47, 50, 106, 0.3);
+  transition: transform 0.15s ease;
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+/* Effet radar (05/09/2026, "un effet radar un peu plus premium mais que ça se voit quand
+   même") : un seul anneau fin qui respire lentement, plutôt que le double anneau saturé
+   des pins de la carte (.dotRing) — plus discret/chic pour un bouton de CTA permanent à
+   l'écran, mais un tirage large + une opacité de départ franche pour rester visible sur
+   le dégradé. */
+.button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid rgba(255, 255, 255, 0.8);
+  animation: radarPulse 2.6s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes radarPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  70% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: scale(1.18);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button::before {
+    animation: none;
+  }
+}
+
+.close {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--color-white);
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}

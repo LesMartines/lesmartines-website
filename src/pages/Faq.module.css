@@ -281,7 +281,11 @@
 
   .row {
     grid-template-columns: 1fr;
-    text-align: center;
+    /* text-align:left (05/09/2026, "il faut aligner à gauche le texte") : le centrage
+       hérité par .answer (voir plus bas) rendait le texte de réponse difficile à lire en
+       colonne étroite — l'image garde son propre centrage via margin:0 auto sur
+       .rowImage, qui ne dépend pas de ce text-align. */
+    text-align: left;
   }
 
   .rowImage {

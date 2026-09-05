@@ -74,7 +74,7 @@
   font-weight: 700;
   font-size: 15px;
   padding: 14px 26px;
-  border-radius: var(--radius-pill);
+  border-radius: 10px;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }

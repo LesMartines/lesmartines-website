@@ -91,4 +91,18 @@
     height: auto;
     width: 100%;
   }
+
+  /* sizeSmall exclu du flex:1/width:100% généralisé ci-dessus (05/09/2026, "dans le
+     footer les logos sont super gros") : ce badge est utilisé dans des colonnes bien
+     plus larges (Footer, formulaire Contact) que le Hero/CtaFinal pour lesquels la
+     généralisation avait été pensée — y grandir à 50% de la largeur du conteneur donnait
+     des badges bien plus gros que les 42px de hauteur prévus. Repasse en taille
+     naturelle (flex-grow désactivé, la hauteur fixe de .sizeSmall reprend la main). */
+  .wrap.sizeSmall .button {
+    flex: 0 1 auto;
+  }
+
+  .wrap.sizeSmall .badge {
+    width: auto;
+  }
 }

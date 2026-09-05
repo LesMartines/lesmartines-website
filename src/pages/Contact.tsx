@@ -449,6 +449,21 @@ export default function Contact() {
                     On lit chaque candidature avec attention, mais on ne dit pas oui à
                     tout le monde&nbsp;: raconte-nous ce qui rend ta marque unique.
                   </p>
+                  {/* Repris de /partenaires/ (05/09/2026, "on peut le remettre dans le
+                      formulaire aussi comme info") : même bande/même critère, pour que la
+                      marque le sache dès le formulaire, pas seulement sur la page dédiée. */}
+                  <p className={styles.womenLedBanner}>
+                    <svg
+                      className={styles.womenLedHeart}
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 21s-6.716-4.35-9.428-8.03C.29 10.106.796 6.61 3.343 4.87c2.02-1.38 4.66-1.02 6.24.86L12 8.2l2.417-2.47c1.58-1.88 4.22-2.24 6.24-.86 2.547 1.74 3.053 5.236.771 8.1C18.716 16.65 12 21 12 21z" />
+                    </svg>
+                    L&rsquo;entrepreneuriat féminin à l&rsquo;honneur&nbsp;: au moins une
+                    femme aux commandes de ta marque
+                  </p>
 
                   <div className={styles.field}>
                     <label htmlFor="brand-name" className={styles.label}>

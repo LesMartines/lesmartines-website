@@ -77,12 +77,21 @@ export default function EventsPromo() {
             <span aria-hidden="true">👀</span> Ça arrive soon
           </span>
           <h2 id="events-title" className={styles.title}>
-            Découvre bientôt les events 100% entre meufs près de chez toi
+            Découvre bientôt les
+            <br className={styles.titleBreak} /> events 100% entre
+            <br className={styles.titleBreak} /> meufs près de chez toi
           </h2>
           <p className={styles.body}>
             Des Martinades organisées par des Martines, des papotages en ligne, ou des
             sorties chez nos partenaires… Rejoins des events safe près de chez toi.
           </p>
+          {/* CTA réintroduit (05/09/2026, "être prévenue au lancement") : pas de vrai
+              formulaire de collecte d'email sur le site, donc l'action honnête et utile
+              reste de renvoyer vers le téléchargement de l'app (#appli, bloc Hero) — les
+              events y seront annoncés dès leur sortie. */}
+          <a href="#appli" className={styles.cta}>
+            Être prévenue au lancement
+          </a>
         </div>
 
         {/*

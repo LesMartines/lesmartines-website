@@ -154,27 +154,210 @@
   margin-bottom: var(--space-3);
 }
 
-/* Bouton principal repris de StoreButtons/CtaFinal (couleur, forme pilule, hover
-   "premium" en léger soulèvement + ombre) pour rester dans le même vocabulaire visuel
-   que le reste du site plutôt que d'inventer un nouveau style de bouton. */
+/* Bande lilas pour le critère "au moins une femme à la tête" (05/09/2026, "faut le mettre
+   en avant dans une bande lilas [...]" puis "ça ressemble trop à 'Sur candidature
+   uniquement'") : une vraie bande pleine largeur (coins à peine arrondis, pas une pilule)
+   pour se démarquer nettement du badge .badge (pilule fine, fond blanc translucide) tout
+   en haut de la page — jamais confondre les 2. */
+.womenLedBanner {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  background: var(--color-lilas-light);
+  color: var(--color-primary-dark);
+  font-weight: 600;
+  font-size: 12.5px;
+  text-align: left;
+  padding: 8px 18px 8px 8px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 14px rgba(47, 50, 106, 0.08);
+  margin-bottom: var(--space-3);
+}
+
+/* Médaillon retiré (05/09/2026, "enlève le rond blanc, laisse juste le coeur qui bat") :
+   le cœur bat directement, sans halo ni fond, animation portée sur le SVG lui-même. */
+.womenLedHeart {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  color: var(--color-primary);
+  animation: womenLedHeartbeat 1.6s ease-in-out infinite;
+}
+
+@keyframes womenLedHeartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.25);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .womenLedHeart {
+    animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .womenLedBanner {
+    padding: 10px 16px;
+    gap: 8px;
+  }
+}
+
+/* Dégradé Figma + ombre "cocoon" (05/09/2026, "mettre dégrader sur le bouton [...] avec
+   l'ombre") : même dégradé que le bouton de la StickyAppBar (node Figma "ct1"
+   10757:26508, rose pâle -> indigo), plutôt que l'aplat violet uni utilisé jusqu'ici. */
 .becomeButton {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--color-primary);
+  background-image: linear-gradient(140deg, rgba(244, 180, 178, 0) 52.5%, rgb(96, 102, 216) 91.6%),
+    linear-gradient(90deg, rgb(206, 160, 188) 0%, rgb(206, 160, 188) 100%);
   color: var(--color-white);
   font-weight: 700;
   font-size: 15px;
   padding: 14px 28px;
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-soft);
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(96, 102, 216, 0.35);
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .becomeButton:hover {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 12px 28px rgba(96, 102, 216, 0.42);
+}
+
+/* Filtres par catégorie (05/09/2026, "il faut que tu fasses des filtres finalement") :
+   même famille discrète que .category sur les cartes (petites capitales, pas de fond
+   plein) pour rester cohérent, juste posée sur liseré léger pour se détacher un minimum
+   du fond de la section hero. Devenus des <button> (avant un simple <li> décoratif). */
+/* Largeur volontairement plus large que .heroInner (620px) sur desktop (05/09/2026,
+   "mettre que 2 lignes de pills en desktop") : à 620px les 7 pills (× compris, toujours
+   réservé même masqué) tombaient sur 3 lignes ; mesuré empiriquement, il faut au moins
+   ~660px pour un wrap greedy à 2 lignes, 700px avec un peu de marge de sécurité. Centrée
+   indépendamment de .heroInner via left:50%/translateX (même recette que .visual dans
+   EventsPromo.module.css pour un élément plus large que son parent). */
+.categoryLegend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 14px;
+  margin-top: var(--space-3);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  max-width: 100vw;
+}
+
+@media (max-width: 640px) {
+  .categoryLegend {
+    width: auto;
+    left: auto;
+    transform: none;
+  }
+}
+
+.categoryLegendItem {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-primary-dark);
+  opacity: 0.7;
+  padding: 6px 14px;
+  background: none;
+  border: 1px solid rgba(47, 50, 106, 0.14);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, background-color 0.2s ease, border-color 0.2s ease,
+    color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover : contour + texte lilas, intérieur vide (05/09/2026, "pourquoi on essaye pas
+   contour lilas, intérieur vide et texte lilas ?") : --color-lilas-light (#ececff) est
+   trop pâle pour porter du texte/contour lisible, donc --color-primary (le violet
+   "lilas" le plus saturé du site) ici plutôt qu'un aplat de fond.
+   Restreint aux vrais pointeurs de souris (05/09/2026, "quand je clique sur le filtre,
+   que je clique sur la croix il reste quand même sélectionné") : sur tactile, il n'y a
+   pas de curseur qui "sort" de l'élément après un tap, le navigateur laisse l'état
+   :hover collé indéfiniment — la pill déselectionnée avait donc encore le même style
+   visuel (contour + texte lilas) que .categoryLegendItemActive, donnant l'impression
+   qu'elle était toujours sélectionnée alors que le filtre était bien retiré. */
+@media (hover: hover) and (pointer: fine) {
+  .categoryLegendItem:hover {
+    opacity: 1;
+    background: none;
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(47, 50, 106, 0.1);
+  }
+}
+
+/* Actif : même contour lilas que le hover, poids de police accentué pour rester lisible
+   comme état "sélectionné" sans revenir à un aplat de couleur. */
+.categoryLegendItemActive {
+  opacity: 1;
+  background: none;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+.categoryLegendItemActive:hover {
+  border-color: var(--color-primary);
+}
+
+.categoryLegendItemClose {
+  font-weight: 700;
+  visibility: hidden;
+}
+
+.categoryLegendItemActive .categoryLegendItemClose {
+  visibility: visible;
+}
+
+/* Rangée scrollable en mobile (05/09/2026, "au niveau du mobile, ce n'est pas hyper
+   pratique") : 8 pills qui passaient sur 4 lignes en colonne étroite, pénible à scanner
+   et à taper. Une seule ligne qui glisse horizontalement, comme les filtres d'/events/,
+   plutôt qu'un wrap qui allonge la hero de plusieurs lignes. */
+@media (max-width: 640px) {
+  .categoryLegend {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    /* overflow-x: auto sans overflow-y explicite force aussi l'axe vertical en "auto"
+       (comportement standard CSS, overflow-y:visible ne suffit pas à l'annuler) : le
+       petit soulèvement + l'ombre du hover (voir .categoryLegendItem:hover) se faisaient
+       couper en haut/en bas par ce scroll container. Le padding vertical ci-dessous
+       laisse la place à ce débordement plutôt que de le supprimer. */
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-left: calc(var(--space-2) * -1);
+    margin-right: calc(var(--space-2) * -1);
+    padding: 6px var(--space-2) 10px;
+  }
+
+  .categoryLegend::-webkit-scrollbar {
+    display: none;
+  }
+
+  .categoryLegendItem {
+    flex: none;
+    scroll-snap-align: start;
+    white-space: nowrap;
+  }
 }
 
 /* Grille de cartes (01/09/2026, "rendre la page plus sympa, qu'elles donnent envie") :
@@ -201,20 +384,32 @@
   min-height: 296px;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-soft);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  /* Fond blanc plein sur toute la carte (05/09/2026, "ce n'est pas très beau finalement,
+     moitié transparent, moitié blanc [...] rendre plus premium") : le glassmorphisme de
+     .textZone laissait deviner le dégradé lavande derrière par endroits selon la carte,
+     jamais tout à fait la même teinte d'une carte à l'autre — plus incohérent que
+     "premium". Un fond uni + une bordure fine + une ombre plus travaillée donnent un
+     rendu carte plus net et plus haut de gamme. */
+  background: var(--color-white);
+  border: 1.5px solid rgba(47, 50, 106, 0.06);
+  /* Ombre en 2 couches, plus diffuse (05/09/2026, "tu peux faire mieux ?") : un liseré
+     très serré pour détacher net le bord de la carte + une ombre large/très douce en
+     dessous pour la faire "flotter" plutôt qu'un simple aplat de shadow-soft. */
+  box-shadow: 0 1px 3px rgba(47, 50, 106, 0.06), 0 20px 40px -16px rgba(47, 50, 106, 0.16);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
   text-decoration: none;
   color: inherit;
 }
 
 a.card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-card);
+  transform: translateY(-8px);
+  border-color: rgba(96, 102, 216, 0.4);
+  box-shadow: 0 1px 3px rgba(47, 50, 106, 0.06), 0 28px 48px -16px rgba(47, 50, 106, 0.24);
 }
 
-/* Fond blanc plein (02/09/2026, "on voit les carrés blancs des logos [...] on va faire
-   la partie logo avec un fond blanc") : beaucoup de logos sources ont déjà leur propre
-   carré blanc, un fond transparent derrière aurait juste déplacé le problème. */
+/* Même fond que .textZone (voir plus haut) : les logos gardent leur propre carré blanc
+   si besoin, la seule chose qui change désormais entre les 2 zones est la ligne de
+   séparation ci-dessous, pas une différence de fond. */
 .logoWrap {
   display: flex;
   align-items: center;
@@ -225,45 +420,74 @@ a.card:hover {
   background: var(--color-white);
 }
 
-/* Zone texte en glassmorphisme (02/09/2026) : fond blanc semi-transparent + flou du
-   dégradé de la section derrière — même famille que le badge "Sur candidature
-   uniquement" plus haut sur cette page. */
 .textZone {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: var(--space-3);
-  background: rgba(255, 255, 255, 0.55);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  transition: background-color 0.25s ease;
-}
-
-a.card:hover .textZone {
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--color-white);
+  border-top: 1px solid rgba(47, 50, 106, 0.07);
 }
 
 /* Niveaux de gris au repos, couleur au survol (01/09/2026, même recette que le bandeau
    défilant de l'accueil) : 30 cartes identiques avec des logos déjà très colorés font
-   vite "mur uniforme" à plat, la couleur redevient une vraie récompense au survol. */
+   vite "mur uniforme" à plat, la couleur redevient une vraie récompense au survol. Léger
+   zoom ajouté le 05/09/2026 pour donner un peu plus de vie au hover. */
 .logo {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
   filter: grayscale(100%);
-  transition: filter 0.3s ease;
+  transition: filter 0.3s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card:hover .logo {
+/* a.card uniquement, pas .card (05/09/2026, "amélioration sur cette page" -> carte sans
+   lien) : quelques marques n'ont pas de href (voir Partenaires.tsx, PARTENAIRES sans
+   `href` retombent sur un <div>, pas un <a>) — leur carte ne doit plus réagir au survol
+   comme si elle menait quelque part. */
+a.card:hover .logo {
   filter: grayscale(0%);
+  transform: scale(1.06);
+}
+
+/* Discret et premium (05/09/2026) : petites capitales espacées, couleur atténuée — un
+   repère de lecture, pas un badge qui capte l'oeil avant le nom de la marque. */
+.category {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  opacity: 0.65;
+  margin-bottom: 4px;
 }
 
 .name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 19px;
   color: var(--color-primary-dark);
   margin-bottom: 6px;
+}
+
+/* Flèche qui glisse depuis le nom au survol (05/09/2026) : affordance discrète qui
+   rappelle que la carte mène vers le site de la marque, sans ajouter de bouton/texte
+   permanent qui alourdirait chacune des 30 cartes. */
+.name::after {
+  content: '→';
+  color: var(--color-primary);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+a.card:hover .name::after {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .description {
@@ -302,6 +526,16 @@ a.card:hover .textZone {
   margin: 0 auto var(--space-3);
   color: var(--color-text-secondary);
   line-height: 1.6;
+}
+
+/* 2 lignes en desktop (05/09/2026) : une par phrase, en s'appuyant sur le <br /> déjà
+   posé dans le JSX entre les 2 phrases (Partenaires.tsx). 480px faisait retomber la 1re
+   phrase ("On ne retient pas [...] même attention.") sur 2 lignes à elle seule (mesuré
+   ~657px à 16px/Inter) ; 680px la fait tenir sur une seule ligne, avec un peu de marge. */
+@media (min-width: 641px) {
+  .closingText {
+    max-width: 680px;
+  }
 }
 
 @media (max-width: 980px) {
