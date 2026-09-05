@@ -9,9 +9,13 @@
   margin: 0 0 var(--space-5);
 }
 
+/* Agrandi (05/09/2026, "le titre est un peu petit sur desktop non ?") : plafonné à 32px,
+   ce titre restait nettement plus petit que tous les autres titres de section du site
+   (44px sur EventsPromo/CtaFinal, 46px sur CommunityStats, 52px sur Partenaires/ValeursBloc)
+   — aligné sur la même famille clamp() que CtaFinal. */
 .sectionTitle {
   text-align: center;
-  font-size: clamp(24px, 3vw, 32px);
+  font-size: clamp(24px, 4vw, 44px);
   margin-bottom: var(--space-5);
 }
 
