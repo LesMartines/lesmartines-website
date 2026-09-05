@@ -313,6 +313,9 @@ export default function Blog() {
                       <span className={styles.eyebrow}>{post.category}</span>
                       <h3 className={styles.cardTitle}>{post.title}</h3>
                       <p className={styles.cardExcerpt}>{post.excerpt}</p>
+                      <span className={styles.readMoreSmall}>
+                        Lire l&rsquo;article <span aria-hidden="true">→</span>
+                      </span>
                       <span className={styles.cardDate}>{post.date}</span>
                     </div>
                   </a>

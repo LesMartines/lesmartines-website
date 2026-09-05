@@ -335,6 +335,24 @@
   margin-bottom: var(--space-4);
   border-bottom: 1px solid rgba(47, 50, 106, 0.12);
   text-decoration: none;
+  transition: transform 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-3px);
+  }
+}
+
+/* "Lire l'article" ajouté sur les cartes de la grille (05/09/2026, "tu penses que tu
+   peux encore ameliorer les cards... pour rendre ca encore plus sympa et premium") :
+   jusqu'ici seule la une avait ce CTA, les cartes de la grille n'avaient qu'un extrait +
+   une date, sans invitation claire à cliquer. */
+.readMoreSmall {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: 8px;
 }
 
 .cardImageWrap {
