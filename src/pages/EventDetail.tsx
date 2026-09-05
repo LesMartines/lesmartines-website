@@ -237,6 +237,10 @@ export default function EventDetail() {
       ? `${event.title}, ${event.dateLabel} à ${event.city}. ${event.description ?? ''} Réserve ta place dans l'appli Les Martines.`
       : "Cet event n'existe pas ou plus.",
     path: `/events/${id}/`,
+    // Photo propre à l'event plutôt que le Hero générique de la home (05/09/2026,
+    // "og:image par event") : un lien partagé ("regarde ce Yoga & Tartines !") donne
+    // envie de CET event précis, pas de l'appli en général.
+    image: event ? IMAGES[event.image] : undefined,
     // Page pas encore publiée (03/09/2026, "Non, pas tout de suite" pour brancher les
     // cards) : même logique de checklist que /events/ elle-même, voir Events.tsx.
     noindex: true,

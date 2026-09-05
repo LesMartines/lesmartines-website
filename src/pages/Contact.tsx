@@ -7,6 +7,7 @@ import HighlightedText from '../components/HighlightedText'
 import heartIcon from '../assets/hero/heart.png'
 import { SOCIALS } from '../components/SocialIcons'
 import StoreButtons from '../components/StoreButtons'
+import { UserIcon, MailIcon, MessageIcon, LinkIcon, CalendarIcon, PinIcon, TagIcon, AtIcon } from '../components/FormIcons'
 import { StarRating } from './Events'
 import styles from './Contact.module.css'
 
@@ -34,73 +35,6 @@ const PRO_MODES: Mode[] = ['marque', 'event', 'lieu']
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const URL_RE = /^https?:\/\/.+\..+/
-
-// Petites icônes discrètes dans chaque champ (01/09/2026, "améliore le formulaire" — après
-// avoir proposé "des petites icônes à l'intérieur de chaque champ [...] signal premium
-// classique") : même famille visuelle en traits que SocialIcons.tsx, plutôt que des icônes
-// importées d'une lib externe pour rester cohérent avec le reste du site.
-function UserIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="10" cy="6.5" r="3.5" />
-      <path d="M3 17c0-3.3 3.1-6 7-6s7 2.7 7 6" />
-    </svg>
-  )
-}
-
-function MailIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2.5" y="4.5" width="15" height="11" rx="2" />
-      <path d="M3 6l7 5 7-5" />
-    </svg>
-  )
-}
-
-function MessageIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M2.5 5.5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H8l-4 3v-3H4.5a2 2 0 0 1-2-2v-6Z" />
-    </svg>
-  )
-}
-
-function LinkIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M8.5 11.5 11.5 8.5" />
-      <path d="M9.5 5.5 11 4a3 3 0 0 1 4.2 4.2l-1.5 1.5" />
-      <path d="M10.5 14.5 9 16a3 3 0 0 1-4.2-4.2l1.5-1.5" />
-    </svg>
-  )
-}
-
-function CalendarIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2.5" y="4" width="15" height="13" rx="2" />
-      <path d="M6 2.5v3M14 2.5v3M2.5 8h15" />
-    </svg>
-  )
-}
-
-function PinIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M10 18s6-5.2 6-10a6 6 0 0 0-12 0c0 4.8 6 10 6 10Z" />
-      <circle cx="10" cy="8" r="2.2" />
-    </svg>
-  )
-}
-
-function TagIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M10.6 2.5H16a1 1 0 0 1 1 1v5.4a1 1 0 0 1-.3.7l-6.6 6.6a1 1 0 0 1-1.4 0l-5.4-5.4a1 1 0 0 1 0-1.4l6.6-6.6a1 1 0 0 1 .7-.3Z" />
-      <circle cx="13" cy="6" r="1" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
 
 // Confettis en CSS pur (01/09/2026, "un petit message cool [...] avec une animation sympa
 // de félicitation") : une poignée de spans colorés qui tombent en tournant, délais et
@@ -185,15 +119,6 @@ function EmailFallback() {
         {copied ? 'Copié !' : 'Copier'}
       </button>
     </p>
-  )
-}
-
-function AtIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="10" cy="10.5" r="3.2" />
-      <path d="M13.2 10.5V12a2 2 0 0 0 4 0V10a7.2 7.2 0 1 0-3 5.85" />
-    </svg>
   )
 }
 
@@ -769,12 +694,16 @@ export default function Contact() {
                       co-organiser aussi carrément" et "c'est nous qui décidons s'ils
                       rentrent dans l'appli, on sélectionne") : référencer des events qui
                       tournent déjà OU co-organiser un nouvel event avec Les Martines —
-                      la sélection reste réelle dans les 2 cas, pas automatique. */}
+                      la sélection reste réelle dans les 2 cas, pas automatique.
+                      "On te répond dans tous les cas" (05/09/2026, envisagé puis retiré
+                      un badge "Bientôt" — "les gens vont se dire on contact plus tard" —
+                      remplacé par cette garantie de réponse, qui répond au vrai souci
+                      (être laissée sans nouvelles) sans donner d'excuse pour attendre). */}
                   <p className={styles.tabIntro}>
                     Tu organises déjà des events 100% entre femmes, ou t&rsquo;as une idée
                     à monter avec nous (atelier, sortie, rencontre pro...)&nbsp;? On
-                    sélectionne ceux qu&rsquo;on pousse à notre communauté&nbsp;:
-                    présente-nous ton projet.
+                    sélectionne ceux qu&rsquo;on pousse à notre communauté, et on te
+                    répond dans tous les cas&nbsp;: présente-nous ton projet.
                   </p>
 
                   <div className={styles.field}>
@@ -909,7 +838,8 @@ export default function Contact() {
                   <p className={styles.tabIntro}>
                     T&rsquo;as un café, une salle, un espace pro ou un autre endroit
                     safe&nbsp;? On choisit les lieux qu&rsquo;on propose aux Martines qui
-                    organisent une Martinade&nbsp;: présente-nous le tien.
+                    organisent une Martinade, et on te répond dans tous les
+                    cas&nbsp;: présente-nous le tien.
                   </p>
 
                   <div className={styles.row}>

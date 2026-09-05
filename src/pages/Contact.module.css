@@ -10,6 +10,16 @@
   text-align: center;
 }
 
+/* 2 lignes en desktop (05/09/2026) : à 640px, le sous-titre retombait sur 3 lignes
+   ("T'es une marque, une organisatrice d'events ou un lieu qui veut nous rejoindre ?"
+   rallongé le 05/09 pour couvrir les 3 profils pro) ; mesuré ~680px pour repasser à 2,
+   700px avec un peu de marge. */
+@media (min-width: 641px) {
+  .header {
+    max-width: 700px;
+  }
+}
+
 .title {
   font-size: clamp(36px, 6vw, 60px);
   color: var(--color-primary);
@@ -101,7 +111,10 @@
    au-dessus grâce au z-index négatif dans CE contexte d'empilement précis). */
 .cardWrap {
   position: relative;
-  max-width: 560px;
+  /* 560px -> 720px (05/09/2026, "un peu plus large sur desktop") : la carte semblait
+     étriquée sur grand écran, surtout avec les 3 sous-onglets pro et les champs en
+     rangée (.row) qui gagnent à respirer davantage. */
+  max-width: 720px;
   margin: 0 auto;
 }
 
@@ -255,7 +268,13 @@
    l'ombre) : --shadow-soft (4px d'offset) donnait l'impression que le badge "tombe" trop
    bas ; 2px + un flou un peu réduit pour rester discret mais plus posé/centré. */
 .exclusiveBadge {
-  display: inline-block;
+  /* display:table (05/09/2026, "faut le centrer") : inline-block dans un <form> (bloc,
+     aligné à gauche par défaut) ne peut pas être centré par un simple margin:auto —
+     table le peut tout en gardant une largeur au contenu (pas de largeur 100% comme un
+     bloc classique). */
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
   font-weight: 800;
   font-size: 12px;
   letter-spacing: 0.03em;

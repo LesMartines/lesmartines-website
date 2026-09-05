@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom'
 import Nav from './Nav'
 import Footer from './Footer'
 import StickyAppBar from './StickyAppBar'
+import StickyQR from './StickyQR'
 
 export default function Layout() {
   const location = useLocation()
@@ -45,6 +46,12 @@ export default function Layout() {
       </main>
       <Footer />
       {!hasOwnStickyBar && !hidesStickyBar && <StickyAppBar />}
+      {/* Pendant desktop de StickyAppBar (05/09/2026, "on branche" — composant déjà codé
+          le 27/08/2026 mais jamais relié à Layout) : StickyAppBar cible le mobile (voir
+          son CSS, masqué au-dessus de 780px), ce widget cible le desktop (masqué en
+          dessous de 768px) où les boutons App Store/Google Play ne sont pas cliquables
+          depuis l'ordinateur — mêmes pages exclues, même raisonnement. */}
+      {!hasOwnStickyBar && !hidesStickyBar && <StickyQR />}
     </>
   )
 }

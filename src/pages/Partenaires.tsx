@@ -3,6 +3,7 @@ import { useHead } from '../lib/useHead'
 import Reveal from '../components/Reveal'
 import HighlightedText from '../components/HighlightedText'
 import { PARTENAIRES, type Partenaire } from '../data/partenaires'
+import { TagIcon, CalendarIcon, PinIcon } from '../components/FormIcons'
 import styles from './Partenaires.module.css'
 
 // Page dédiée (01/09/2026, "fais moi la page partenaire en t'inspirant de cette page [...]
@@ -23,35 +24,6 @@ import styles from './Partenaires.module.css'
 // catégories réellement posées sur les cartes.
 const ALL_CATEGORIES = Array.from(new Set(PARTENAIRES.flatMap((p) => p.category ?? [])))
 
-// Icônes locales (même recette que Contact.tsx : petites icônes en traits, pas de lib
-// externe) réutilisées pour les 3 profils d'affiliation ci-dessous.
-function TagIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M10.6 2.5H16a1 1 0 0 1 1 1v5.4a1 1 0 0 1-.3.7l-6.6 6.6a1 1 0 0 1-1.4 0l-5.4-5.4a1 1 0 0 1 0-1.4l6.6-6.6a1 1 0 0 1 .7-.3Z" />
-      <circle cx="13" cy="6" r="1" fill="currentColor" stroke="none" />
-    </svg>
-  )
-}
-
-function CalendarIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2.5" y="4" width="15" height="13" rx="2" />
-      <path d="M6 2.5v3M14 2.5v3M2.5 8h15" />
-    </svg>
-  )
-}
-
-function PinIcon() {
-  return (
-    <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M10 18s6-5.2 6-10a6 6 0 0 0-12 0c0 4.8 6 10 6 10Z" />
-      <circle cx="10" cy="8" r="2.2" />
-    </svg>
-  )
-}
-
 // 3 profils d'affiliation (05/09/2026, "on parle pas que des marques c'est de
 // l'affiliation [...] faudrait pas un espace pro ?") : cette page ne montrait jusqu'ici
 // que le profil "marque" (30 logos + candidature), sans aucune visibilité pour les 2
@@ -68,6 +40,11 @@ function PinIcon() {
 // lieu par sa gérante. Les 3 profils sont sur sélection, pas seulement la marque : "on
 // choisit" explicite plutôt qu'implicite pour rester vendeur (exclusivité =
 // désirabilité) sur les 3 cartes, pas juste celle des marques.
+// Pas de badge "Bientôt" sur event/lieu (05/09/2026, envisagé puis retiré : "les gens
+// vont se dire on contact plus tard") : même honnête, un signal "ça arrive bientôt"
+// risquait de donner une excuse pour repousser la candidature plutôt que de la
+// remplir maintenant — on garde juste "on sélectionne" (voir plus bas), sans mention de
+// calendrier.
 const AFFILIATION_PROFILES = [
   {
     Icon: TagIcon,

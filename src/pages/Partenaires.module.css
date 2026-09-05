@@ -429,6 +429,14 @@
   margin-bottom: 4px;
 }
 
+/* Taille explicite (05/09/2026, mutualisation des icônes dans FormIcons.tsx) : les
+   icônes partagées ont un attribut intrinsèque 18x18 (taille utilisée dans Contact.tsx),
+   fixée ici à 20px pour préserver la taille d'origine dans ce médaillon de 40px. */
+.affiliationIcon svg {
+  width: 20px;
+  height: 20px;
+}
+
 .affiliationCardTitle {
   font-family: var(--font-display);
   font-size: 17px;
@@ -709,6 +717,7 @@ a.card:hover .name::after {
    reprend le même heroInner (centré, même largeur) pour rester visuellement raccord
    avec le hero juste au-dessus, plutôt qu'un style ad hoc. */
 .brandSectionIntro {
+  position: relative;
   max-width: 620px;
   margin: 0 auto var(--space-5);
   text-align: center;

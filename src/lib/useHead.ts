@@ -7,6 +7,12 @@ interface HeadOptions {
   /** true pour les pages qui ne doivent jamais apparaître dans les résultats de
       recherche (404, maintenance...) — voir NotFound.tsx/Maintenance.tsx. */
   noindex?: boolean
+  /** Image de partage propre à la page (05/09/2026, "og:image par event") : chemin
+      renvoyé par un import Vite (ex. `import photo from '...'`), root-relative en
+      production. Absent = DEFAULT_OG_IMAGE (voir EventDetail.tsx pour le seul usage
+      actuel — chaque event a déjà sa propre photo, partagée sur WhatsApp/Insta elle
+      donnera envie de CET event plutôt que de montrer le Hero générique de la home). */
+  image?: string
 }
 
 const SITE_URL = 'https://www.lesmartines.app'
@@ -43,9 +49,14 @@ function upsertLink(rel: string, href: string) {
  * et capture le <head> résultant dans le HTML statique généré : ce hook tourne
  * donc aussi bien à la build (SEO/IA) qu'au runtime dans le navigateur.
  */
-export function useHead({ title, description, path, noindex = false }: HeadOptions) {
+export function useHead({ title, description, path, noindex = false, image }: HeadOptions) {
   useLayoutEffect(() => {
     const fullTitle = path === '/' ? title : `${title} · ${SITE_NAME}`
+    // `image` vient d'un import Vite : déjà absolu (http...) si jamais servi depuis un
+    // CDN externe, sinon root-relative ("/assets/xxx.webp") à préfixer par SITE_URL —
+    // og:image/twitter:image exigent une URL absolue, un chemin relatif est ignoré par
+    // la plupart des crawlers de partage (WhatsApp, iMessage, Slack...).
+    const ogImage = image ? (image.startsWith('http') ? image : `${SITE_URL}${image}`) : DEFAULT_OG_IMAGE
     document.title = fullTitle
     upsertMeta('name', 'description', description)
     upsertMeta('property', 'og:title', fullTitle)
@@ -54,14 +65,14 @@ export function useHead({ title, description, path, noindex = false }: HeadOptio
     upsertMeta('property', 'og:url', `${SITE_URL}${path}`)
     upsertMeta('property', 'og:site_name', SITE_NAME)
     upsertMeta('property', 'og:locale', 'fr_FR')
-    upsertMeta('property', 'og:image', DEFAULT_OG_IMAGE)
+    upsertMeta('property', 'og:image', ogImage)
     upsertMeta('name', 'twitter:card', 'summary_large_image')
-    upsertMeta('name', 'twitter:image', DEFAULT_OG_IMAGE)
+    upsertMeta('name', 'twitter:image', ogImage)
     // Pages sans contenu réel à indexer (02/09/2026) : sans ça, Google pouvait en
     // théorie indexer /404/ ou /maintenance/ comme de vraies pages du site.
     upsertMeta('name', 'robots', noindex ? 'noindex, nofollow' : 'index, follow')
     if (!noindex) {
       upsertLink('canonical', `${SITE_URL}${path}`)
     }
-  }, [title, description, path, noindex])
+  }, [title, description, path, noindex, image])
 }
