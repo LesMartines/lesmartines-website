@@ -1,0 +1,117 @@
+.section {
+  padding: var(--space-6) 0;
+}
+
+.header {
+  max-width: 560px;
+  margin: 0 auto var(--space-5);
+  text-align: center;
+}
+
+/* Pas de positionnement absolu à côté du titre (contrairement à Contact.module.css) :
+   cette page a un titre plus court et pas besoin de reproduire le calcul de décalage
+   propre à "Un p'tit mot ?" — un simple cœur au-dessus, centré, suffit ici. */
+.heart {
+  width: 40px;
+  margin-bottom: var(--space-2);
+  animation: heartBeat 2.6s ease-in-out infinite;
+}
+
+@keyframes heartBeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.15);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heart {
+    animation: none;
+  }
+}
+
+.title {
+  font-size: clamp(36px, 6vw, 56px);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+.subtitle {
+  font-size: 17px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* Même recette que .trustRow dans Contact.module.css : preuve sociale visible dès
+   l'arrivée, utile ici en particulier puisque cette page n'est jamais atteinte en
+   naviguant depuis la home (uniquement via le QR code) — aucune raison de supposer que la
+   confiance est déjà acquise. */
+.trustRow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: var(--space-2) auto 0;
+  background: var(--color-white);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-soft);
+  padding: 8px 18px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+.trustStars {
+  position: relative;
+  display: inline-block;
+  font-size: 16px;
+  letter-spacing: 1px;
+  color: var(--color-lime);
+  -webkit-text-stroke: 0.5px var(--color-primary);
+}
+
+.trustStars::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 95%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(219, 255, 115, 0.16) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.trustDot {
+  color: var(--color-muted);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+.groupPhoto {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin: var(--space-4) auto 0;
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding: var(--space-5) 0;
+  }
+
+  .title {
+    font-size: clamp(32px, 9vw, 44px);
+  }
+}

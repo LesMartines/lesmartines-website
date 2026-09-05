@@ -3,27 +3,27 @@
   right: var(--space-3);
   bottom: var(--space-3);
   z-index: 90;
-  display: flex;
-  align-items: flex-start;
-  gap: 6px;
 }
 
+/* Liseré dégradé essayé puis retiré (05/09/2026, "je trouve ça trop lourd comme design") :
+   revenu à un carton blanc simple, juste un peu plus soigné que l'original (padding un
+   poil plus généreux, coins plus arrondis, légende en vrai texte) sans ajouter de couleur
+   ni de bordure supplémentaire. */
 .widget {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 156px;
-  padding: 12px;
+  width: 152px;
+  padding: 14px;
   background: var(--color-white);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-card);
-  text-decoration: none;
   color: var(--color-charcoal);
-  transition: transform 0.15s ease;
 }
 
-.widget:hover {
-  transform: translateY(-2px);
+.codeFrame {
+  display: block;
+  width: 100%;
 }
 
 .code {
@@ -33,11 +33,27 @@
   border-radius: var(--radius-sm);
 }
 
-/* Bouton de fermeture (05/09/2026, "le badge des partenaires on le voit plus") : même
-   recette que .close dans StickyAppBar.module.css, pour fermer le widget s'il chevauche
-   du contenu malgré le délai d'apparition. */
+/* Légende en vrai texte, pas cuite dans le PNG (voir StickyQR.tsx) : police manuscrite
+   déjà utilisée ailleurs sur le site pour les annotations à la main. */
+.caption {
+  margin-top: 8px;
+  font-family: var(--font-hand);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Bouton de fermeture (05/09/2026, "le badge des partenaires on le voit plus") : posé en
+   badge sur le coin de la carte plutôt qu'à côté (05/09/2026, "tu veux pas mettre la croix
+   dans le QR code ou c'est moche ?") — un bouton séparé flottant à côté du widget prenait
+   sa propre largeur et cassait la compo ; en overlay sur le coin, c'est le même geste que
+   n'importe quel bouton de fermeture de toast/carte. */
 .close {
-  flex: none;
+  position: absolute;
+  top: -8px;
+  right: -8px;
   display: flex;
   align-items: center;
   justify-content: center;

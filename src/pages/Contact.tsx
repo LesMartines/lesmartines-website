@@ -194,6 +194,17 @@ export default function Contact() {
   const [venueContactName, setVenueContactName] = useState('')
   const [venueEmail, setVenueEmail] = useState('')
   const [venuePitch, setVenuePitch] = useState('')
+  // Case à cocher (05/09/2026, "la personne pourrait aussi organiser des événements dans
+  // son lieu safe [...] faut peut-être mettre une option") : un lieu proposé n'est pas
+  // forcément juste "prêté" passivement, sa gérante peut aussi être elle-même
+  // organisatrice — utile de le savoir dès ce formulaire plutôt que de le découvrir après
+  // coup, ça change qui on recontacte pour monter une Martinade dans ce lieu.
+  const [venueOrganizesEvents, setVenueOrganizesEvents] = useState(false)
+  // Champ conditionnel (05/09/2026, "il faudrait demander ce qu'elle organise comme sorte
+  // d'event aussi [...] si elle coche, il faut que derrière ça crée un champ") : la case
+  // seule ("Oui/Non" dans le mail) ne dit rien du TYPE d'event, cette précision est
+  // justement ce qui permet de juger si ça colle avec une Martinade.
+  const [venueEventsDetails, setVenueEventsDetails] = useState('')
 
   const [sent, setSent] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -283,6 +294,9 @@ export default function Contact() {
     if (!venueContactName.trim()) nextErrors['venue-contact-name'] = 'Comment on t’appelle ?'
     if (!EMAIL_RE.test(venueEmail)) nextErrors['venue-email'] = 'Ton mail, pour qu’on puisse te répondre !'
     if (!venuePitch.trim()) nextErrors['venue-pitch'] = 'Raconte-nous ton lieu !'
+    if (venueOrganizesEvents && !venueEventsDetails.trim()) {
+      nextErrors['venue-events-details'] = 'Dis-nous en un mot ce que tu organises !'
+    }
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors)
       return
@@ -293,6 +307,7 @@ export default function Contact() {
       `Lieu : ${venueName}`,
       `Ville : ${venueCity}`,
       `Contact : ${venueContactName} (${venueEmail})`,
+      `Organise aussi des events dans ce lieu : ${venueOrganizesEvents ? `Oui — ${venueEventsDetails}` : 'Non'}`,
       '',
       venuePitch,
     ].join('\n')
@@ -525,8 +540,8 @@ export default function Contact() {
                       argument — répété ici, au moment exact où elle décide de remplir
                       le formulaire ou de repartir. */}
                   <p className={styles.brandBenefit}>
-                    En échange&nbsp;: une visibilité directe auprès d&rsquo;une communauté
-                    notée <strong>4,8/5</strong> (450+ avis), sur une appli déjà repérée
+                    En échange&nbsp;: une visibilité directe auprès de notre communauté,
+                    sur une appli notée <strong>4,8/5</strong> (450+ avis) et déjà repérée
                     par <strong>Les Echos</strong>, <strong>BFM Tech&amp;Co</strong> ou{' '}
                     <strong>Cosmopolitan</strong>.
                   </p>
@@ -954,6 +969,55 @@ export default function Contact() {
                       {errors['venue-email'] && <p className={styles.fieldError}>{errors['venue-email']}</p>}
                     </div>
                   </div>
+
+                  {/* Case à cocher (05/09/2026, "la personne pourrait aussi organiser
+                      des événements dans son lieu safe [...] faut peut-être mettre une
+                      option") : une gérante de lieu peut être elle-même organisatrice,
+                      pas seulement prêter un espace passif — utile de le savoir dès la
+                      candidature plutôt que de le découvrir après coup. */}
+                  <label className={styles.checkboxRow} htmlFor="venue-organizes">
+                    <input
+                      id="venue-organizes"
+                      type="checkbox"
+                      className={styles.checkbox}
+                      checked={venueOrganizesEvents}
+                      onChange={(e) => setVenueOrganizesEvents(e.target.checked)}
+                    />
+                    Je propose aussi d&rsquo;organiser des events dans ce lieu
+                  </label>
+
+                  {/* Champ conditionnel (05/09/2026, "il faudrait demander ce qu'elle
+                      organise comme sorte d'event aussi [...] si elle coche, il faut que
+                      derrière ça crée un champ") : n'apparaît que si la case juste
+                      au-dessus est cochée, pas de champ vide à remplir pour tout le monde
+                      quand la question ne concerne qu'une partie des lieux proposés. */}
+                  {venueOrganizesEvents && (
+                    <div className={styles.field}>
+                      <label htmlFor="venue-events-details" className={styles.label}>
+                        Quel type d&rsquo;events tu organises&nbsp;?
+                      </label>
+                      <div className={styles.inputIconWrap}>
+                        <span className={styles.inputIcon} aria-hidden="true">
+                          <CalendarIcon />
+                        </span>
+                        <input
+                          id="venue-events-details"
+                          type="text"
+                          className={`${styles.input} ${styles.hasIcon} ${errors['venue-events-details'] ? styles.inputError : ''}`}
+                          placeholder="Ateliers, brunchs, soirées jeux..."
+                          value={venueEventsDetails}
+                          onChange={(e) => {
+                            clearError('venue-events-details')
+                            setVenueEventsDetails(e.target.value)
+                          }}
+                          aria-invalid={Boolean(errors['venue-events-details'])}
+                        />
+                      </div>
+                      {errors['venue-events-details'] && (
+                        <p className={styles.fieldError}>{errors['venue-events-details']}</p>
+                      )}
+                    </div>
+                  )}
 
                   <div className={styles.field}>
                     <label htmlFor="venue-pitch" className={styles.label}>

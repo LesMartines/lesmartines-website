@@ -7,6 +7,7 @@ import ConditionsGenerales from './pages/ConditionsGenerales'
 import Contact from './pages/Contact'
 import Faq from './pages/Faq'
 import Partenaires from './pages/Partenaires'
+import Telecharger from './pages/Telecharger'
 import Events, { loader as eventsLoader } from './pages/Events'
 import EventDetail, { loader as eventDetailLoader } from './pages/EventDetail'
 import NotFound from './pages/NotFound'
@@ -28,6 +29,11 @@ export const routes: RouteRecord[] = [
       { path: 'contact', Component: Contact },
       { path: 'faq', Component: Faq },
       { path: 'partenaires', Component: Partenaires },
+      // Destination du QR code du widget StickyQR (05/09/2026, "je voudrais que le QR
+      // code ramène vers une page où il y a les deux logos [...] parce que là, ça ramène
+      // que sur Android") : URL dédiée plutôt qu'une simple ancre vers la home, à la fois
+      // pour l'attente "nouvelle page" au scan et pour rendre ce trafic traçable plus tard.
+      { path: 'telecharger', Component: Telecharger },
       // Prête mais pas encore reliée au menu (02/09/2026, "il faudrait la créer mais pas
       // l'afficher tout de suite [...] branchée à un back-office [...] que ma
       // développeuse derrière puisse brancher") : voir src/data/events.ts pour le point

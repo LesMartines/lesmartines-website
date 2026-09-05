@@ -161,6 +161,16 @@ export default function Partenaires() {
         <Reveal>
           <div className={styles.affiliationBlock}>
             <h2 className={styles.affiliationTitle}>Plusieurs façons de rejoindre l&rsquo;aventure</h2>
+            {/* Autorité, généralisée aux 3 profils (05/09/2026, "utilise tous les moyens
+                psychologiques marketing connus...") : la presse valide déjà Les Martines,
+                pas seulement l'offre marque — cette ligne couvre event/lieu aussi, sans
+                répéter le chiffre 4,8/5 utilisé juste plus bas dans .brandBenefit
+                (spécifique aux marques) pour ne pas se répéter deux fois de suite. */}
+            <p className={styles.affiliationTrust}>
+              Les Martines, on en parle déjà dans <strong>Les Echos</strong>,{' '}
+              <strong>BFM Tech&amp;Co</strong> ou <strong>Cosmopolitan</strong>&nbsp;: rejoindre
+              l&rsquo;aventure, c&rsquo;est s&rsquo;associer à un projet qui compte.
+            </p>
             <div className={styles.affiliationGrid}>
               {AFFILIATION_PROFILES.map(({ Icon, title, text, href, cta }) => (
                 <div key={title} className={styles.affiliationCard}>
@@ -206,8 +216,8 @@ export default function Partenaires() {
                 stats inventées pour l'occasion — réciprocité + autorité (la presse valide
                 déjà Les Martines) avant de demander la candidature. */}
             <p className={styles.brandBenefit}>
-              En échange&nbsp;: une visibilité directe auprès d&rsquo;une communauté notée{' '}
-              <strong>4,8/5</strong> (450+ avis), sur une appli déjà repérée par{' '}
+              En échange&nbsp;: une visibilité directe auprès de notre communauté, sur une
+              appli notée <strong>4,8/5</strong> (450+ avis) et déjà repérée par{' '}
               <strong>Les Echos</strong>, <strong>BFM Tech&amp;Co</strong> ou{' '}
               <strong>Cosmopolitan</strong>.
             </p>

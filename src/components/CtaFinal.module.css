@@ -24,6 +24,18 @@
   font-size: clamp(28px, 4vw, 44px);
 }
 
+.trust {
+  margin-top: 6px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.trust span {
+  color: var(--color-lime);
+  -webkit-text-stroke: 0.5px var(--color-primary);
+}
+
 .groupPhoto {
   display: block;
   width: 100%;

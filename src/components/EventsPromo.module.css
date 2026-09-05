@@ -93,65 +93,45 @@
   box-shadow: 0 12px 32px rgba(20, 21, 46, 0.4);
 }
 
-/* Liens secondaires (05/09/2026, refonte suite à "en mobile est vraiment pas belle...
-   fais un truc plus premium" puis "faut arranger les lien sur le desktop aussi ca donne
-   pas envie") : anciens liens en texte souligné brut, sans distinction visuelle entre eux
-   ni du reste du paragraphe. Remplacés par des petites cartes (fond translucide, coin
-   arrondi, flèche alignée à droite) qui reprennent le même traitement "chip" que
-   .categoryLegendItem/.affiliationCard ailleurs sur le site, pour un rendu plus soigné
-   sur mobile ET desktop plutôt qu'un simple lien perdu dans le texte. */
+/* Liens secondaires (05/09/2026) : essayés en pleines cartes 2 lignes ("très chargé"),
+   puis en texte nu ("tu peux quand même les mettre en avant [...] mais de façon à ce que
+   ça prenne moins de place") — 2 petits chips 1 ligne chacun, fond discret, pour garder un
+   vrai repère visuel sans reprendre la hauteur des cartes d'origine. */
 .organizerLinks {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: var(--space-3);
-  max-width: 440px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--space-2);
 }
 
+/* Transparence + forme reprises de l'essai "carte" précédent (05/09/2026, "reprendre le
+   design que t'avais fait tout à l'heure au niveau de la transparence et de la forme") :
+   fond translucide + bordure + coin arrondi 12px (pas une pilule), sur ce format compact
+   1 ligne plutôt que les cartes pleine largeur à 2 lignes d'avant. */
 .organizerLink {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
+  display: inline-block;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: 8px 14px;
   color: var(--color-white);
-  font-size: 14px;
-  line-height: 1.4;
+  opacity: 0.9;
+  font-size: 12.5px;
+  white-space: nowrap;
   text-decoration: none;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.organizerLinkText {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  opacity: 0.85;
-}
-
-.organizerLinkText strong {
+.organizerLink strong {
   color: var(--color-lime);
   font-weight: 700;
-}
-
-.organizerLinkArrow {
-  flex: none;
-  font-size: 16px;
-  opacity: 0.85;
-  transition: transform 0.15s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .organizerLink:hover {
     background: rgba(255, 255, 255, 0.14);
     border-color: rgba(255, 255, 255, 0.32);
-    transform: translateY(-1px);
-  }
-
-  .organizerLink:hover .organizerLinkArrow {
-    transform: translateX(3px);
+    opacity: 1;
   }
 }
 

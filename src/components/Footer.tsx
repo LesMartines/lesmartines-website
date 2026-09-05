@@ -17,6 +17,9 @@ export default function Footer() {
         </div>
 
         <div className={styles.links}>
+          {/* Rendue accessible hors QR code (05/09/2026, "on ajoute" — la page n'était
+              reliée nulle part sur le site, seulement via le QR du widget StickyQR). */}
+          <a href="/telecharger/">Télécharger l&rsquo;appli</a>
           <a href="/mentions-legales/">Mentions légales</a>
           <a href="/conditions-generales-dutilisation/">CGU</a>
           <a href="/politique-de-confidentialite/">Politique de confidentialité</a>

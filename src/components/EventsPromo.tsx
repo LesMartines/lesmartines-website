@@ -92,27 +92,20 @@ export default function EventsPromo() {
           <a href="#appli" className={styles.cta}>
             Être prévenue au lancement
           </a>
-          {/* Liens organisatrices/lieux (05/09/2026, "faut qu'on en parle dans ce bloc
-              avec un lien qui renvoie vers le formulaire" puis "CETTE PARTIE là en mobile
-              est vraiment pas belle avec les lien fais un truc plus premium") : d'anciens
-              liens soulignés en texte brut cassaient l'aspect propre du bandeau sur
-              mobile (soulignement qui traverse plusieurs lignes) — remplacés par de
-              petites cartes discrètes (fond translucide, coin arrondi) qui renvoient vers
-              les onglets "J'organise des events" / "J'ai un lieu safe" du formulaire. */}
+          {/* Liens organisatrices/lieux (05/09/2026) : essayés en pleines cartes 2 lignes
+              (trop chargé), puis en texte nu (plus assez visible, "tu peux quand même les
+              mettre en avant [...] mais de façon à ce que ça prenne moins de place") —
+              2 petits chips côte à côte plutôt qu'empilés en pleine largeur, 1 seule ligne
+              chacun : gardent un vrai repère visuel sans reprendre la hauteur des cartes
+              d'origine. */}
           <div className={styles.organizerLinks}>
             <a href="/contact/?type=event" className={styles.organizerLink}>
-              <span className={styles.organizerLinkText}>
-                Tu organises des events entre femmes&nbsp;?
-                <strong>Fais-toi connaître</strong>
-              </span>
-              <span className={styles.organizerLinkArrow} aria-hidden="true">→</span>
+              Tu organises des events&nbsp;? <strong>Fais-toi connaître</strong>{' '}
+              <span aria-hidden="true">→</span>
             </a>
             <a href="/contact/?type=lieu" className={styles.organizerLink}>
-              <span className={styles.organizerLinkText}>
-                T&rsquo;as un lieu safe pour une Martinade&nbsp;?
-                <strong>Propose-le</strong>
-              </span>
-              <span className={styles.organizerLinkArrow} aria-hidden="true">→</span>
+              T&rsquo;as un lieu safe&nbsp;? <strong>Propose-le</strong>{' '}
+              <span aria-hidden="true">→</span>
             </a>
           </div>
         </div>

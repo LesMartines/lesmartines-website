@@ -315,6 +315,27 @@
   margin-bottom: var(--space-3);
 }
 
+/* Case à cocher du formulaire lieu (05/09/2026) : même famille de couleur/texte que
+   .label, pas un style ad hoc — reste discret, pas une question aussi centrale que le
+   nom/mail/pitch juste autour. */
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: var(--space-3);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.checkbox {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
 .label {
   font-size: 13px;
   font-weight: 700;

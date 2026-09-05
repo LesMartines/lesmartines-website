@@ -20,6 +20,9 @@ export default function Layout() {
     '/mentions-legales/',
     '/politique-de-confidentialite/',
     '/conditions-generales-dutilisation/',
+    // Déjà son unique action (les 2 boutons de store en grand) : une barre sticky qui
+    // répète le même téléchargement serait redondante sur cette page mono-objectif.
+    '/telecharger/',
     '/404/',
   ].includes(location.pathname)
 
