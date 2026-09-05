@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/nos-partenaires",
+      "destination": "/partenaires/",
+      "permanent": true
+    },
+    {
+      "source": "/nos-partenaires/",
+      "destination": "/partenaires/",
+      "permanent": true
+    }
+  ]
+}

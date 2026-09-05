@@ -8,6 +8,7 @@ import Contact from './pages/Contact'
 import Faq from './pages/Faq'
 import Partenaires from './pages/Partenaires'
 import Telecharger from './pages/Telecharger'
+import Blog from './pages/Blog'
 import Events, { loader as eventsLoader } from './pages/Events'
 import EventDetail, { loader as eventDetailLoader } from './pages/EventDetail'
 import NotFound from './pages/NotFound'
@@ -34,6 +35,12 @@ export const routes: RouteRecord[] = [
       // que sur Android") : URL dédiée plutôt qu'une simple ancre vers la home, à la fois
       // pour l'attente "nouvelle page" au scan et pour rendre ce trafic traçable plus tard.
       { path: 'telecharger', Component: Telecharger },
+      // Page d'accueil du blog WordPress reconstruite avec notre nav/footer (05/09/2026,
+      // "il y a aussi un blog wordpress a recuperer donc il faudrait la page mais pas le
+      // menu") : même chemin que l'ancien site pour ne pas casser les liens/le SEO
+      // existants, mais les 21 articles restent sur WordPress (voir Blog.tsx) — chaque
+      // carte pointe vers l'article original en lien externe.
+      { path: 'blog-les-martines', Component: Blog },
       // Prête mais pas encore reliée au menu (02/09/2026, "il faudrait la créer mais pas
       // l'afficher tout de suite [...] branchée à un back-office [...] que ma
       // développeuse derrière puisse brancher") : voir src/data/events.ts pour le point

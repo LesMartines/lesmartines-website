@@ -6,9 +6,11 @@ import styles from './Nav.module.css'
 // "Events" n'a pas encore de page dédiée : affiché en "Bientôt" plutôt que retiré, pour ne
 // pas perdre l'intention de la maquette.
 // "On papote ?" ajouté le 31/08/2026 (nouvelle page /contact/, voir src/pages/Contact.tsx).
-// "Le Martine Mag" repassé en lien normal le 31/08/2026 ("on va le brancher nous-même") :
-// pointe pour l'instant vers le blog du site en prod, en attendant que Marine le remplace
-// par une page dédiée sur ce site.
+// "Le Martine Mag" repassé en lien normal le 31/08/2026 ("on va le brancher nous-même"),
+// pointe maintenant vers la page dédiée /blog-les-martines/ sur ce site (05/09/2026, "il y
+// a aussi un blog wordpress a recuperer donc il faudrait la page mais pas le menu") : les
+// 21 articles restent sur WordPress tel quel (pas migrés, SEO intact), seule la page
+// d'accueil du mag est reconstruite ici avec notre nav/footer — voir src/pages/Blog.tsx.
 // "What the FAQ" (nouvelle page /faq/, voir src/pages/Faq.tsx) reste dans le footer
 // seulement (31/08/2026, "on le laisse en bas, pas besoin de l'avoir dans le menu") :
 // présent dans le nav du site en prod, mais Marine préfère ne pas l'ajouter ici.
@@ -36,7 +38,7 @@ const links: NavLink[] = [
   { label: "L'appli", href: '/', activeOn: ['/'] },
   { label: 'Events', href: null },
   { label: 'Devenir partenaire', href: '/partenaires/', activeOn: ['/partenaires/'] },
-  { label: 'Le Martine Mag', href: 'https://www.lesmartines.app/blog-les-martines/' },
+  { label: 'Le Martine Mag', href: '/blog-les-martines/', activeOn: ['/blog-les-martines/'] },
   { label: 'On papote ?', href: '/contact/', activeOn: ['/contact/'] },
 ]
 
