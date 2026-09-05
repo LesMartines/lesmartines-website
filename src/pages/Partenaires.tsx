@@ -49,21 +49,35 @@ const AFFILIATION_PROFILES = [
   {
     Icon: TagIcon,
     title: 'Tu es une marque',
-    text: 'Rejoins nos 30+ marques partenaires, choisies une à une.',
+    text: (
+      <>
+        Rejoins nos <strong>30+ marques partenaires</strong>, choisies une à une.
+      </>
+    ),
     href: '/contact/?type=marque',
     cta: 'Je candidate',
   },
   {
     Icon: CalendarIcon,
     title: 'Tu organises des events',
-    text: 'On sélectionne ceux qu’on relaie à la communauté, ou qu’on co-organise avec toi.',
+    text: (
+      <>
+        On sélectionne ceux qu&rsquo;on <strong>relaie à la communauté</strong>, ou
+        qu&rsquo;on co-organise avec toi.
+      </>
+    ),
     href: '/contact/?type=event',
     cta: 'Je me fais connaître',
   },
   {
     Icon: PinIcon,
     title: 'Tu as un lieu safe',
-    text: 'On choisit les meilleurs lieux à proposer aux Martines qui organisent une Martinade.',
+    text: (
+      <>
+        On choisit les meilleurs lieux à proposer aux Martines qui organisent{' '}
+        <strong>une Martinade</strong>.
+      </>
+    ),
     href: '/contact/?type=lieu',
     cta: 'Je propose mon lieu',
   },
@@ -80,6 +94,14 @@ function PartnerCard({ p }: { p: Partenaire }) {
     <>
       <div className={styles.logoWrap}>
         <img src={p.logo} alt={p.name} className={styles.logo} loading="lazy" />
+        {/* Teinte bleue via mix-blend-mode (05/09/2026, "pourquoi t'as pas mis en bleu
+            foncé plutôt que noir") : un filter (sepia+hue-rotate) teintait aussi le carré
+            blanc cuit dans le fichier source (voir plus haut), visible contre la carte —
+            "color" ne change QUE la teinte/saturation en gardant la luminosité du logo en
+            dessous : le blanc (luminosité 100%) reste blanc, seule l'encre sombre du logo
+            prend la couleur de la marque. Invisible sur .logoWrap (fond blanc identique),
+            disparaît au survol pour révéler la vraie couleur du logo (voir .logo:hover). */}
+        <span className={styles.logoTint} aria-hidden="true" />
       </div>
       <div className={styles.textZone}>
         {/* Catégorie(s) en discret au-dessus du nom (05/09/2026, "pour qu'on comprenne
@@ -146,7 +168,7 @@ export default function Partenaires() {
             </h1>
             <p className={styles.subtitle}>
               Marques engagées, organisatrices d&rsquo;events, lieux qui accueillent des
-              Martinades&nbsp;: Les Martines, ça se construit à plusieurs.
+              Martinades&nbsp;: Les Martines, <strong>ça se construit à plusieurs</strong>.
             </p>
           </div>
         </Reveal>
@@ -204,9 +226,9 @@ export default function Partenaires() {
               </span>
             </span>
             <p className={styles.subtitle}>
-              On ne dit pas oui à tout le monde&nbsp;: {PARTENAIRES.length} marques ont été
-              choisies une à une, pour ce qu&rsquo;elles apportent vraiment à notre
-              communauté.
+              <strong>On ne dit pas oui à tout le monde</strong>&nbsp;: {PARTENAIRES.length}{' '}
+              marques ont été choisies une à une, pour ce qu&rsquo;elles apportent
+              vraiment à notre communauté.
             </p>
             {/* Argument "pourquoi candidater" (05/09/2026, "utilise tous les moyens
                 psychologiques marketing connus pour inciter les gens à candidater") :
@@ -283,8 +305,8 @@ export default function Partenaires() {
                 correspond à la lectrice arrivée jusqu'ici. */}
             <h2 className={styles.closingTitle}>Envie de nous rejoindre&nbsp;?</h2>
             <p className={styles.closingText}>
-              On ne dit pas oui à tout le monde, mais on lit chaque message avec la même
-              attention.
+              On ne dit pas oui à tout le monde, mais{' '}
+              <strong>on lit chaque message avec la même attention</strong>.
               <br />
               Les projets qui changent la donne, ça commence souvent par un
               p&rsquo;tit message.

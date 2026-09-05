@@ -259,6 +259,11 @@
   transition: opacity 0.35s ease;
 }
 
+/* Mots clés en gras (05/09/2026, "mets des mots en gras dans le texte..."). */
+.blockText strong {
+  font-weight: 700;
+}
+
 /* Sous ce seuil, la mise en page 2 colonnes n'a plus de sens (pas assez de largeur).
    Le pattern "visuel sticky qui crossfade pendant que le texte défile à côté" ne se
    transpose pas bien en une seule colonne : empilés, le texte défile SOUS le visuel

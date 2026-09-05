@@ -40,7 +40,7 @@
   font-family: var(--font-hand);
   font-size: 17px;
   font-weight: 700;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   text-align: center;
   line-height: 1.2;
 }
@@ -63,7 +63,7 @@
   background: var(--color-white);
   border: none;
   box-shadow: var(--shadow-soft);
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   font-size: 16px;
   line-height: 1;
   cursor: pointer;

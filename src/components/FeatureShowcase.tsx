@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
 import HighlightedText from './HighlightedText'
 import sororiteImage from '../assets/features/sororite-dans-la-poche.webp'
 import thematiquesImage from '../assets/features/thematiques.webp'
@@ -12,7 +13,7 @@ interface Feature {
   title: string
   /** Sous-chaîne de `title` à souligner en citron vert (traitement "imposant" du 27/08/2026). */
   highlight: string
-  text: string
+  text: ReactNode
   /** Visuel réel (collage complet, pas juste une capture d'écran) fourni par Marine. */
   image?: string
 }
@@ -27,7 +28,12 @@ const FEATURES: Feature[] = [
     id: 'sororite',
     title: 'La sororité dans ta poche',
     highlight: 'sororité',
-    text: "Papoter 24h/24 & 7j/7, c'est possible. Y'a toujours une Martine connectée pour t'écouter, te soutenir ou juste rigoler avec toi.",
+    text: (
+      <>
+        Papoter <strong>24h/24 & 7j/7</strong>, c&rsquo;est possible. Y&rsquo;a toujours
+        une Martine connectée pour t&rsquo;écouter, te soutenir ou juste rigoler avec toi.
+      </>
+    ),
     // Visuel réel envoyé par Marine le 27/08/2026 : collage complet (téléphone + fil de
     // discussion + éléments décoratifs), pas une simple capture d'écran à recadrer dans un
     // cadre de téléphone factice. Rendu tel quel via .collageImage (object-fit: contain),
@@ -38,7 +44,13 @@ const FEATURES: Feature[] = [
     id: 'thematiques',
     title: 'Des thématiques pour toutes',
     highlight: 'thématiques',
-    text: "Ici, tu papotes santé, sexualité, société, love, amitiés, loisirs, voyages… Peu importe ce que t'as en tête : y'a une conversation pour ça (et si y'en a pas, tu la lances !)",
+    text: (
+      <>
+        Ici, tu papotes santé, sexualité, société, love, amitiés, loisirs, voyages… Peu
+        importe ce que t&rsquo;as en tête : <strong>y&rsquo;a une conversation pour ça</strong>{' '}
+        (et si y&rsquo;en a pas, tu la lances !)
+      </>
+    ),
     // Visuel réel envoyé par Marine le 27/08/2026 (grille de tags thématiques).
     image: thematiquesImage,
   },
@@ -46,7 +58,12 @@ const FEATURES: Feature[] = [
     id: 'good-vibes',
     title: 'Des good vibes à volonté',
     highlight: 'good vibes',
-    text: "Ici, on s'encourage, on rigole et on se relève ensemble. Entre Martines, c'est love, sororité et gros boost d'estime.",
+    text: (
+      <>
+        Ici, on s&rsquo;encourage, on rigole et on se relève ensemble. Entre Martines,
+        c&rsquo;est <strong>love, sororité et gros boost d&rsquo;estime</strong>.
+      </>
+    ),
     // Visuel réel envoyé par Marine le 27/08/2026 (fil de commentaires d'encouragement).
     image: commentairesImage,
   },
@@ -54,7 +71,12 @@ const FEATURES: Feature[] = [
     id: 'dm',
     title: 'Glisse dans les DM de tes Martines sûres',
     highlight: 'Martines sûres',
-    text: 'Pour papoter en one-to-one. Et surtout, te sentir entourée. Même à distance.',
+    text: (
+      <>
+        Pour papoter en one-to-one. Et surtout, <strong>te sentir entourée</strong>. Même
+        à distance.
+      </>
+    ),
     // Visuel réel envoyé par Marine le 27/08/2026 (conversation privée chiffrée).
     image: dmImage,
   },
@@ -62,7 +84,11 @@ const FEATURES: Feature[] = [
     id: 'maptine',
     title: "Map'tine pour trouver tes Martines",
     highlight: "Map'tine",
-    text: 'Ta nouvelle bande de Martines sûres est peut-être à deux rues…',
+    text: (
+      <>
+        Ta nouvelle bande de Martines sûres est peut-être <strong>à deux rues</strong>…
+      </>
+    ),
     // Visuel réel envoyé par Marine le 27/08/2026 (carte + "Martines autour de toi"),
     // branché maintenant que le texte du 28/08/2026 confirme que c'est bien cette 6e carte.
     image: maptineImage,

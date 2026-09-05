@@ -209,6 +209,7 @@
 }
 
 .card {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,6 +233,13 @@ a.card:hover {
    bat visuellement en couleur plein pot ; en gris, l'ensemble se calme et la couleur
    redevient une vraie récompense au survol plutôt qu'un effet de plus qui s'ajoute au
    défilement déjà en mouvement. */
+/* Teinte bleue essayée puis retirée (05/09/2026, "il y a un problème sur la page
+   partenaires avec les logos") : contrairement aux logos presse (PNG à vrai fond
+   transparent, voir PressLogos.module.css), ces 30 logos de marques sont des images
+   PLEINES sans canal alpha (fond blanc opaque cuit dans le fichier, vérifié via Pillow) —
+   sepia+hue-rotate teintait donc tout le carré de l'image, visible contre la carte
+   blanche derrière. Retour au gris neutre, qui se fondait dans le fond blanc de la carte
+   sans ce problème. */
 .logo {
   display: block;
   width: 100%;
@@ -241,8 +249,28 @@ a.card:hover {
   transition: filter 0.3s ease;
 }
 
+/* Teinte bleue en mix-blend-mode: color (05/09/2026) : voir le commentaire détaillé dans
+   pages/Partenaires.tsx — conserve la luminosité du logo grayscale, seule l'encre sombre
+   prend la couleur de la marque, le blanc du fichier source reste blanc. */
+/* Légère opacité au repos (05/09/2026, "un petit opacité serait pas mal et plus
+   premium", même retouche que PressLogos.module.css) : plus raffiné qu'un blend à pleine
+   intensité. */
+.logoTint {
+  position: absolute;
+  inset: var(--space-3);
+  background: var(--color-primary-dark);
+  mix-blend-mode: color;
+  opacity: 0.65;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
 .card:hover .logo {
   filter: grayscale(0%);
+}
+
+.card:hover .logoTint {
+  opacity: 0;
 }
 
 @keyframes scroll {
@@ -310,7 +338,7 @@ a.card:hover {
 .ctaBrand {
   margin-top: var(--space-2);
   font-size: 14px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   text-align: center;
 }
 

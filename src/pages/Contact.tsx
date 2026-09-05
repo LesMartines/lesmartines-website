@@ -327,7 +327,7 @@ export default function Contact() {
             <p className={styles.subtitle}>
               Une question pour Les Martines&nbsp;? T&rsquo;es une marque, une
               organisatrice d&rsquo;events ou un lieu qui veut nous rejoindre&nbsp;?
-              Écris-nous, on te répond sous 48h&nbsp;!
+              Écris-nous, <strong>on te répond sous 48h</strong>&nbsp;!
             </p>
             {/* Preuve sociale + délai de réponse (03/09/2026, "une visiteuse qui arrive
                 directement sur /contact/ [...] n'a aucune raison de croire que c'est un
@@ -358,6 +358,10 @@ export default function Contact() {
                   pas un espace pro ?") : perso/pro d'abord, pour ne jamais mettre "dire
                   coucou" et "candidater comme marque" à plat sur la même ligne. */}
               <div className={styles.tabs} role="tablist" aria-label="Registre du message">
+                <span
+                  className={`${styles.tabIndicator} ${audience === 'pro' ? styles.tabIndicatorPro : ''}`}
+                  aria-hidden="true"
+                />
                 <button
                   type="button"
                   role="tab"
@@ -531,8 +535,9 @@ export default function Contact() {
                       l'exclusivité saute aux yeux avant même de lire le texte. */}
                   <span className={styles.exclusiveBadge}>Sur candidature uniquement · +30 marques déjà là</span>
                   <p className={styles.tabIntro}>
-                    On lit chaque candidature avec attention, mais on ne dit pas oui à
-                    tout le monde&nbsp;: raconte-nous ce qui rend ta marque unique.
+                    On lit chaque candidature avec attention, mais{' '}
+                    <strong>on ne dit pas oui à tout le monde</strong>&nbsp;:
+                    raconte-nous ce qui rend ta marque unique.
                   </p>
                   {/* Même argument "pourquoi candidater" que /partenaires/ (05/09/2026) :
                       quelqu'une qui arrive directement sur ce formulaire (lien partagé,

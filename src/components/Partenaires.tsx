@@ -8,7 +8,15 @@ const ROW_1 = PARTENAIRES.slice(0, HALF)
 const ROW_2 = PARTENAIRES.slice(HALF)
 
 function LogoCard({ p }: { p: Partenaire }) {
-  const img = <img src={p.logo} alt={p.name} className={styles.logo} loading="lazy" />
+  // Teinte bleue en mix-blend-mode: color (05/09/2026, "pourquoi t'as pas mis en bleu
+  // foncé plutôt que noir") : voir le commentaire détaillé dans pages/Partenaires.tsx —
+  // même recette, garde le fond blanc cuit dans le fichier source intact.
+  const img = (
+    <>
+      <img src={p.logo} alt={p.name} className={styles.logo} loading="lazy" />
+      <span className={styles.logoTint} aria-hidden="true" />
+    </>
+  )
   return p.href ? (
     <a href={p.href} target="_blank" rel="noopener noreferrer" className={styles.card} aria-label={p.name}>
       {img}

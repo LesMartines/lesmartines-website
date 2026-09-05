@@ -54,7 +54,7 @@
 
 .subtitle {
   font-size: 17px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   line-height: 1.6;
   margin-bottom: var(--space-4);
 }

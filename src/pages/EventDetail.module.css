@@ -44,7 +44,7 @@
 .brandIntro {
   font-size: 14px;
   line-height: 1.6;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   background: var(--color-lilas-light);
   border-radius: 12px;
   padding: 12px 14px;
@@ -158,7 +158,7 @@
   padding-left: 26px;
   font-size: 14px;
   line-height: 1.5;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
 }
 
 .highlights li::before {
@@ -211,7 +211,7 @@
 .privacyNote {
   font-size: 13.5px;
   line-height: 1.6;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   padding-top: var(--space-3);
   border-top: 1px solid rgba(96, 102, 216, 0.15);
 }
@@ -335,7 +335,7 @@
 .ctaText {
   font-size: 13.5px;
   line-height: 1.55;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   margin-bottom: var(--space-3);
 }
 
@@ -390,7 +390,7 @@
   padding: 0;
   margin-top: var(--space-2);
   font-size: 10.5px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   white-space: nowrap;
 }
 
@@ -649,7 +649,7 @@
 
 .stickyBarRating {
   font-size: 11.5px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   white-space: nowrap;
 }
 

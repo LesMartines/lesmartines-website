@@ -119,8 +119,10 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Bleu plutôt que gris (05/09/2026, "la partie témoignage aussi est encore grise et les
+   notes" — même cohérence que le reste des paragraphes du site désormais en bleu). */
 .breakdown {
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   font-size: 16px;
   font-weight: 600;
   margin-top: var(--space-1);
@@ -224,10 +226,10 @@
   box-shadow: var(--shadow-card);
 }
 
-/* Même halo que .stars plus haut (04/09/2026, "que ce soit dans les temoignages ou
-   dans les 450 avis"). */
+/* Halo retiré (05/09/2026, "enleve le jaune sur les cards des temoignages derrière et au
+   hover") : le radial-gradient citron vert derrière les étoiles de chaque carte
+   d'avis lisait comme un "jaune" parasite. */
 .cardStars {
-  position: relative;
   color: var(--color-lime);
   font-size: 12px;
   letter-spacing: 1px;
@@ -239,32 +241,14 @@
     0.4px 0.4px 0 var(--color-primary);
   margin-bottom: var(--space-2);
   display: inline-block;
-  /* Petit effet (31/08/2026) : les étoiles grossissent légèrement au survol de la
-     carte, même déclencheur que le léger soulèvement de .card ci-dessus. */
-  transition: transform 0.2s ease;
-  transform-origin: left center;
 }
 
-.card:hover .cardStars {
-  transform: scale(1.15);
-}
 
-.cardStars::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  top: 50%;
-  left: 50%;
-  width: 110%;
-  aspect-ratio: 1 / 1;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(219, 255, 115, 0.14) 0%, transparent 70%);
-  pointer-events: none;
-}
-
+/* Bleu plutôt que charcoal (05/09/2026, "les temoignages qui sont encore en gris") :
+   cohérent avec le reste des paragraphes du site désormais en bleu. */
 .quote {
   flex: 1;
-  color: var(--color-text);
+  color: var(--color-primary-dark);
   font-size: 15px;
   line-height: 1.5;
 }
@@ -300,14 +284,6 @@
   }
 
   .card:hover {
-    transform: none;
-  }
-
-  .cardStars {
-    transition: none;
-  }
-
-  .card:hover .cardStars {
     transform: none;
   }
 }

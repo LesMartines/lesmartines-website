@@ -8,32 +8,41 @@
   text-align: center;
 }
 
-/* Pas de positionnement absolu à côté du titre (contrairement à Contact.module.css) :
-   cette page a un titre plus court et pas besoin de reproduire le calcul de décalage
-   propre à "Un p'tit mot ?" — un simple cœur au-dessus, centré, suffit ici. */
-.heart {
-  width: 40px;
-  margin-bottom: var(--space-2);
-  animation: heartBeat 2.6s ease-in-out infinite;
+/* Icône réelle de l'appli (05/09/2026, "on va mettre le logo de l'appli" puis "le logo de
+   l'appli est pas bien mis en avant") : favicon.png, le même visuel que sur les fiches App
+   Store/Google Play — agrandie et détachée du fond avec une ombre plus marquée + un halo,
+   pour que ce soit la 1re chose qui capte l'œil en arrivant sur la page. */
+.appIcon {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  margin-bottom: var(--space-3);
+  position: relative;
 }
 
-@keyframes heartBeat {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  25% {
-    transform: scale(1.15);
-  }
-  40% {
-    transform: scale(1);
-  }
+.appIconWrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--space-3);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .heart {
-    animation: none;
-  }
+.appIconWrap::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: 140%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(96, 102, 216, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.appIconWrap .appIcon {
+  margin-bottom: 0;
+  display: block;
 }
 
 .title {
@@ -42,16 +51,21 @@
   margin-bottom: var(--space-2);
 }
 
+/* Texte entier en bleu, pas juste les mots clés (05/09/2026, "pourquoi on a du gris et
+   du bleu dans ce texte" puis "mets tout le texte en bleu avec le gras") : un mélange
+   gris (texte normal) + bleu (mots en gras) faisait 2 tons différents dans la même
+   phrase — tout repasse dans la même couleur, seul le poids (gras) distingue les mots
+   clés désormais. */
 .subtitle {
   font-size: 17px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   line-height: 1.6;
 }
 
-/* Même recette que .trustRow dans Contact.module.css : preuve sociale visible dès
-   l'arrivée, utile ici en particulier puisque cette page n'est jamais atteinte en
-   naviguant depuis la home (uniquement via le QR code) — aucune raison de supposer que la
-   confiance est déjà acquise. */
+.subtitle strong {
+  font-weight: 700;
+}
+
 .trustRow {
   display: inline-flex;
   align-items: center;
@@ -98,12 +112,16 @@
   justify-content: center;
 }
 
+/* Réduite (05/09/2026, "rends ça plus premium") : 420px dominait toute la page. Pas de
+   coin arrondi/ombre ici : l'image est un détourage à fond transparent (silhouettes +
+   fleurs), pas un rectangle plein — une ombre dessinerait un cadre rectangulaire moche
+   autour de pixels transparents (même leçon que les badges de StoreButtons.module.css). */
 .groupPhoto {
   display: block;
   width: 100%;
-  max-width: 420px;
+  max-width: 260px;
   height: auto;
-  margin: var(--space-4) auto 0;
+  margin: var(--space-5) auto 0;
 }
 
 @media (max-width: 640px) {

@@ -150,26 +150,38 @@
   }
 }
 
+/* Texte entier en bleu, pas juste les mots en gras (05/09/2026, "pourquoi on a du gris
+   et du bleu dans ce texte" puis "mets tout le texte en bleu avec le gras") : un mélange
+   gris/bleu dans la même phrase faisait 2 tons — tout repasse dans la même couleur, le
+   poids (gras) suffit à distinguer les mots clés. */
 .subtitle {
   font-size: 17px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   line-height: 1.6;
   margin-bottom: var(--space-3);
+}
+
+.subtitle strong,
+.closingText strong,
+.affiliationCardText strong {
+  font-weight: 700;
 }
 
 /* Argument "pourquoi candidater" (05/09/2026) : texte simple, sans fond ni bordure,
    pour rester au même niveau visuel que .subtitle juste au-dessus plutôt que de rivaliser
    avec le badge/écusson qui portent déjà l'exclusivité. */
+/* Largeur mesurée pour tenir sur 2 lignes (05/09/2026, "mettre sur 2 lignes") : 480px
+   retombait sur 3 lignes, 600px minimum pour repasser à 2 (mesuré en direct dans le
+   navigateur), 620px avec un peu de marge de sécurité. */
 .brandBenefit {
   font-size: 15px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   line-height: 1.6;
-  max-width: 480px;
+  max-width: 620px;
   margin: 0 auto var(--space-3);
 }
 
 .brandBenefit strong {
-  color: var(--color-primary-dark);
   font-weight: 700;
 }
 
@@ -420,12 +432,11 @@
   margin: 0 auto var(--space-4);
   text-align: center;
   font-size: 14px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   line-height: 1.5;
 }
 
 .affiliationTrust strong {
-  color: var(--color-primary-dark);
   font-weight: 700;
 }
 
@@ -491,7 +502,7 @@
 
 .affiliationCardText {
   font-size: 14px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   line-height: 1.5;
   flex: 1;
 }
@@ -573,6 +584,7 @@ a.card:hover {
    si besoin, la seule chose qui change désormais entre les 2 zones est la ligne de
    séparation ci-dessous, pas une différence de fond. */
 .logoWrap {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -595,12 +607,35 @@ a.card:hover {
    défilant de l'accueil) : 30 cartes identiques avec des logos déjà très colorés font
    vite "mur uniforme" à plat, la couleur redevient une vraie récompense au survol. Léger
    zoom ajouté le 05/09/2026 pour donner un peu plus de vie au hover. */
+/* Teinte bleue essayée puis retirée (05/09/2026, "il y a un problème sur la page
+   partenaires avec les logos") : ces logos sont des images pleines sans canal alpha
+   (fond blanc opaque, contrairement aux logos presse de PressLogos.module.css) —
+   sepia+hue-rotate teintait tout le carré de l'image, visible contre la carte blanche.
+   Retour au gris neutre, invisible sur le fond blanc de la carte. */
 .logo {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
   filter: grayscale(100%);
   transition: filter 0.3s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Teinte bleue en mix-blend-mode: color, pas un filter (05/09/2026, "pourquoi t'as pas
+   mis en bleu foncé plutôt que noir") : ce mode ne change que la teinte/saturation en
+   conservant la luminosité du logo grayscale en dessous — le blanc (déjà cuit dans le
+   fichier source, voir Partenaires.tsx) reste blanc à l'identique du fond de .logoWrap,
+   l'encre sombre du logo prend la couleur de la marque. */
+/* Légère opacité au repos (05/09/2026, "un petit opacité serait pas mal et plus
+   premium", même retouche que PressLogos.module.css) : plus raffiné qu'un blend à pleine
+   intensité. */
+.logoTint {
+  position: absolute;
+  inset: var(--space-2);
+  background: var(--color-primary-dark);
+  mix-blend-mode: color;
+  opacity: 0.65;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 /* a.card uniquement, pas .card (05/09/2026, "amélioration sur cette page" -> carte sans
@@ -610,6 +645,10 @@ a.card:hover {
 a.card:hover .logo {
   filter: grayscale(0%);
   transform: scale(1.06);
+}
+
+a.card:hover .logoTint {
+  opacity: 0;
 }
 
 /* Discret et premium (05/09/2026) : petites capitales espacées, couleur atténuée — un
@@ -656,7 +695,7 @@ a.card:hover .name::after {
   flex: 1;
   font-size: 14px;
   line-height: 1.55;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   margin-bottom: var(--space-2);
   /* Clampé à 4 lignes (01/09/2026) : les descriptifs du site en prod n'ont pas tous la
      même longueur, sans ça un texte plus long aurait dépassé la hauteur fixe de .card. */
@@ -686,7 +725,7 @@ a.card:hover .name::after {
 .closingText {
   max-width: 480px;
   margin: 0 auto var(--space-3);
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   line-height: 1.6;
 }
 

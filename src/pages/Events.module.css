@@ -127,7 +127,7 @@
 
 .subtitle {
   font-size: 17px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   line-height: 1.65;
   margin-bottom: var(--space-1);
 }
@@ -154,7 +154,7 @@
 
 .loading {
   text-align: center;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   padding: var(--space-4) 0;
 }
 
@@ -211,7 +211,7 @@
   z-index: 1;
   background: transparent;
   border: none;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   font-weight: 700;
   font-size: 13.5px;
   padding: 9px 18px;
@@ -486,7 +486,7 @@
   height: 54px;
   font-size: 12.5px;
   line-height: 1.45;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   margin-bottom: 8px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -674,7 +674,7 @@
 .faqAnswer {
   font-size: 14px;
   line-height: 1.6;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   padding: 0 4px var(--space-3);
 }
 

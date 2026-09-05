@@ -82,8 +82,9 @@ export default function EventsPromo() {
             <br className={styles.titleBreak} /> meufs près de chez toi
           </h2>
           <p className={styles.body}>
-            Des Martinades organisées par des Martines, des papotages en ligne, ou des
-            sorties chez nos partenaires… Rejoins des events safe près de chez toi.
+            Des <strong>Martinades</strong> organisées par des Martines, des papotages en
+            ligne, ou des sorties chez nos partenaires… Rejoins des{' '}
+            <strong>events safe</strong> près de chez toi.
           </p>
           {/* CTA réintroduit (05/09/2026, "être prévenue au lancement") : pas de vrai
               formulaire de collecte d'email sur le site, donc l'action honnête et utile

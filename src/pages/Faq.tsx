@@ -23,47 +23,59 @@ import styles from './Faq.module.css'
 // ensuite (même jour, "ok pour l'accordéon" : la question reste toujours visible, seuls le
 // texte de réponse et l'illustration se déplient au clic) pour alléger la page — 7 blocs de
 // texte long affichés en continu faisaient un trop gros pavé à lire d'une traite.
+// `boldAnswer` (05/09/2026, "mets des mots en gras dans le texte et fait ça partout dans
+// le site où on a des paragraphes") : phrases de `answer` à mettre en <strong> à
+// l'affichage (voir boldPhrases dans src/lib/boldPhrases.tsx). `answer` reste un texte
+// brut intact, seul champ utilisé par le JSON-LD schema.org/FAQPage plus bas — jamais du
+// JSX, un moteur de recherche ne doit voir que du texte simple à cet endroit.
 const FAQ_ITEMS = [
   {
     question: "C'est pour qui ce réseau social ?",
     answer:
       "Si tu te sens meuf, t'es une Martine. Peu importe ton genre assigné, ton étiquette ou ton parcours. Ici, c'est pour toi. Pour se confier, se rencontrer, créer, rire, pleurer, vibrer. Ici t'as ta place !",
+    boldAnswer: ["Ici, c'est pour toi."],
     image: card1,
   },
   {
     question: "C'est vraiment safe, ou c'est du blabla marketing ?",
     answer:
       "C'est safe. Vraiment. Pas de relous, pas de DM chelou, pas d'algos qui décident à ta place. Tu choisis à qui tu parles, quand, comment. Et si quelqu'une dépasse les bornes ? Modération rapide, bienveillante, et sans blabla. Ta sécurité, c'est notre priorité.",
+    boldAnswer: ['Ta sécurité, c’est notre priorité.'],
     image: card2,
   },
   {
     question: "Comment on est sûres d'être qu'entre meufs ?",
     answer:
       "Chez Les Martines, on ne joue pas avec la sécurité. À l'inscription, chaque Martine s'identifie comme femme (cis ou trans) et passe par un selfie de vérification. L'équipe veille au grain.",
+    boldAnswer: ['un selfie de vérification'],
     image: card3,
   },
   {
     question: 'Comment ça papote par ici ?',
     answer:
       "Via des posts, des commentaires ou en messages privés. Envie de te confier, de râler ou de parler de ton ex ? Ici tu parles de tout, sans tabou. Pas de filtre. Pas de pression. Pas de relous. Juste des meufs qui se comprennent.",
+    boldAnswer: ['Ici tu parles de tout, sans tabou.'],
     image: card4,
   },
   {
     question: "J'peux faire quoi sur Les Martines ?",
     answer:
       "Envie de parler d'un truc perso ? Poste en anonyme. Besoin d'un espace safe ? Mets un TW, pour que ça passe tout doux. Ici, tu peux filtrer ton feed, choisir tes sujets, créer ou répondre à des posts, papoter en privé... Tout ça, à ton rythme et entre meufs qui te comprennent vraiment.",
+    boldAnswer: ['à ton rythme'],
     image: card5,
   },
   {
     question: "Comment on garde l'ambiance safe et cool ici ?",
     answer:
       "Ici, la modération veille au grain pour que ça reste chill et respectueux. On a un Sis Code clair : pas de haine, pas de relous, que du soutien. Chaque Martine peut signaler ce qui pose problème. Si ça part en vrille, on intervient rapido pour que tu restes en sécurité. Résultat : un espace où tu peux être toi, tranquille, sans stress.",
+    boldAnswer: ['on intervient rapido'],
     image: card6,
   },
   {
     question: 'Dans quels pays Les Martines est dispo ?',
     answer:
       "Les Martines sont déjà installées en France, Belgique, Suisse, Luxembourg et Canada. Partout où tu vas, y'aura bientôt une Martine pour toi.",
+    boldAnswer: ['France, Belgique, Suisse, Luxembourg et Canada'],
     image: card7,
   },
 ]

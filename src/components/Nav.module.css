@@ -92,11 +92,14 @@
   }
 }
 
+/* Bleu plutôt que charcoal (05/09/2026, "le texte du menu est encore gris je crois") :
+   #3a3748 lisait comme un gris foncé à côté du bleu de marque utilisé partout ailleurs
+   désormais. */
 .link {
   font-weight: 600;
   font-size: 15px;
   text-decoration: none;
-  color: var(--color-charcoal);
+  color: var(--color-primary-dark);
 }
 
 .link:hover {

@@ -103,7 +103,7 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 6px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   font-size: 14px;
   font-weight: 600;
   text-align: center;

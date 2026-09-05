@@ -52,7 +52,26 @@ function LogoList({ hidden }: { hidden?: boolean }) {
   return (
     <ul className={styles.list} aria-hidden={hidden ? 'true' : undefined}>
       {PRESS.map((logo) => {
-        const img = <img src={logo.src} alt={logo.name} loading="lazy" />
+        // Recoloré en bleu via un masque CSS plutôt qu'un filter (05/09/2026, "au lieu de
+        // les passer en noir [...] plutôt les passer en bleu, mais il ne faut pas de
+        // carré") : grayscale+sepia+hue-rotate tintait aussi le fond quasi-transparent de
+        // certains PNG (halo/ombre douce cuits dans l'image, jamais tout à fait à
+        // alpha 0), ce qui faisait apparaître un carré teinté autour du logo. Un masque
+        // (même recette que le cœur de CommunityStats.tsx) peint une couleur plate
+        // derrière la silhouette du PNG : tout ce qui est transparent dans le fichier
+        // source reste transparent, quelle que soit sa teinte d'origine — aucun carré
+        // possible. <img> gardée invisible (visibility:hidden) uniquement pour donner sa
+        // largeur intrinsèque au conteneur (mask ne calcule pas de ratio tout seul).
+        const img = (
+          <span className={styles.logoBox}>
+            <img src={logo.src} alt={logo.name} loading="lazy" className={styles.logoGhost} />
+            <span
+              className={styles.logoMask}
+              style={{ WebkitMaskImage: `url(${logo.src})`, maskImage: `url(${logo.src})` }}
+              aria-hidden="true"
+            />
+          </span>
+        )
         return (
           <li key={logo.name} className={styles.item}>
             {logo.url ? (
@@ -83,7 +102,13 @@ export default function PressLogos() {
   // ne pas dupliquer l'annonce lecteur d'écran.
   return (
     <section className={styles.section} aria-label="Ils parlent de nous dans la presse">
-      <p className={styles.title}>On parle de nous</p>
+      {/* Petits traits de part et d'autre (05/09/2026, "rendre la barre media plus
+          premium") : traitement éditorial ("— titre —") plutôt qu'un simple label plat. */}
+      <p className={styles.title}>
+        <span className={styles.titleLine} aria-hidden="true" />
+        On parle de nous
+        <span className={styles.titleLine} aria-hidden="true" />
+      </p>
 
       <div className={styles.marqueeWrap}>
         <div className={styles.track}>

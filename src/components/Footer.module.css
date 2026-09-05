@@ -27,7 +27,7 @@
 }
 
 .tagline {
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   font-size: 14px;
   max-width: 320px;
 }
@@ -43,7 +43,7 @@
 
 .links a {
   text-decoration: none;
-  color: var(--color-charcoal);
+  color: var(--color-primary-dark);
 }
 
 .links a:hover {
@@ -77,7 +77,7 @@
   padding-top: var(--space-2);
   border-top: 1px solid var(--color-lavender-pale);
   font-size: 13px;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
 }
 
 .socials {
@@ -93,7 +93,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-charcoal);
+  color: var(--color-primary-dark);
   transition: color 0.15s ease;
 }
 
