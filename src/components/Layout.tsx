@@ -23,6 +23,10 @@ export default function Layout() {
     // Déjà son unique action (les 2 boutons de store en grand) : une barre sticky qui
     // répète le même téléchargement serait redondante sur cette page mono-objectif.
     '/telecharger/',
+    // A déjà sa propre carte de rappel téléchargement en colonne latérale (05/09/2026,
+    // "vire le qr code, c'est trop" — sur cette page uniquement) : le widget QR en plus
+    // faisait doublon avec .sideCard, voir Blog.tsx.
+    '/blog-les-martines/',
     '/404/',
   ].includes(location.pathname)
 

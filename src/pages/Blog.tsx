@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useHead } from '../lib/useHead'
 import Reveal from '../components/Reveal'
 import HighlightedText from '../components/HighlightedText'
+import { APP_STORE_URL } from '../components/StoreButtons'
+import { StarRating } from './Events'
 import headerIllustration from '../assets/blog/header-illustration.webp'
 import image8Mars from '../assets/blog/8-mars.webp'
 import imageHommes from '../assets/blog/pourquoi-les-hommes-ne-rappellent-pas.webp'
@@ -258,93 +260,131 @@ export default function Blog() {
           </div>
         </Reveal>
 
-        {/* Article vedette (05/09/2026, "faut que la page ait un style de blog" + "inspire
-            toi des plus beaux blog premium") : le plus récent en grand format, comme la
-            une d'un magazine, plutôt qu'une grille uniforme qui n'a l'air de rien mettre
-            en avant. Étiquette "Dernier article" ajoutée le même jour ("précise que
-            l'article du haut c'est le dernier article") : sans elle, rien ne distingue
-            visuellement "mis en avant" de "le plus récent". */}
-        <Reveal delay={0.05}>
-          <a
-            href={FEATURED.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.featured}
-          >
-            <span className={styles.featuredImageWrap}>
-              <img src={FEATURED.image} alt="" className={styles.featuredImage} />
-              <span className={styles.categoryPill}>{FEATURED.category}</span>
-            </span>
-            <div className={styles.featuredText}>
-              <span className={styles.featuredEyebrow}>Dernier article</span>
-              <h2 className={styles.featuredTitle}>{FEATURED.title}</h2>
-              <p className={styles.cardExcerpt}>{FEATURED.excerpt}</p>
-              <span className={styles.readMore}>
-                Lire l&rsquo;article <span aria-hidden="true">→</span>
-              </span>
-              <span className={styles.cardDate}>{FEATURED.date}</span>
-            </div>
-          </a>
-        </Reveal>
-
-        <div id="blog-grid" className={styles.grid}>
-          {pagePosts.map((post, i) => (
-            <Reveal key={post.href} delay={Math.min(i * 0.03, 0.24)}>
+        {/* 2 colonnes façon EventDetail.tsx (05/09/2026, "il ne faut pas oublier que le
+            but premier c'est qu'elle télécharge l'application [...] un peu comme on a
+            fait sur la page événement") : colonne large pour les articles, colonne
+            étroite sticky à droite pour le rappel téléchargement — jamais l'inverse, un
+            blog dont le but final reste de convertir vers l'appli ne doit pas laisser le
+            visiteur repartir vers WordPress sans avoir revu ce rappel. */}
+        <div className={styles.contentGrid}>
+          <div className={styles.mainCol}>
+            {/* Refonte "mode et chic" (05/09/2026, "l'ensemble ne fait pas très blog, je
+                voudrais un truc un peu mode et chic") : plus de cartes encadrées (bordure
+                + ombre + coins arrondis, plutôt "app") — image nette sans badge dessus,
+                légende catégorie en petites capitales italiques au-dessus du titre façon
+                magazine, et un simple filet fin sous chaque article plutôt qu'une boîte.
+                Images réduites le même jour ("je trouve les images trop grosse") : la
+                2e colonne les rétrécit déjà mécaniquement, aspect-ratio resserré en plus. */}
+            <Reveal delay={0.05}>
               <a
-                href={post.href}
+                href={FEATURED.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={styles.card}
+                className={styles.featured}
               >
-                <span className={styles.cardImageWrap}>
-                  <img src={post.image} alt="" className={styles.cardImage} loading="lazy" />
-                  <span className={styles.categoryPill}>{post.category}</span>
+                <span className={styles.featuredImageWrap}>
+                  <img src={FEATURED.image} alt="" className={styles.featuredImage} />
                 </span>
-                <div className={styles.cardBody}>
-                  <h3 className={styles.cardTitle}>{post.title}</h3>
-                  <p className={styles.cardExcerpt}>{post.excerpt}</p>
-                  <span className={styles.cardDate}>{post.date}</span>
+                <div className={styles.featuredText}>
+                  <span className={styles.eyebrow}>Dernier article — {FEATURED.category}</span>
+                  <h2 className={styles.featuredTitle}>{FEATURED.title}</h2>
+                  <p className={styles.cardExcerpt}>{FEATURED.excerpt}</p>
+                  <span className={styles.readMore}>
+                    Lire l&rsquo;article <span aria-hidden="true">→</span>
+                  </span>
+                  <span className={styles.cardDate}>{FEATURED.date}</span>
                 </div>
               </a>
             </Reveal>
-          ))}
-        </div>
 
-        {/* Pagination (05/09/2026, "mets une pagination") : même volume de pages que
-            l'ancien blog WordPress (21 articles, 9 par page -> 3 pages). */}
-        {PAGE_COUNT > 1 && (
-          <nav className={styles.pagination} aria-label="Pages du blog">
-            <button
-              type="button"
-              className={styles.pageArrow}
-              onClick={() => goToPage(Math.max(0, page - 1))}
-              disabled={page === 0}
-              aria-label="Page précédente"
-            >
-              ←
-            </button>
-            {Array.from({ length: PAGE_COUNT }, (_, i) => (
-              <button
-                key={i}
-                type="button"
-                className={`${styles.pageNumber} ${i === page ? styles.pageNumberActive : ''}`}
-                onClick={() => goToPage(i)}
-                aria-current={i === page ? 'page' : undefined}
-              >
-                {i + 1}
-              </button>
-            ))}
-            <button
-              type="button"
-              className={styles.pageArrow}
-              onClick={() => goToPage(Math.min(PAGE_COUNT - 1, page + 1))}
-              disabled={page === PAGE_COUNT - 1}
-              aria-label="Page suivante"
-            >
-              →
-            </button>
-          </nav>
-        )}
+            <div id="blog-grid" className={styles.grid}>
+              {pagePosts.map((post, i) => (
+                <Reveal key={post.href} delay={Math.min(i * 0.03, 0.24)}>
+                  <a
+                    href={post.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.card}
+                  >
+                    <span className={styles.cardImageWrap}>
+                      <img src={post.image} alt="" className={styles.cardImage} loading="lazy" />
+                    </span>
+                    <div className={styles.cardBody}>
+                      <span className={styles.eyebrow}>{post.category}</span>
+                      <h3 className={styles.cardTitle}>{post.title}</h3>
+                      <p className={styles.cardExcerpt}>{post.excerpt}</p>
+                      <span className={styles.cardDate}>{post.date}</span>
+                    </div>
+                  </a>
+                </Reveal>
+              ))}
+            </div>
+
+            {/* Pagination (05/09/2026, "mets une pagination") : même volume de pages que
+                l'ancien blog WordPress (21 articles, 9 par page -> 3 pages). */}
+            {PAGE_COUNT > 1 && (
+              <nav className={styles.pagination} aria-label="Pages du blog">
+                <button
+                  type="button"
+                  className={styles.pageArrow}
+                  onClick={() => goToPage(Math.max(0, page - 1))}
+                  disabled={page === 0}
+                  aria-label="Page précédente"
+                >
+                  ←
+                </button>
+                {Array.from({ length: PAGE_COUNT }, (_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    className={`${styles.pageNumber} ${i === page ? styles.pageNumberActive : ''}`}
+                    onClick={() => goToPage(i)}
+                    aria-current={i === page ? 'page' : undefined}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+                <button
+                  type="button"
+                  className={styles.pageArrow}
+                  onClick={() => goToPage(Math.min(PAGE_COUNT - 1, page + 1))}
+                  disabled={page === PAGE_COUNT - 1}
+                  aria-label="Page suivante"
+                >
+                  →
+                </button>
+              </nav>
+            )}
+          </div>
+
+          {/* Carte de rappel téléchargement, même recette que .sideCard dans
+              EventDetail.module.css (mot manuscrit, icône appli, note, CTA, badges de
+              réassurance) : le blog est un contenu d'appel, pas une fin en soi. */}
+          <div className={styles.sideCol}>
+            <div className={styles.sideCard}>
+              <span className={styles.ctaHandwritten}>viens papoter&nbsp;!</span>
+              <img src="/favicon.png" alt="" className={styles.ctaAppIcon} />
+              <div className={styles.ctaRating}>
+                <StarRating className={styles.starRating} /> 4,8/5{' '}
+                <span className={styles.ctaRatingSep}>·</span> 450+ avis
+              </div>
+              <div className={styles.ctaDivider} />
+              <h2 className={styles.ctaTitle}>Rejoins la communauté Les Martines</h2>
+              <p className={styles.ctaText}>
+                Papote avec des milliers de meufs, en toute sécurité, directement dans
+                l&rsquo;appli.
+              </p>
+              <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className={styles.ctaButton}>
+                Télécharger l&rsquo;appli
+              </a>
+              <ul className={styles.ctaTrust}>
+                <li>Sécurisé</li>
+                <li>Gratuit</li>
+                <li>2 min chrono</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )

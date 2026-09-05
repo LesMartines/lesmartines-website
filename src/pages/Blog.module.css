@@ -2,15 +2,13 @@
   padding: var(--space-6) 0;
 }
 
-/* Header en 2 colonnes, inspiré des blogs premium (05/09/2026, "inspire toi des plus
-   beau blog premium pour la mise en page") : texte à gauche, illustration à droite,
-   plutôt qu'un simple bloc centré — donne tout de suite un ton plus édito/magazine. */
+/* Header en 2 colonnes, inspiré des blogs premium. */
 .header {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
   gap: var(--space-4);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-6);
 }
 
 .headerText {
@@ -19,7 +17,7 @@
 
 .headerImage {
   width: 100%;
-  max-width: 340px;
+  max-width: 320px;
   margin: 0 auto;
   display: block;
 }
@@ -37,7 +35,7 @@
 
   .headerImage {
     order: 1;
-    max-width: 220px;
+    max-width: 200px;
   }
 }
 
@@ -58,127 +56,257 @@
   font-weight: 700;
 }
 
-/* Pastille catégorie posée SUR l'image (05/09/2026, "les plus beau blog premium") :
-   traitement magazine (The Verge/Medium...) plutôt qu'un simple texte au-dessus du
-   titre — la photo respire, l'info catégorie reste lisible en 1 coup d'œil. */
-.categoryPill {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(4px);
-  color: var(--color-primary-dark);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 5px 12px;
-  border-radius: var(--radius-pill);
+/* 2 colonnes façon EventDetail.module.css (05/09/2026, "il ne faut pas oublier que le
+   but premier c'est qu'elle télécharge l'application") : colonne large pour les
+   articles, colonne étroite sticky à droite pour le rappel téléchargement. */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: var(--space-5);
+  align-items: start;
 }
 
-/* Article vedette : image + texte côte à côte sur desktop, façon "une" de magazine. */
-.featured {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: var(--space-4);
-  align-items: center;
+@media (max-width: 860px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mainCol {
+  min-width: 0;
+}
+
+.sideCol {
+  position: sticky;
+  top: 84px;
+}
+
+/* Ombre allégée (05/09/2026, "faire une ombre plus legere [...] la c'est trop
+   prononcé") : la recette d'origine (EventDetail.module.css) était pensée pour se
+   détacher d'une page très chargée en visuels ; ici, sur une page plus sobre ("mode et
+   chic"), --shadow-card standard du site suffit largement. */
+.sideCard {
+  text-align: center;
   background: var(--color-white);
   border: 1px solid rgba(47, 50, 106, 0.1);
-  border-radius: var(--radius-lg);
-  padding: var(--space-2);
-  margin-bottom: var(--space-4);
-  text-decoration: none;
-  box-shadow: var(--shadow-soft);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  padding: var(--space-4) var(--space-3);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .featured:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-card);
-  }
+.ctaHandwritten {
+  display: block;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-primary);
+  transform: rotate(-4deg);
+  margin-bottom: 2px;
+}
 
-  .featured:hover .featuredImage,
-  .card:hover .cardImage {
-    transform: scale(1.05);
+.ctaAppIcon {
+  display: block;
+  width: 68px;
+  height: 68px;
+  margin: 0 auto var(--space-2);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(47, 50, 106, 0.2);
+}
+
+.ctaRating {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-2);
+}
+
+.starRating {
+  position: relative;
+  display: inline-block;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--color-lime);
+  -webkit-text-stroke: 0.4px var(--color-primary);
+}
+
+.ctaRatingSep {
+  color: var(--color-muted);
+  font-weight: 400;
+}
+
+.ctaDivider {
+  width: 40px;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: rgba(96, 102, 216, 0.2);
+  margin: var(--space-2) auto var(--space-3);
+}
+
+.ctaTitle {
+  font-size: 19px;
+  color: var(--color-primary);
+  margin-bottom: 2px;
+}
+
+.ctaText {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--color-primary-dark);
+  margin-bottom: var(--space-3);
+}
+
+.ctaButton {
+  display: inline-block;
+  background: var(--color-primary);
+  color: var(--color-white);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 13px 28px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(96, 102, 216, 0.35);
+  transition: transform 0.15s ease;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+}
+
+.ctaTrust {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+  padding: 0;
+  margin-top: var(--space-2);
+  font-size: 10.5px;
+  color: var(--color-primary-dark);
+  white-space: nowrap;
+}
+
+.ctaTrust li {
+  position: relative;
+  padding-left: 16px;
+}
+
+.ctaTrust li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0.5px;
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-lime);
+  color: var(--color-primary-dark);
+  font-size: 8px;
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ctaButton:hover {
+    transform: none;
   }
+}
+
+/* Refonte "mode et chic" (05/09/2026, "l'ensemble ne fait pas très blog, je voudrais un
+   truc un peu mode et chic") : v1 en cartes encadrées (bordure + ombre + coins arrondis +
+   badge sur l'image) jugée trop "app". Repris dans l'esprit d'un édito mode — image nette
+   SANS rien dessus, légende en petites capitales italiques façon chapô de magazine, filet
+   fin sous chaque bloc plutôt qu'une boîte, aucun rayon de bordure. */
+.eyebrow {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 6px;
+}
+
+/* Article vedette : image + texte côte à côte, sans encadré — juste un filet fin en bas
+   pour marquer la fin du bloc et rester raccord avec le reste de la page. */
+.featured {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: var(--space-5);
+  align-items: center;
+  padding-bottom: var(--space-5);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid rgba(47, 50, 106, 0.14);
+  text-decoration: none;
 }
 
 .featuredImageWrap {
-  position: relative;
   display: block;
   overflow: hidden;
-  border-radius: var(--radius-md);
-  max-height: 280px;
 }
 
+/* Réduite (05/09/2026, "je trouve les images trop grosse") : 340px écrasait le texte
+   à côté, 220px reste net sans dominer la carte. */
 .featuredImage {
   width: 100%;
   height: 100%;
-  max-height: 280px;
+  max-height: 220px;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .featured:hover .featuredImage,
+  .card:hover .cardImage {
+    transform: scale(1.04);
+  }
 }
 
 .featuredText {
   display: flex;
   flex-direction: column;
-  gap: 8px;
   align-items: flex-start;
-  padding: var(--space-2) var(--space-3) var(--space-2) 0;
-}
-
-.featuredEyebrow {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-primary);
 }
 
 .featuredTitle {
   font-family: var(--font-display);
-  font-size: clamp(22px, 2.6vw, 30px);
+  font-size: clamp(24px, 3vw, 34px);
   color: var(--color-primary-dark);
   line-height: 1.2;
+  margin-bottom: 10px;
 }
 
 .readMore {
   font-size: 14px;
   font-weight: 700;
   color: var(--color-primary);
+  margin-top: 10px;
 }
 
 @media (max-width: 780px) {
   .featured {
     grid-template-columns: 1fr;
-    padding: var(--space-2);
   }
 
   .featuredImageWrap {
-    max-height: 200px;
+    max-height: 220px;
   }
 
   .featuredImage {
-    max-height: 200px;
-  }
-
-  .featuredText {
-    padding: 0 var(--space-1) var(--space-1);
+    max-height: 220px;
   }
 }
 
+/* 2 colonnes plutôt que 3 (05/09/2026, "mode et chic") : des cartes plus grandes/plus
+   posées, moins "grille dense de vignettes app". */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-3);
-}
-
-@media (max-width: 900px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: var(--space-4);
 }
 
 @media (max-width: 640px) {
@@ -187,65 +315,52 @@
   }
 }
 
-/* Même famille que .affiliationCard (Partenaires.module.css) : carte blanche, léger
-   soulèvement au survol, plutôt qu'un nouveau traitement pour cette page. */
 .card {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  background: var(--color-white);
-  border: 1px solid rgba(47, 50, 106, 0.1);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-soft);
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid rgba(47, 50, 106, 0.12);
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-card);
-  }
 }
 
 .cardImageWrap {
-  position: relative;
   display: block;
   overflow: hidden;
+  margin-bottom: var(--space-2);
 }
 
+/* Ratio resserré (05/09/2026, "je trouve les images trop grosse") : 3/2 prenait trop de
+   hauteur par rapport au texte, 16/10 reste net sans dominer la carte. */
 .cardImage {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 16 / 10;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
 
 .cardBody {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding: var(--space-3);
-  flex: 1;
 }
 
 .cardTitle {
   font-family: var(--font-display);
-  font-size: 19px;
+  font-size: 21px;
   color: var(--color-primary-dark);
   line-height: 1.3;
+  margin-bottom: 6px;
 }
 
 .cardExcerpt {
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--color-primary-dark);
-  line-height: 1.5;
-  flex: 1;
-  /* Hauteur homogène entre les cartes (05/09/2026, "les plus beau blog premium") :
-     tronque à 3 lignes plutôt que de laisser chaque carte prendre la hauteur de son
-     propre extrait, qui désalignait les dates d'une carte à l'autre. */
+  opacity: 0.85;
+  line-height: 1.55;
+  margin-bottom: 8px;
+  /* Hauteur homogène entre les cartes : tronque à 3 lignes plutôt que de laisser chaque
+     carte prendre la hauteur de son propre extrait. */
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
@@ -254,17 +369,18 @@
 
 .cardDate {
   font-size: 12px;
+  letter-spacing: 0.02em;
   color: var(--color-muted);
 }
 
-/* Pagination (05/09/2026, "mets une pagination") : même famille que .categoryLegendItem
-   (Partenaires.module.css) — contour lilas, pas de fond plein. */
+/* Pagination : contour fin, coins carrés plutôt que des pastilles rondes pleines — même
+   esprit sobre que le reste de la page. */
 .pagination {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-top: var(--space-4);
+  gap: 10px;
+  margin-top: var(--space-5);
 }
 
 .pageNumber,
@@ -272,33 +388,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 1px solid rgba(47, 50, 106, 0.16);
-  background: var(--color-white);
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: none;
   color: var(--color-primary-dark);
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
-  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
 }
 
 .pageNumberActive {
-  background: var(--color-primary);
+  color: var(--color-primary);
   border-color: var(--color-primary);
-  color: var(--color-white);
 }
 
 .pageArrow:disabled {
-  opacity: 0.35;
+  opacity: 0.3;
   cursor: default;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .pageNumber:not(.pageNumberActive):hover,
   .pageArrow:not(:disabled):hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    border-color: rgba(47, 50, 106, 0.4);
   }
 }
