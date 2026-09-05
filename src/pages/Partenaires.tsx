@@ -180,7 +180,7 @@ export default function Partenaires() {
                   <h3 className={styles.affiliationCardTitle}>{title}</h3>
                   <p className={styles.affiliationCardText}>{text}</p>
                   <a href={href} className={styles.affiliationCardLink}>
-                    {cta} →
+                    {cta} <span aria-hidden="true">→</span>
                   </a>
                 </div>
               ))}

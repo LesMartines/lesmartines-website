@@ -435,6 +435,10 @@
   gap: var(--space-3);
 }
 
+/* Effet au survol sur la carte entière (05/09/2026, "j'aime pas le soulignement sur les
+   boutons liens au hover mets un petit effet sur les cards") : la carte se soulève et son
+   ombre se creuse légèrement, plutôt qu'un simple soulignement sur le lien de texte tout
+   en bas — se voit dès qu'on approche n'importe où sur la carte, pas juste sur le lien. */
 .affiliationCard {
   display: flex;
   flex-direction: column;
@@ -445,6 +449,18 @@
   border-radius: var(--radius-lg);
   padding: var(--space-3);
   box-shadow: var(--shadow-soft);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .affiliationCard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .affiliationCard:hover .affiliationCardLink span {
+    transform: translateX(3px);
+  }
 }
 
 .affiliationIcon {
@@ -488,6 +504,11 @@
   margin-top: 10px;
 }
 
+.affiliationCardLink span {
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
 /* Marge en bas de carte (05/09/2026, "en responsive le bouton est hyper proche du
    bord") : sur mobile, .affiliationCardText en flex:1 pousse le lien tout en bas de la
    carte sans laisser d'air sous lui, contre le bord inférieur — un padding-bottom dédié
@@ -498,9 +519,6 @@
   }
 }
 
-.affiliationCardLink:hover {
-  text-decoration: underline;
-}
 
 @media (max-width: 780px) {
   .affiliationGrid {
