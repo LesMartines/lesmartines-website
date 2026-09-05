@@ -168,6 +168,34 @@
   box-shadow: var(--shadow-card);
 }
 
+/* Sous-onglets "pro" (05/09/2026, "faudrait pas un espace pro ?") : contour + texte
+   lilas, pas de fond plein, même famille que .categoryLegendItem sur /partenaires/
+   (Partenaires.module.css) — plus discret que .tab pour marquer que c'est un sous-choix
+   à l'intérieur du registre "pro", pas un 2e niveau d'importance équivalente. */
+.subTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -8px 0 var(--space-4);
+}
+
+.subTab {
+  flex: 1;
+  background: none;
+  border: 1px solid rgba(47, 50, 106, 0.14);
+  border-radius: var(--radius-md);
+  padding: 8px 10px;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--color-muted);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.subTabActive {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
 .tabIntro {
   font-size: 14px;
   color: var(--color-text-secondary);
@@ -610,6 +638,38 @@
 
   .card {
     padding: var(--space-4) var(--space-3);
+  }
+
+  /* Retour à un simple duo perso/pro (05/09/2026, structure à 2 niveaux) : plus besoin
+     du fix scrollable pensé pour 4 onglets à plat, .tabs ne porte plus que 2 labels
+     courts — le pill switcher d'origine (flex:1 partagé) refonctionne tel quel. */
+
+  /* Sous-onglets pro en rangée scrollable (05/09/2026, "arrange le responsive [...] et
+     rend ça plus intuitif en mobile") : 3 labels de longueurs très différentes
+     ("Marque" vs "J'organise des events"), même recette que .categoryLegend sur
+     /partenaires/ plutôt qu'un flex:1 qui écraserait le plus long sur 3 lignes. */
+  .subTabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin: -8px calc(var(--space-3) * -1) var(--space-4);
+    padding: 8px var(--space-3) 4px;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .subTabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .subTab {
+    flex: none;
+    scroll-snap-align: start;
+    white-space: nowrap;
+  }
+
+  .tabActive {
+    background: var(--color-white);
   }
 
   .socialLinks {

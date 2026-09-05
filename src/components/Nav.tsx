@@ -35,7 +35,7 @@ interface NavLink {
 const links: NavLink[] = [
   { label: "L'appli", href: '/', activeOn: ['/'] },
   { label: 'Events', href: null },
-  { label: 'Partenaires', href: '/partenaires/', activeOn: ['/partenaires/'] },
+  { label: 'Devenir partenaire', href: '/partenaires/', activeOn: ['/partenaires/'] },
   { label: 'Le Martine Mag', href: 'https://www.lesmartines.app/blog-les-martines/' },
   { label: 'On papote ?', href: '/contact/', activeOn: ['/contact/'] },
 ]

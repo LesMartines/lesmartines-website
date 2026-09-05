@@ -235,7 +235,7 @@ export function EventCard({ event }: { event: EventItem }) {
       </div>
 
       <div className={styles.infoBlock}>
-        <h2 className={styles.cardTitle}>{event.title}</h2>
+        <h3 className={styles.cardTitle}>{event.title}</h3>
         {/* Hauteur fixe, comme .card sur la page Partenaires (02/09/2026, "les dates et
             le lieu [...] toujours alignés avec les autres cards") : les descriptifs
             n'ont pas tous la même longueur, sans ça la ligne date/lieu se retrouvait à

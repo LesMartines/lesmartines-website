@@ -14,7 +14,10 @@
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  margin-bottom: var(--space-5);
+  /* margin-bottom retiré (05/09/2026, "il y a une bande violette en haut du nouveau
+     bloc") : ce vide révélait le dégradé lavande de .section entre le hero pêche et la
+     bande blanche du hub affiliation juste en dessous — inutile maintenant que cette
+     bande a son propre padding-top (voir .affiliationBlock). */
 }
 
 .hero::before {
@@ -364,6 +367,109 @@
    chaque marque a son propre bloc avec logo + descriptif + lien, plutôt qu'un simple mur
    de logos comme sur le bandeau de l'accueil — l'idée ici est de donner envie de cliquer,
    pas juste de montrer qu'on a des partenaires. */
+/* Hub affiliation (05/09/2026) : 3 cartes égales, sobres (contour + fond blanc, pas de
+   glassmorphisme comme les cartes marques plus bas) pour rester des "portes d'entrée"
+   claires plutôt que de concurrencer visuellement le mur de logos qui suit. */
+/* Bande pleine largeur d'une autre couleur (05/09/2026, "faudrait le mettre dans un
+   bandeau d'une autre couleur pour pas le confondre avec les marques") : sans ça, le hub
+   affiliation flottait sur le même dégradé lavande/pêche que le reste de la page,
+   fondu avec la section marques juste en dessous. Même recette de bande bord à bord que
+   .hero plus haut (100vw + marge négative), fond blanc chaud pour trancher net sur le
+   dégradé lavande/pêche de .section. */
+.affiliationBlock {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  margin-bottom: var(--space-6);
+  padding: var(--space-5) var(--space-3);
+  background: var(--color-white-warm);
+}
+
+.affiliationBlock > * {
+  max-width: var(--container-width);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.affiliationTitle {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 2.6vw, 28px);
+  color: var(--color-primary-dark);
+  text-align: center;
+  margin-bottom: var(--space-4);
+}
+
+.affiliationGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.affiliationCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  background: var(--color-white);
+  border: 1px solid rgba(47, 50, 106, 0.1);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  box-shadow: var(--shadow-soft);
+}
+
+.affiliationIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-lilas-light);
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+.affiliationCardTitle {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--color-primary-dark);
+}
+
+.affiliationCardText {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.affiliationCardLink {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-primary);
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+/* Marge en bas de carte (05/09/2026, "en responsive le bouton est hyper proche du
+   bord") : sur mobile, .affiliationCardText en flex:1 pousse le lien tout en bas de la
+   carte sans laisser d'air sous lui, contre le bord inférieur — un padding-bottom dédié
+   plutôt que de dépendre du seul padding partagé de .affiliationCard. */
+@media (max-width: 780px) {
+  .affiliationCard {
+    padding-bottom: var(--space-4);
+  }
+}
+
+.affiliationCardLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 780px) {
+  .affiliationGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -526,6 +632,93 @@ a.card:hover .name::after {
   margin: 0 auto var(--space-3);
   color: var(--color-text-secondary);
   line-height: 1.6;
+}
+
+/* 3 liens plutôt qu'1 seul bouton "marque" (05/09/2026, "je me dis qu'on peut aussi
+   avoir un lieu safe et organiser des events" puis "je voudrais que les boutons aient la
+   mm tailles [...] pas beau et premium") : grid à 3 colonnes égales (repris de
+   .affiliationGrid/.affiliationCard plus haut, même icône en médaillon) plutôt qu'un
+   flex wrap où chaque lien gardait la largeur de son propre texte. */
+.closingLinks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.closingLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-white);
+  color: var(--color-primary-dark);
+  text-align: center;
+  text-decoration: none;
+  padding: var(--space-3) var(--space-1);
+  border: 1px solid rgba(47, 50, 106, 0.1);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.closingLink svg {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: var(--color-primary);
+  padding: 9px;
+  background: var(--color-lilas-light);
+  border-radius: 50%;
+  box-sizing: content-box;
+}
+
+.closingLinkLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+}
+
+.closingLinkLabel strong {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.closingLinkLabel span {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.closingLink:hover {
+  transform: translateY(-3px);
+  border-color: rgba(96, 102, 216, 0.25);
+  box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 640px) {
+  .closingLinks {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Intro du profil "marque" (05/09/2026, descendue du hero — voir Partenaires.tsx) :
+   reprend le même heroInner (centré, même largeur) pour rester visuellement raccord
+   avec le hero juste au-dessus, plutôt qu'un style ad hoc. */
+.brandSectionIntro {
+  max-width: 620px;
+  margin: 0 auto var(--space-5);
+  text-align: center;
+}
+
+.brandSectionTitle {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 30px);
+  color: var(--color-primary-dark);
+  margin: var(--space-2) 0 var(--space-3);
 }
 
 /* 2 lignes en desktop (05/09/2026) : une par phrase, en s'appuyant sur le <br /> déjà

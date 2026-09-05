@@ -13,10 +13,10 @@
      reste : tout ce qui dépasse sous cette ligne est visuellement "avalé". */
   position: relative;
   z-index: 2;
-  /* Descendu de 20px puis 30px de plus (31/08/2026, "baisse le bandeau des logos") :
-     -72px -> -52px -> -22px, pour laisser respirer la compo du Hero agrandie juste
-     au-dessus (voir Hero.module.css). */
-  margin-top: -22px;
+  /* Descendu de 20px puis 30px puis 10px de plus (31/08/2026 puis 05/09/2026, "baisse
+     de 10px la bande de logo") : -72px -> -52px -> -22px -> -12px, pour laisser
+     respirer la compo du Hero agrandie juste au-dessus (voir Hero.module.css). */
+  margin-top: -12px;
 }
 
 /* Remonté de 30px de plus en mobile (04/09/2026, "remonte la bande media de 30px"),
@@ -28,7 +28,9 @@
    entre les logos pour ne pas avoir l'air trop épars sur un écran étroit. */
 @media (max-width: 640px) {
   .section {
-    margin-top: -102px;
+    /* -102px -> -82px -> -62px (05/09/2026, "baisse de 20px sur mobile la bande de
+       logo" puis "baisse encore de 20px") */
+    margin-top: -62px;
     padding: var(--space-1) 0 var(--space-3);
   }
 

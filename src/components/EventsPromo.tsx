@@ -92,6 +92,20 @@ export default function EventsPromo() {
           <a href="#appli" className={styles.cta}>
             Être prévenue au lancement
           </a>
+          {/* Lien organisatrices (05/09/2026, "faut qu'on en parle dans ce bloc avec un
+              lien qui renvoie vers le formulaire") : renvoie vers le nouvel onglet
+              "J'organise des events" du formulaire de contact (voir Contact.tsx) —
+              discret, sous le CTA principal (télécharger/être prévenue), pour ne pas
+              lui faire concurrence auprès du plus large public de cette section. */}
+          <a href="/contact/?type=event" className={styles.organizerLink}>
+            Tu organises des events entre femmes&nbsp;? Fais-toi connaître →
+          </a>
+          {/* 2e lien (05/09/2026, "on peut faire un 4ème [...] et en parler aussi sur la
+              home") : même traitement discret que le lien organisatrice juste au-dessus,
+              vers l'onglet "J'ai un lieu safe" du formulaire. */}
+          <a href="/contact/?type=lieu" className={styles.organizerLink}>
+            T&rsquo;as un lieu safe pour une Martinade&nbsp;? Propose-le →
+          </a>
         </div>
 
         {/*

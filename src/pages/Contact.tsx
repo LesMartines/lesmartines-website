@@ -20,13 +20,17 @@ import styles from './Contact.module.css'
 // se passe réellement, et fonctionne sans aucune infra côté serveur.
 const CONTACT_EMAIL = 'hello@lesmartines.app'
 
-// Deux publics, deux formulaires (01/09/2026, "il faudrait avoir une partie pour les
-// partenaires (pro) et une partie classique, pas le même formulaire") : une meuf qui
-// papote n'a pas besoin de renseigner un site web ou un nom de marque, et une marque qui
-// candidate (voir /partenaires/, "Candidater pour être sur Les Martines") a besoin de
-// pouvoir présenter son projet, pas juste écrire 3 lignes. Onglets plutôt que 2 pages
-// séparées : ça reste "un p'tit mot" pour les deux, seul le contenu du formulaire change.
-type Mode = 'meuf' | 'marque'
+// Quatre publics, quatre formulaires, mais 2 registres bien différents (01/09/2026 puis
+// 05/09/2026, "je sais pas si c'est bien parce que je mélange le pro et le petit mot") :
+// une meuf qui papote un p'tit mot n'a rien à voir avec une marque/organisatrice/lieu qui
+// candidate ou propose un partenariat. Mettre les 4 à plat sur la même ligne d'onglets
+// laissait croire que "dire coucou" est une option équivalente à "candidater comme
+// marque". Structure à 2 niveaux à la place : `audience` choisit d'abord le registre
+// (perso/pro), et seul le registre "pro" affiche un 2e sélecteur pour préciser le type
+// (marque/event/lieu) — `mode` reste la source de vérité fine utilisée par le formulaire.
+type Audience = 'perso' | 'pro'
+type Mode = 'meuf' | 'marque' | 'event' | 'lieu'
+const PRO_MODES: Mode[] = ['marque', 'event', 'lieu']
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const URL_RE = /^https?:\/\/.+\..+/
@@ -67,6 +71,24 @@ function LinkIcon() {
       <path d="M8.5 11.5 11.5 8.5" />
       <path d="M9.5 5.5 11 4a3 3 0 0 1 4.2 4.2l-1.5 1.5" />
       <path d="M10.5 14.5 9 16a3 3 0 0 1-4.2-4.2l1.5-1.5" />
+    </svg>
+  )
+}
+
+function CalendarIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2.5" y="4" width="15" height="13" rx="2" />
+      <path d="M6 2.5v3M14 2.5v3M2.5 8h15" />
+    </svg>
+  )
+}
+
+function PinIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10 18s6-5.2 6-10a6 6 0 0 0-12 0c0 4.8 6 10 6 10Z" />
+      <circle cx="10" cy="8" r="2.2" />
     </svg>
   )
 }
@@ -184,13 +206,28 @@ function AtIcon() {
 
 export default function Contact() {
   const [searchParams] = useSearchParams()
-  const initialMode: Mode = searchParams.get('type') === 'marque' ? 'marque' : 'meuf'
+  const typeParam = searchParams.get('type')
+  const initialMode: Mode =
+    typeParam === 'marque' ? 'marque' : typeParam === 'event' ? 'event' : typeParam === 'lieu' ? 'lieu' : 'meuf'
   const [mode, setMode] = useState<Mode>(initialMode)
+  const [audience, setAudience] = useState<Audience>(initialMode === 'meuf' ? 'perso' : 'pro')
+
+  // Bascule "Un p'tit mot" / "Je suis pro" (05/09/2026) : passer en pro sélectionne le
+  // dernier sous-type pro actif (ou 'marque' par défaut) plutôt que de laisser `mode` sur
+  // 'meuf', ce qui afficherait un formulaire perso sous un onglet "pro" sélectionné.
+  const handleAudienceChange = (next: Audience) => {
+    setAudience(next)
+    if (next === 'perso') {
+      setMode('meuf')
+    } else if (!PRO_MODES.includes(mode)) {
+      setMode('marque')
+    }
+  }
 
   useHead({
     title: 'On papote ?',
     description:
-      "Une question, une idée, un coucou, ou une marque qui veut candidater ? Écris aux Martines, on te répond dès que possible.",
+      "Une question, une idée, un coucou, une marque qui veut candidater, une organisatrice d'events déjà active, ou un lieu à proposer ? Écris aux Martines, on te répond dès que possible.",
     path: '/contact/',
   })
 
@@ -212,6 +249,26 @@ export default function Contact() {
   const [website, setWebsite] = useState('')
   const [instagram, setInstagram] = useState('')
   const [pitch, setPitch] = useState('')
+
+  // Formulaire "event" (05/09/2026, "un troisième onglet pour les gens qui veulent nous
+  // contacter pour faire des orgas d'événements pour les femmes") : pas de site web/marque
+  // à présenter comme pour une candidature partenaire, mais un projet d'event à décrire
+  // (type d'event envisagé, pour qui, où/quand si déjà une idée).
+  const [eventOrgName, setEventOrgName] = useState('')
+  const [eventInstagram, setEventInstagram] = useState('')
+  const [eventContactName, setEventContactName] = useState('')
+  const [eventEmail, setEventEmail] = useState('')
+  const [eventPitch, setEventPitch] = useState('')
+
+  // Formulaire "lieu" (05/09/2026, "on peut faire un 4ème qui est : tu es lieu safe qui
+  // peut accueillir des martinades") : un lieu (café, salle, appartement...) qui propose
+  // d'accueillir une Martinade — besoin de savoir où c'est et ce que le lieu propose,
+  // pas juste un contact.
+  const [venueName, setVenueName] = useState('')
+  const [venueCity, setVenueCity] = useState('')
+  const [venueContactName, setVenueContactName] = useState('')
+  const [venueEmail, setVenueEmail] = useState('')
+  const [venuePitch, setVenuePitch] = useState('')
 
   const [sent, setSent] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -270,6 +327,54 @@ export default function Contact() {
     setSent(true)
   }
 
+  const handleSubmitEvent = (e: FormEvent) => {
+    e.preventDefault()
+    const nextErrors: Record<string, string> = {}
+    if (!eventContactName.trim()) nextErrors['event-contact-name'] = 'Comment on t’appelle ?'
+    if (!EMAIL_RE.test(eventEmail)) nextErrors['event-email'] = 'Ton mail, pour qu’on puisse te répondre !'
+    if (!eventPitch.trim()) nextErrors['event-pitch'] = 'Raconte-nous ce que tu organises !'
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors)
+      return
+    }
+    setErrors({})
+    const subject = `Proposition d'event — ${eventOrgName || eventContactName}`
+    const body = [
+      `Organisatrice / structure : ${eventOrgName || 'non renseigné'}`,
+      `Instagram : ${eventInstagram || 'non renseigné'}`,
+      `Contact : ${eventContactName} (${eventEmail})`,
+      '',
+      eventPitch,
+    ].join('\n')
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    setSent(true)
+  }
+
+  const handleSubmitVenue = (e: FormEvent) => {
+    e.preventDefault()
+    const nextErrors: Record<string, string> = {}
+    if (!venueName.trim()) nextErrors['venue-name'] = 'Il s’appelle comment, ton lieu ?'
+    if (!venueCity.trim()) nextErrors['venue-city'] = 'Il est où, ton lieu ?'
+    if (!venueContactName.trim()) nextErrors['venue-contact-name'] = 'Comment on t’appelle ?'
+    if (!EMAIL_RE.test(venueEmail)) nextErrors['venue-email'] = 'Ton mail, pour qu’on puisse te répondre !'
+    if (!venuePitch.trim()) nextErrors['venue-pitch'] = 'Raconte-nous ton lieu !'
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors)
+      return
+    }
+    setErrors({})
+    const subject = `Lieu safe proposé — ${venueName}`
+    const body = [
+      `Lieu : ${venueName}`,
+      `Ville : ${venueCity}`,
+      `Contact : ${venueContactName} (${venueEmail})`,
+      '',
+      venuePitch,
+    ].join('\n')
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    setSent(true)
+  }
+
   return (
     <section className={styles.section} aria-labelledby="contact-title">
       <div className="container">
@@ -280,8 +385,9 @@ export default function Contact() {
               <HighlightedText text="Un p'tit mot ?" highlight="p'tit mot" />
             </h1>
             <p className={styles.subtitle}>
-              Une question pour Les Martines&nbsp;? T&rsquo;es une marque qui veut nous
-              rejoindre&nbsp;? Écris-nous, on te répond sous 48h&nbsp;!
+              Une question pour Les Martines&nbsp;? T&rsquo;es une marque, une
+              organisatrice d&rsquo;events ou un lieu qui veut nous rejoindre&nbsp;?
+              Écris-nous, on te répond sous 48h&nbsp;!
             </p>
             {/* Preuve sociale + délai de réponse (03/09/2026, "une visiteuse qui arrive
                 directement sur /contact/ [...] n'a aucune raison de croire que c'est un
@@ -308,26 +414,65 @@ export default function Contact() {
                 <SuccessCelebration onReset={() => setSent(false)} />
               ) : (
                 <>
-              <div className={styles.tabs} role="tablist" aria-label="Type de message">
+              {/* Niveau 1 (05/09/2026, "je mélange le pro et le petit mot [...] faudrait
+                  pas un espace pro ?") : perso/pro d'abord, pour ne jamais mettre "dire
+                  coucou" et "candidater comme marque" à plat sur la même ligne. */}
+              <div className={styles.tabs} role="tablist" aria-label="Registre du message">
                 <button
                   type="button"
                   role="tab"
-                  aria-selected={mode === 'meuf'}
-                  className={`${styles.tab} ${mode === 'meuf' ? styles.tabActive : ''}`}
-                  onClick={() => setMode('meuf')}
+                  aria-selected={audience === 'perso'}
+                  className={`${styles.tab} ${audience === 'perso' ? styles.tabActive : ''}`}
+                  onClick={() => handleAudienceChange('perso')}
                 >
-                  Une question, un coucou
+                  Un p&rsquo;tit mot
                 </button>
                 <button
                   type="button"
                   role="tab"
-                  aria-selected={mode === 'marque'}
-                  className={`${styles.tab} ${mode === 'marque' ? styles.tabActive : ''}`}
-                  onClick={() => setMode('marque')}
+                  aria-selected={audience === 'pro'}
+                  className={`${styles.tab} ${audience === 'pro' ? styles.tabActive : ''}`}
+                  onClick={() => handleAudienceChange('pro')}
                 >
-                  Je suis une marque
+                  Je suis pro
                 </button>
               </div>
+
+              {/* Niveau 2, seulement en pro : précise le type de partenariat. Même
+                  famille visuelle que les onglets du dessus mais plus petite/discrète
+                  (.subTabs), pour marquer que c'est un sous-choix, pas un 2e niveau
+                  d'importance équivalente. */}
+              {audience === 'pro' && (
+                <div className={styles.subTabs} role="tablist" aria-label="Type de partenariat">
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={mode === 'marque'}
+                    className={`${styles.subTab} ${mode === 'marque' ? styles.subTabActive : ''}`}
+                    onClick={() => setMode('marque')}
+                  >
+                    Marque
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={mode === 'event'}
+                    className={`${styles.subTab} ${mode === 'event' ? styles.subTabActive : ''}`}
+                    onClick={() => setMode('event')}
+                  >
+                    J&rsquo;organise des events
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={mode === 'lieu'}
+                    className={`${styles.subTab} ${mode === 'lieu' ? styles.subTabActive : ''}`}
+                    onClick={() => setMode('lieu')}
+                  >
+                    J&rsquo;ai un lieu safe
+                  </button>
+                </div>
+              )}
 
               {mode === 'meuf' ? (
                 <form onSubmit={handleSubmitMeuf} noValidate>
@@ -437,7 +582,7 @@ export default function Contact() {
                     <StoreButtons size="small" />
                   </div>
                 </form>
-              ) : (
+              ) : mode === 'marque' ? (
                 <form onSubmit={handleSubmitMarque} noValidate>
                   {/* Écusson repris de /partenaires/ (03/09/2026, "l'intro dit juste 'on
                       ne dit pas oui à tout le monde' en une ligne discrète [...] perdu au
@@ -612,6 +757,288 @@ export default function Contact() {
 
                   <button type="submit" className={styles.submit}>
                     Je candidate <span aria-hidden="true">🤝</span>
+                  </button>
+                  <p className={styles.hint}>Ça ouvre ta messagerie, avec le message déjà rempli.</p>
+                  <EmailFallback />
+                </form>
+              ) : mode === 'event' ? (
+                <form onSubmit={handleSubmitEvent} noValidate>
+                  {/* 2 cas couverts, pas l'un à l'exclusion de l'autre (05/09/2026,
+                      "c'est plus pour les personnes qui organisent déjà des événements
+                      [...] pour qu'on les pousse à notre communauté" puis "si on peut
+                      co-organiser aussi carrément" et "c'est nous qui décidons s'ils
+                      rentrent dans l'appli, on sélectionne") : référencer des events qui
+                      tournent déjà OU co-organiser un nouvel event avec Les Martines —
+                      la sélection reste réelle dans les 2 cas, pas automatique. */}
+                  <p className={styles.tabIntro}>
+                    Tu organises déjà des events 100% entre femmes, ou t&rsquo;as une idée
+                    à monter avec nous (atelier, sortie, rencontre pro...)&nbsp;? On
+                    sélectionne ceux qu&rsquo;on pousse à notre communauté&nbsp;:
+                    présente-nous ton projet.
+                  </p>
+
+                  <div className={styles.field}>
+                    <label htmlFor="event-org-name" className={styles.label}>
+                      Ton nom, ou celui de ton asso/entreprise{' '}
+                      <span className={styles.labelOptional}>(optionnel)</span>
+                    </label>
+                    <div className={styles.inputIconWrap}>
+                      <span className={styles.inputIcon} aria-hidden="true">
+                        <TagIcon />
+                      </span>
+                      <input
+                        id="event-org-name"
+                        type="text"
+                        className={`${styles.input} ${styles.hasIcon}`}
+                        placeholder="Les Copines du jeudi"
+                        value={eventOrgName}
+                        onChange={(e) => setEventOrgName(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="event-instagram" className={styles.label}>
+                      Instagram <span className={styles.labelOptional}>(optionnel)</span>
+                    </label>
+                    <div className={styles.inputIconWrap}>
+                      <span className={styles.inputIcon} aria-hidden="true">
+                        <AtIcon />
+                      </span>
+                      <input
+                        id="event-instagram"
+                        type="text"
+                        className={`${styles.input} ${styles.hasIcon}`}
+                        placeholder="lescopinesdujeudi"
+                        value={eventInstagram}
+                        onChange={(e) => setEventInstagram(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label htmlFor="event-contact-name" className={styles.label}>
+                        Ton nom
+                      </label>
+                      <div className={styles.inputIconWrap}>
+                        <span className={styles.inputIcon} aria-hidden="true">
+                          <UserIcon />
+                        </span>
+                        <input
+                          id="event-contact-name"
+                          type="text"
+                          className={`${styles.input} ${styles.hasIcon} ${errors['event-contact-name'] ? styles.inputError : ''}`}
+                          placeholder="Martine Queen"
+                          value={eventContactName}
+                          onChange={(e) => {
+                            clearError('event-contact-name')
+                            setEventContactName(e.target.value)
+                          }}
+                          aria-invalid={Boolean(errors['event-contact-name'])}
+                        />
+                      </div>
+                      {errors['event-contact-name'] && (
+                        <p className={styles.fieldError}>{errors['event-contact-name']}</p>
+                      )}
+                    </div>
+
+                    <div className={styles.field}>
+                      <label htmlFor="event-email" className={styles.label}>
+                        Ton mail
+                      </label>
+                      <div className={styles.inputIconWrap}>
+                        <span className={styles.inputIcon} aria-hidden="true">
+                          <MailIcon />
+                        </span>
+                        <input
+                          id="event-email"
+                          type="email"
+                          className={`${styles.input} ${styles.hasIcon} ${errors['event-email'] ? styles.inputError : ''}`}
+                          placeholder="martine.queen@gmail.com"
+                          value={eventEmail}
+                          onChange={(e) => {
+                            clearError('event-email')
+                            setEventEmail(e.target.value)
+                          }}
+                          aria-invalid={Boolean(errors['event-email'])}
+                        />
+                      </div>
+                      {errors['event-email'] && <p className={styles.fieldError}>{errors['event-email']}</p>}
+                    </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="event-pitch" className={styles.label}>
+                      Ton event, en quelques mots
+                    </label>
+                    <div className={styles.inputIconWrap}>
+                      <span className={`${styles.inputIcon} ${styles.inputIconTop}`} aria-hidden="true">
+                        <CalendarIcon />
+                      </span>
+                      <textarea
+                        id="event-pitch"
+                        className={`${styles.textarea} ${styles.hasIcon} ${errors['event-pitch'] ? styles.inputError : ''}`}
+                        placeholder="Le type d'event, pour qui, à quelle fréquence, ou ton idée si c'est à monter ensemble..."
+                        value={eventPitch}
+                        onChange={(e) => {
+                          clearError('event-pitch')
+                          setEventPitch(e.target.value)
+                        }}
+                        aria-invalid={Boolean(errors['event-pitch'])}
+                      />
+                    </div>
+                    {errors['event-pitch'] && <p className={styles.fieldError}>{errors['event-pitch']}</p>}
+                  </div>
+
+                  <button type="submit" className={styles.submit}>
+                    J&rsquo;envoie mon event <span aria-hidden="true">🎉</span>
+                  </button>
+                  <p className={styles.hint}>Ça ouvre ta messagerie, avec le message déjà rempli.</p>
+                  <EmailFallback />
+                </form>
+              ) : (
+                <form onSubmit={handleSubmitVenue} noValidate>
+                  {/* Distinct du formulaire "event" (05/09/2026, "tu vois la différence
+                      entre orga et lieux ?" puis "c'est pas prêté, c'est proposé [...]
+                      quand une personne organise une Martinade, on propose ce lieu") :
+                      ici on référence un ESPACE physique que LES MARTINES suggèrent
+                      ensuite aux organisatrices de Martinades — la gérante du lieu ne
+                      l'accueille pas elle-même, d'où le nom + la ville du lieu plutôt
+                      qu'un pitch d'activité. */}
+                  <p className={styles.tabIntro}>
+                    T&rsquo;as un café, une salle, un espace pro ou un autre endroit
+                    safe&nbsp;? On choisit les lieux qu&rsquo;on propose aux Martines qui
+                    organisent une Martinade&nbsp;: présente-nous le tien.
+                  </p>
+
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label htmlFor="venue-name" className={styles.label}>
+                        Nom du lieu
+                      </label>
+                      <div className={styles.inputIconWrap}>
+                        <span className={styles.inputIcon} aria-hidden="true">
+                          <TagIcon />
+                        </span>
+                        <input
+                          id="venue-name"
+                          type="text"
+                          className={`${styles.input} ${styles.hasIcon} ${errors['venue-name'] ? styles.inputError : ''}`}
+                          placeholder="Café des Copines"
+                          value={venueName}
+                          onChange={(e) => {
+                            clearError('venue-name')
+                            setVenueName(e.target.value)
+                          }}
+                          aria-invalid={Boolean(errors['venue-name'])}
+                        />
+                      </div>
+                      {errors['venue-name'] && <p className={styles.fieldError}>{errors['venue-name']}</p>}
+                    </div>
+
+                    <div className={styles.field}>
+                      <label htmlFor="venue-city" className={styles.label}>
+                        Ville
+                      </label>
+                      <div className={styles.inputIconWrap}>
+                        <span className={styles.inputIcon} aria-hidden="true">
+                          <PinIcon />
+                        </span>
+                        <input
+                          id="venue-city"
+                          type="text"
+                          className={`${styles.input} ${styles.hasIcon} ${errors['venue-city'] ? styles.inputError : ''}`}
+                          placeholder="Lyon 2e"
+                          value={venueCity}
+                          onChange={(e) => {
+                            clearError('venue-city')
+                            setVenueCity(e.target.value)
+                          }}
+                          aria-invalid={Boolean(errors['venue-city'])}
+                        />
+                      </div>
+                      {errors['venue-city'] && <p className={styles.fieldError}>{errors['venue-city']}</p>}
+                    </div>
+                  </div>
+
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label htmlFor="venue-contact-name" className={styles.label}>
+                        Ton nom
+                      </label>
+                      <div className={styles.inputIconWrap}>
+                        <span className={styles.inputIcon} aria-hidden="true">
+                          <UserIcon />
+                        </span>
+                        <input
+                          id="venue-contact-name"
+                          type="text"
+                          className={`${styles.input} ${styles.hasIcon} ${errors['venue-contact-name'] ? styles.inputError : ''}`}
+                          placeholder="Martine Queen"
+                          value={venueContactName}
+                          onChange={(e) => {
+                            clearError('venue-contact-name')
+                            setVenueContactName(e.target.value)
+                          }}
+                          aria-invalid={Boolean(errors['venue-contact-name'])}
+                        />
+                      </div>
+                      {errors['venue-contact-name'] && (
+                        <p className={styles.fieldError}>{errors['venue-contact-name']}</p>
+                      )}
+                    </div>
+
+                    <div className={styles.field}>
+                      <label htmlFor="venue-email" className={styles.label}>
+                        Ton mail
+                      </label>
+                      <div className={styles.inputIconWrap}>
+                        <span className={styles.inputIcon} aria-hidden="true">
+                          <MailIcon />
+                        </span>
+                        <input
+                          id="venue-email"
+                          type="email"
+                          className={`${styles.input} ${styles.hasIcon} ${errors['venue-email'] ? styles.inputError : ''}`}
+                          placeholder="martine.queen@gmail.com"
+                          value={venueEmail}
+                          onChange={(e) => {
+                            clearError('venue-email')
+                            setVenueEmail(e.target.value)
+                          }}
+                          aria-invalid={Boolean(errors['venue-email'])}
+                        />
+                      </div>
+                      {errors['venue-email'] && <p className={styles.fieldError}>{errors['venue-email']}</p>}
+                    </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="venue-pitch" className={styles.label}>
+                      Ton lieu en quelques mots
+                    </label>
+                    <div className={styles.inputIconWrap}>
+                      <span className={`${styles.inputIcon} ${styles.inputIconTop}`} aria-hidden="true">
+                        <MessageIcon />
+                      </span>
+                      <textarea
+                        id="venue-pitch"
+                        className={`${styles.textarea} ${styles.hasIcon} ${errors['venue-pitch'] ? styles.inputError : ''}`}
+                        placeholder="Capacité, ambiance, créneaux disponibles..."
+                        value={venuePitch}
+                        onChange={(e) => {
+                          clearError('venue-pitch')
+                          setVenuePitch(e.target.value)
+                        }}
+                        aria-invalid={Boolean(errors['venue-pitch'])}
+                      />
+                    </div>
+                    {errors['venue-pitch'] && <p className={styles.fieldError}>{errors['venue-pitch']}</p>}
+                  </div>
+
+                  <button type="submit" className={styles.submit}>
+                    Je propose mon lieu <span aria-hidden="true">🏠</span>
                   </button>
                   <p className={styles.hint}>Ça ouvre ta messagerie, avec le message déjà rempli.</p>
                   <EmailFallback />

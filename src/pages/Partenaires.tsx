@@ -23,6 +23,75 @@ import styles from './Partenaires.module.css'
 // catégories réellement posées sur les cartes.
 const ALL_CATEGORIES = Array.from(new Set(PARTENAIRES.flatMap((p) => p.category ?? [])))
 
+// Icônes locales (même recette que Contact.tsx : petites icônes en traits, pas de lib
+// externe) réutilisées pour les 3 profils d'affiliation ci-dessous.
+function TagIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10.6 2.5H16a1 1 0 0 1 1 1v5.4a1 1 0 0 1-.3.7l-6.6 6.6a1 1 0 0 1-1.4 0l-5.4-5.4a1 1 0 0 1 0-1.4l6.6-6.6a1 1 0 0 1 .7-.3Z" />
+      <circle cx="13" cy="6" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
+
+function CalendarIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2.5" y="4" width="15" height="13" rx="2" />
+      <path d="M6 2.5v3M14 2.5v3M2.5 8h15" />
+    </svg>
+  )
+}
+
+function PinIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10 18s6-5.2 6-10a6 6 0 0 0-12 0c0 4.8 6 10 6 10Z" />
+      <circle cx="10" cy="8" r="2.2" />
+    </svg>
+  )
+}
+
+// 3 profils d'affiliation (05/09/2026, "on parle pas que des marques c'est de
+// l'affiliation [...] faudrait pas un espace pro ?") : cette page ne montrait jusqu'ici
+// que le profil "marque" (30 logos + candidature), sans aucune visibilité pour les 2
+// autres façons de s'associer à Les Martines — personne n'a de raison de deviner que
+// /contact/?type=event ou ?type=lieu existent.
+// Reformulé (05/09/2026, "c'est plus pour les personnes qui organisent déjà des
+// événements [...] pour qu'on les pousse à notre communauté" + "c'est pas prêté, c'est
+// proposé [...] on propose ce lieu" quand une Martine organise une Martinade, puis "faut
+// que ce soit plus vendeur et en plus de ça c'est nous qui décidons s'ils rentrent dans
+// l'appli, on sélectionne", puis "si on peut co-organiser aussi carrément") : "event"
+// couvre 2 cas — référencer des events qui tournent déjà, OU co-organiser un nouvel
+// event avec Les Martines — pas l'un à l'exclusion de l'autre ; "lieu" reste un lieu que
+// LES MARTINES proposent ensuite aux organisatrices de Martinades, pas un prêt actif du
+// lieu par sa gérante. Les 3 profils sont sur sélection, pas seulement la marque : "on
+// choisit" explicite plutôt qu'implicite pour rester vendeur (exclusivité =
+// désirabilité) sur les 3 cartes, pas juste celle des marques.
+const AFFILIATION_PROFILES = [
+  {
+    Icon: TagIcon,
+    title: 'Tu es une marque',
+    text: 'Rejoins nos 30+ marques partenaires, choisies une à une.',
+    href: '/contact/?type=marque',
+    cta: 'Je candidate',
+  },
+  {
+    Icon: CalendarIcon,
+    title: 'Tu organises des events',
+    text: 'On sélectionne ceux qu’on relaie à la communauté, ou qu’on co-organise avec toi.',
+    href: '/contact/?type=event',
+    cta: 'Je me fais connaître',
+  },
+  {
+    Icon: PinIcon,
+    title: 'Tu as un lieu safe',
+    text: 'On choisit les meilleurs lieux à proposer aux Martines qui organisent une Martinade.',
+    href: '/contact/?type=lieu',
+    cta: 'Je propose mon lieu',
+  },
+]
+
 function PartnerCard({ p }: { p: Partenaire }) {
   // Deux zones distinctes (02/09/2026, "on voit les carrés blancs des logos [...] on va
   // faire la partie logo avec un fond blanc et la partie texte en glassmorphisme") :
@@ -43,7 +112,7 @@ function PartnerCard({ p }: { p: Partenaire }) {
         {p.category && p.category.length > 0 && (
           <span className={styles.category}>{p.category.join(' · ')}</span>
         )}
-        <h2 className={styles.name}>{p.name}</h2>
+        <h3 className={styles.name}>{p.name}</h3>
         {p.description && <p className={styles.description}>{p.description}</p>}
       </div>
     </>
@@ -77,24 +146,68 @@ export default function Partenaires() {
       : PARTENAIRES.filter((p) => p.category?.some((cat) => activeCategories.includes(cat)))
 
   useHead({
-    title: 'Nos partenaires',
+    title: 'Deviens partenaire',
     description:
-      'Des marques engagées qui ont rejoint l’aventure Les Martines. Découvre-les toutes, et pourquoi pas la tienne bientôt ?',
+      'Marque, organisatrice d’events (existants ou à co-organiser avec nous), ou lieu à proposer pour une Martinade : 3 façons de rejoindre Les Martines, sur sélection.',
     path: '/partenaires/',
   })
 
   return (
     <section className={styles.section} aria-labelledby="partenaires-title">
       <div className={styles.hero}>
+        {/* Hero neutre (05/09/2026, "en pro tout est sur Sur candidature uniquement" —
+            la page ne parlait QUE de marques ici : badge "sur candidature", écusson "30+
+            marques", sous-titre "30 marques choisies"... alors que la page couvre
+            maintenant 3 profils d'affiliation, dont 2 (event, lieu) ne sont pas des
+            "candidatures" compétitives. Tout ce qui est spécifique aux marques (badge,
+            écusson, critère femme, bouton, filtres) est descendu juste au-dessus de la
+            grille, comme intro du profil "marque" plutôt que du haut de toute la page. */}
         <Reveal immediate>
           <div className={styles.heroInner}>
-            <span className={styles.badge}>Sur candidature uniquement</span>
             <h1 id="partenaires-title" className={styles.title}>
-              <HighlightedText text="Nos partenaires" highlight="partenaires" />
+              <HighlightedText text="Deviens partenaire" highlight="partenaire" />
             </h1>
-            {/* Écusson (02/09/2026, "mettre une sorte d'écusson pour dire qu'on a plus
-                de 30 marques partenaires") : donne un chiffre concret et mémorisable,
-                en plus de la phrase déjà présente dans le sous-titre juste en dessous. */}
+            <p className={styles.subtitle}>
+              Marques engagées, organisatrices d&rsquo;events, lieux qui accueillent des
+              Martinades&nbsp;: Les Martines, ça se construit à plusieurs.
+            </p>
+          </div>
+        </Reveal>
+      </div>
+
+      <div className="container">
+        {/* Hub affiliation (05/09/2026, "on parle pas que les marques c'est de
+            l'affiliation [...] faudrait pas un espace pro ?") : présente les 3 façons de
+            s'associer à Les Martines AVANT la grille (qui ne couvre que le profil
+            marque), pour qu'une organisatrice d'events ou une gérante de lieu comprenne
+            tout de suite que cette page la concerne aussi. */}
+        <Reveal>
+          <div className={styles.affiliationBlock}>
+            <h2 className={styles.affiliationTitle}>Plusieurs façons de rejoindre l&rsquo;aventure</h2>
+            <div className={styles.affiliationGrid}>
+              {AFFILIATION_PROFILES.map(({ Icon, title, text, href, cta }) => (
+                <div key={title} className={styles.affiliationCard}>
+                  <span className={styles.affiliationIcon} aria-hidden="true">
+                    <Icon />
+                  </span>
+                  <h3 className={styles.affiliationCardTitle}>{title}</h3>
+                  <p className={styles.affiliationCardText}>{text}</p>
+                  <a href={href} className={styles.affiliationCardLink}>
+                    {cta} →
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+
+        {/* Intro du profil "marque" (descendue du hero, voir plus haut) : le badge
+            "sur candidature uniquement", l'écusson, le critère féminin et le bouton
+            candidater ne concernent QUE ce profil, pas les 2 autres juste au-dessus. */}
+        <Reveal>
+          <div className={styles.brandSectionIntro}>
+            <span className={styles.badge}>Sur candidature uniquement</span>
+            <h2 className={styles.brandSectionTitle}>Nos marques</h2>
             <span className={styles.seal} aria-hidden="true">
               <span className={styles.sealNumber}>{PARTENAIRES.length}+</span>
               <span className={styles.sealLabel}>
@@ -108,12 +221,6 @@ export default function Partenaires() {
               choisies une à une, pour ce qu&rsquo;elles apportent vraiment à notre
               communauté.
             </p>
-            {/* Critère de sélection sorti du sous-titre (05/09/2026, "il faudrait aussi
-                dire qu'on accepte les marques s'il y a au moins une femme à la tête du
-                projet" puis "faut le mettre en avant dans une bande lilas avec un coeur
-                svg au début qui clignote") : un vrai critère de candidature mérite mieux
-                qu'une phrase noyée dans un paragraphe — bande à part pour qu'il saute aux
-                yeux avant même de lire le reste. */}
             <p className={styles.womenLedBanner}>
               <svg
                 className={styles.womenLedHeart}
@@ -147,12 +254,6 @@ export default function Partenaires() {
                     onClick={() => toggleCategory(c)}
                   >
                     {c}
-                    {/* "×" toujours présent mais masqué au repos (05/09/2026, "faut
-                        comprendre que ça se désélectionne" puis "ça fait sauter sur 3
-                        lignes quand on sélectionne") : afficher/masquer un texte en plus
-                        changeait la largeur de la pill au clic, ce qui décalait tout le
-                        wrap sur une ligne de plus. En réservant toujours sa place (juste
-                        invisible au repos), la largeur ne bouge jamais. */}
                     <span className={styles.categoryLegendItemClose} aria-hidden="true">
                       {' '}
                       ×
@@ -163,9 +264,7 @@ export default function Partenaires() {
             </div>
           </div>
         </Reveal>
-      </div>
 
-      <div className="container">
         <div className={styles.grid}>
           {visiblePartenaires.map((p, i) => (
             <Reveal key={p.name} delay={Math.min(i * 0.03, 0.3)}>
@@ -177,17 +276,34 @@ export default function Partenaires() {
         <Reveal delay={0.1}>
           <div className={styles.closing}>
             <span className={styles.badge}>Places limitées</span>
-            <h2 className={styles.closingTitle}>Tu es une marque qui a envie de nous rejoindre&nbsp;?</h2>
+            {/* Généralisé aux 3 profils (05/09/2026, "je me dis qu'on peut aussi avoir un
+                lieu safe et organiser des events") : ce bloc de clôture ne parlait que de
+                "marque", alors qu'on peut très bien être organisatrice ET avoir un lieu —
+                les 3 liens plutôt qu'un seul bouton qui présuppose lequel des 3 profils
+                correspond à la lectrice arrivée jusqu'ici. */}
+            <h2 className={styles.closingTitle}>Envie de nous rejoindre&nbsp;?</h2>
             <p className={styles.closingText}>
-              On ne retient pas toutes les candidatures mais on les lit toutes, avec la
-              même attention.
+              On ne dit pas oui à tout le monde, mais on lit chaque message avec la même
+              attention.
               <br />
               Les projets qui changent la donne, ça commence souvent par un
               p&rsquo;tit message.
             </p>
-            <a href="/contact/?type=marque" className={styles.becomeButton}>
-              Je candidate pour être sur Les Martines
-            </a>
+            {/* Icône + titre du profil affichés (05/09/2026, "on comprend pas bien à
+                quoi correspond les boutons") : "Je candidate →" seul ne dit pas à quel
+                profil ça correspond une fois sorti du contexte du hub plus haut — même
+                icône + même titre que les cartes d'affiliation pour rester identifiable. */}
+            <div className={styles.closingLinks}>
+              {AFFILIATION_PROFILES.map(({ Icon, title, href, cta }) => (
+                <a key={title} href={href} className={styles.closingLink}>
+                  <Icon />
+                  <span className={styles.closingLinkLabel}>
+                    <strong>{title}</strong>
+                    <span>{cta} →</span>
+                  </span>
+                </a>
+              ))}
+            </div>
           </div>
         </Reveal>
       </div>

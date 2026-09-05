@@ -259,7 +259,8 @@
   width: 73%;
   left: -7.5%;
   top: 26%;
-  animation: floatSoftC 7s ease-in-out infinite;
+  /* Animation retirée (05/09/2026, "fixe l'écran map") : reste statique, comme la carte
+     Loulou (voir .mobileCardLoulou / commentaire "anime pas la carte loulou"). */
 }
 
 /* Agrandi (04/09/2026, "grossir l'ecran papotage") : 51% -> 60%, recentré sur le même
@@ -270,7 +271,7 @@
   width: 60%;
   left: 33%;
   top: 13%;
-  animation: floatSoftA 8s ease-in-out infinite 0.4s;
+  /* Animation retirée (05/09/2026, "fixe l'écran papotage") : reste statique. */
 }
 
 .mobileHeart {
@@ -314,7 +315,9 @@
   z-index: 2;
   width: 55%;
   left: 45%;
-  top: 39%;
+  /* 39% -> 45% (05/09/2026, "descend la carte de loulou de 20px sur mobile") : 20px
+     mesuré ≈ 6% de la hauteur de .mobilePhones sur un iPhone standard (375px de large). */
+  top: 45%;
 }
 
 .mobileBadge19 {
@@ -373,8 +376,6 @@
 
 
 @media (prefers-reduced-motion: reduce) {
-  .mobileMapPhone,
-  .mobilePapotagePhone,
   .mobileCardLea,
   .mobileBadge19,
   .mobileCardEvent {

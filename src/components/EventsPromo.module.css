@@ -93,6 +93,22 @@
   box-shadow: 0 12px 32px rgba(20, 21, 46, 0.4);
 }
 
+/* Lien secondaire discret (05/09/2026) : simple lien souligné sous le CTA principal,
+   pas un 2e bouton plein qui lui ferait concurrence visuellement. */
+.organizerLink {
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--color-white);
+  opacity: 0.85;
+  font-size: 14px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.organizerLink:hover {
+  opacity: 1;
+}
+
 /* Collage : ratio calé sur la maquette envoyée par Marine (~920 x 810). Toutes les
    positions ci-dessous sont en % de ce conteneur pour rester proportionnelles quel que
    soit le rétrécissement de la colonne (grid 1fr) à travers les tailles d'écran. */
