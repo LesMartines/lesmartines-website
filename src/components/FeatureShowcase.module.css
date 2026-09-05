@@ -5,7 +5,11 @@
      au bandeau événements (violet foncé) juste au-dessus. */
   background: var(--color-lavender);
   width: 100%;
-  padding: var(--space-5) 0 var(--space-6);
+  /* Padding du haut aligné sur celui du bas (05/09/2026, "il est un peu trop haut dans
+     le bloc" après avoir agrandi .sectionTitle) : à 32px le titre respirait suffisamment
+     avec seulement 64px au-dessus, mais à 44px il collait visuellement au bord supérieur
+     du bandeau lavande. */
+  padding: var(--space-6) 0;
   margin: 0 0 var(--space-5);
 }
 
