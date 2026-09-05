@@ -2,34 +2,42 @@
   padding: var(--space-6) 0;
 }
 
+/* Header en 2 colonnes, inspiré des blogs premium (05/09/2026, "inspire toi des plus
+   beau blog premium pour la mise en page") : texte à gauche, illustration à droite,
+   plutôt qu'un simple bloc centré — donne tout de suite un ton plus édito/magazine. */
 .header {
-  max-width: 640px;
-  margin: 0 auto var(--space-5);
-  text-align: center;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
 }
 
-.heart {
-  width: 40px;
-  margin-bottom: var(--space-2);
-  animation: heartBeat 2.6s ease-in-out infinite;
+.headerText {
+  text-align: left;
 }
 
-@keyframes heartBeat {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  25% {
-    transform: scale(1.15);
-  }
-  40% {
-    transform: scale(1);
-  }
+.headerImage {
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  display: block;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .heart {
-    animation: none;
+@media (max-width: 780px) {
+  .header {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .headerText {
+    text-align: center;
+    order: 2;
+  }
+
+  .headerImage {
+    order: 1;
+    max-width: 220px;
   }
 }
 
@@ -43,15 +51,32 @@
   font-size: 17px;
   color: var(--color-primary-dark);
   line-height: 1.6;
+  max-width: 480px;
 }
 
 .subtitle strong {
   font-weight: 700;
 }
 
-/* Article vedette (05/09/2026, "faut que la page ait un style de blog") : image + texte
-   côte à côte sur desktop, façon "une" de magazine — casse la monotonie d'une grille
-   uniforme et met en avant l'article le plus récent. */
+/* Pastille catégorie posée SUR l'image (05/09/2026, "les plus beau blog premium") :
+   traitement magazine (The Verge/Medium...) plutôt qu'un simple texte au-dessus du
+   titre — la photo respire, l'info catégorie reste lisible en 1 coup d'œil. */
+.categoryPill {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(4px);
+  color: var(--color-primary-dark);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+}
+
+/* Article vedette : image + texte côte à côte sur desktop, façon "une" de magazine. */
 .featured {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
@@ -72,6 +97,19 @@
     transform: translateY(-4px);
     box-shadow: var(--shadow-card);
   }
+
+  .featured:hover .featuredImage,
+  .card:hover .cardImage {
+    transform: scale(1.05);
+  }
+}
+
+.featuredImageWrap {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  max-height: 280px;
 }
 
 .featuredImage {
@@ -79,15 +117,24 @@
   height: 100%;
   max-height: 280px;
   object-fit: cover;
-  border-radius: var(--radius-md);
   display: block;
+  transition: transform 0.4s ease;
 }
 
 .featuredText {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  align-items: flex-start;
   padding: var(--space-2) var(--space-3) var(--space-2) 0;
+}
+
+.featuredEyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
 }
 
 .featuredTitle {
@@ -97,10 +144,20 @@
   line-height: 1.2;
 }
 
+.readMore {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
 @media (max-width: 780px) {
   .featured {
     grid-template-columns: 1fr;
     padding: var(--space-2);
+  }
+
+  .featuredImageWrap {
+    max-height: 200px;
   }
 
   .featuredImage {
@@ -135,6 +192,7 @@
 .card {
   display: flex;
   flex-direction: column;
+  height: 100%;
   background: var(--color-white);
   border: 1px solid rgba(47, 50, 106, 0.1);
   border-radius: var(--radius-lg);
@@ -151,11 +209,18 @@
   }
 }
 
+.cardImageWrap {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
 .cardImage {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
+  transition: transform 0.4s ease;
 }
 
 .cardBody {
@@ -164,14 +229,6 @@
   gap: 6px;
   padding: var(--space-3);
   flex: 1;
-}
-
-.cardCategory {
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--color-primary);
 }
 
 .cardTitle {
@@ -186,9 +243,62 @@
   color: var(--color-primary-dark);
   line-height: 1.5;
   flex: 1;
+  /* Hauteur homogène entre les cartes (05/09/2026, "les plus beau blog premium") :
+     tronque à 3 lignes plutôt que de laisser chaque carte prendre la hauteur de son
+     propre extrait, qui désalignait les dates d'une carte à l'autre. */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .cardDate {
   font-size: 12px;
   color: var(--color-muted);
+}
+
+/* Pagination (05/09/2026, "mets une pagination") : même famille que .categoryLegendItem
+   (Partenaires.module.css) — contour lilas, pas de fond plein. */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: var(--space-4);
+}
+
+.pageNumber,
+.pageArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(47, 50, 106, 0.16);
+  background: var(--color-white);
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.pageNumberActive {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.pageArrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pageNumber:not(.pageNumberActive):hover,
+  .pageArrow:not(:disabled):hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
 }
